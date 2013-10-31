@@ -1,4 +1,5 @@
 graphs
 ======
 
-A simple graph library loosely based on Haskell's Data.Graph
+A Scala port of FGL (Functional Graph Library).
+http://web.engr.oregonstate.edu/~erwig/fgl/
