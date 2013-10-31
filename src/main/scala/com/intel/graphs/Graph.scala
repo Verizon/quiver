@@ -1,3 +1,5 @@
+package com.intel.graphs
+
 import scala.collection.immutable.IntMap
 
 import scalaz.{Node => _, _}
@@ -22,6 +24,7 @@ class Graphs[Node] {
   /** Labeled Edge */
   case class LEdge[A](from: Node, to: Node, label: A) {
     def map[B](f: A => B): LEdge[B] = LEdge(from, to, f(label))
+    def edge: Edge = Edge(from, to)
   }
 
   /** Labeled Node */
@@ -46,9 +49,6 @@ class Graphs[Node] {
   /** The internal representation of a graph */
   type GraphRep[A,B] = Map[Node, GrContext[A,B]]
 
-  /** Unlabeled node */
-  type Node = Int
-
   /** Quasi-unlabeled node */
   type UNode = LNode[Unit]
 
@@ -59,7 +59,7 @@ class Graphs[Node] {
   type Adj[B] = Vector[(B, Node)]
 
   /** An empty graph */
-  def empty[A,B]: Graph[A,B] = Graph(IntMap.empty[GrContext[A,B]])
+  def empty[A,B]: Graph[A,B] = Graph(Map.empty[Node, GrContext[A,B]])
 
   /** Create a graph from lists of labeled nodes and edges */
   def mkGraph[A,B](vs: Seq[LNode[A]], es: Seq[LEdge[B]]): Graph[A,B] =
@@ -98,12 +98,12 @@ class Graphs[Node] {
 
   /** Turn an adjacency list of labeled edges into an intmap of vectors of labels */
   def fromAdj[B](adj: Adj[B]): Map[Node, Vector[B]] =
-    adj.foldLeft(IntMap.empty[Vector[B]]) {
+    adj.foldLeft(Map.empty[Node, Vector[B]]) {
       case (m, (b, n)) => m + (n -> (m.get(n).toVector.flatten :+ b))
     }
 
   /**
-   * An efficient implementation of an inductive graph using `IntMap` (i.e. Patricia Trees).
+   * An implementation of an inductive graph using `Map`.
    * Nodes are labeled with `A`, and edges are labeled with `B`.
    */
   case class Graph[A,B](rep: GraphRep[A,B]) {
@@ -139,7 +139,7 @@ class Graphs[Node] {
     /** Add a node to this graph */
     def addNode(n: LNode[A]): Graph[A,B] = {
       val LNode(v, l) = n
-      Graph(rep + (v -> GrContext(IntMap.empty, l, IntMap.empty)))
+      Graph(rep + (v -> GrContext(Map.empty, l, Map.empty)))
     }
 
     /** Add an edge to this graph */
@@ -212,12 +212,6 @@ class Graphs[Node] {
     /** The number of nodes in this graph */
     def countNodes: Int = rep.size
 
-    /** The minimum and maximum node in a graph */
-    def nodeRange: (Node, Node) = {
-      val vs = nodes
-      (vs.min, vs.max)
-    }
-
     /** A list of all the edges in the graph and their labels */
     def labEdges: Vector[LEdge[B]] = for {
       (node, GrContext(_, _, s)) <- rep.toVector
@@ -247,12 +241,6 @@ class Graphs[Node] {
       def map1(f: B => C, s: Vector[(B, Node)]) =
         s.map { case (b, n) => (f(b), n) }
       gmap { case Context(p, v, l, s) => Context(map1(f, p), v, l, map1(f, s)) }
-    }
-
-    /** A list of `i` available nodes, i.e. nodes that are not used in the graph */
-    def freshNodes(i: Int): Vector[Node] = {
-      val (_, n) = nodeRange
-      Range(n + 1, n + i).toVector
     }
 
     /** Returns true if the given node is in the graph, otherwise false */
