@@ -20,10 +20,14 @@ class Graphs[Node] {
   case class Edge(from: Node, to: Node)
 
   /** Labeled Edge */
-  case class LEdge[A](from: Node, to: Node, label: A)
+  case class LEdge[A](from: Node, to: Node, label: A) {
+    def map[B](f: A => B): LEdge[B] = LEdge(from, to, f(label))
+  }
 
   /** Labeled Node */
-  case class LNode[A](vertex: Node, label: A)
+  case class LNode[A](vertex: Node, label: A) {
+    def map[B](f: A => B): LNode[B] = LNode(vertex, f(label))
+  }
 
   /** The label, predecessors, and successors of a given node */
   case class GrContext[A,B](inEdges: Map[Node, Vector[B]],
@@ -252,7 +256,7 @@ class Graphs[Node] {
     }
 
     /** Returns true if the given node is in the graph, otherwise false */
-    def gelem(v: Node): Boolean = decomp(v) match {
+    def contains(v: Node): Boolean = decomp(v) match {
       case Decomp(Some(_), _) => true
       case _ => false
     }
@@ -311,6 +315,30 @@ class Graphs[Node] {
       val Context(p, _, _, s) = context(v)
       p.length + s.length
     }
+
+    /** Find an edge between two nodes */
+    def findEdge(e: Edge): Option[LEdge[B]] =
+      labEdges.find(c => c.from == e.from && c.to == e.to)
+
+    /** Replace an edge with a new one */
+    def updateEdge(e: LEdge[B]): Graph[A,B] =
+      removeEdge(Edge(e.from, e.to)).addEdge(e)
+
+    /** Update multiple edges */
+    def updateEdges(es: Seq[LEdge[B]]): Graph[A,B] =
+      es.foldLeft(this)(_ updateEdge _)
+
+    /** Replace a node with a new one */
+    def updateNode(n: LNode[A]): Graph[A,B] =
+      decomp(n.vertex) match {
+        case Decomp(Some(Context(p, v, l, s)), rest) =>
+          rest & Context(p, n.vertex, n.label, s)
+        case _ => this
+      }
+
+    /** Update multiple nodes */
+    def updateNodes(ns: Seq[LNode[A]]): Graph[A,B] =
+      ns.foldLeft(this)(_ updateNode _)
 
   }
 }
