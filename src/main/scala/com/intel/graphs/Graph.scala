@@ -4,6 +4,7 @@ import scala.collection.immutable.IntMap
 
 import scalaz.{Node => _, _}
 import scalaz.syntax.std.map._
+import scalaz.syntax.monoid._
 
 /** A module of graphs, parameterized on the type of the `Node` unique identifier */
 class Graphs[Node] {
@@ -57,6 +58,16 @@ class Graphs[Node] {
 
   /** Labeled links to or from a node */
   type Adj[B] = Vector[(B, Node)]
+
+  implicit def nodeOrder[A](implicit N: Order[Node], A: Order[A]): Order[LNode[A]] =
+    Order.order { (a, b) =>
+      N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label)
+    }
+
+  implicit def edgeOrder[A](implicit N: Order[Node], A: Order[A]): Order[LEdge[A]] =
+    Order.order { (a, b) =>
+      N.order(a.from, b.from) |+| N.order(a.to, b.to) |+| A.order(a.label, b.label)
+    }
 
   /** An empty graph */
   def empty[A,B]: Graph[A,B] = Graph(Map.empty[Node, GrContext[A,B]])
