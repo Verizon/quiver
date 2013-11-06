@@ -1,4 +1,4 @@
-name := "Graphs"
+name := "FGL"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.0.4"
 
