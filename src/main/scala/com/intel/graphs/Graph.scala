@@ -17,6 +17,8 @@ class Graphs[Node] {
 
     /** All the outgoing edges plus incoming edges to self */
     def outs: Adj[B] = outEdges ++ inEdges.filter(_._2 == vertex)
+
+    def toGrContext: GrContext[A,B] = GrContext(fromAdj(inEdges), label, fromAdj(outEdges))
   }
 
   /** Unlabeled Edge */
@@ -36,7 +38,9 @@ class Graphs[Node] {
   /** The label, predecessors, and successors of a given node */
   case class GrContext[A,B](inEdges: Map[Node, Vector[B]],
                             label: A,
-                            outEdges: Map[Node, Vector[B]])
+                            outEdges: Map[Node, Vector[B]]) {
+    def toContext(v: Node): Context[A,B] = Context(toAdj(inEdges), v, label, toAdj(outEdges))
+  }
 
   /**
    * The decomposition of a graph into a detached context focused on one node
@@ -241,7 +245,7 @@ class Graphs[Node] {
 
     /** Map a function over the graph */
     def gmap[C,D](f: Context[A,B] => Context[C,D]): Graph[C,D] =
-      fold(empty[C,D]) { (c, g) => g & f(c) }
+      Graph(rep.map { case (k, v) => k -> f(v.toContext(k)).toGrContext })
 
     /** Map a function over the node labels in the grap */
     def nmap[C](f: A => C): Graph[C, B] =
