@@ -249,14 +249,14 @@ class Graphs[Node] {
 
     /** Map a function over the node labels in the grap */
     def nmap[C](f: A => C): Graph[C, B] =
-      gmap { case Context(p, v, l, s) => Context(p, v, f(l), s) }
+      Graph(rep.mapValues { case GrContext(ps, a, ss) => GrContext(ps, f(a), ss) })
 
     /** Map a function over the edge labels in the graph */
     def emap[C](f: B => C): Graph[A, C] = {
-      def map1(f: B => C, s: Vector[(B, Node)]) =
-        s.map { case (b, n) => (f(b), n) }
-      gmap { case Context(p, v, l, s) => Context(map1(f, p), v, l, map1(f, s)) }
-    }
+      Graph(rep.mapValues {
+        case GrContext(ps, a, ss) =>
+          GrContext(ps mapValues (_ map f), a, ss mapValues (_ map f))
+      })
 
     /** Returns true if the given node is in the graph, otherwise false */
     def contains(v: Node): Boolean = decomp(v) match {
