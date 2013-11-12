@@ -252,7 +252,7 @@ class Graphs[Node] {
       Graph(rep.mapValues { case GrContext(ps, a, ss) => GrContext(ps, f(a), ss) })
 
     /** Map a function over the edge labels in the graph */
-    def emap[C](f: B => C): Graph[A, C] = {
+    def emap[C](f: B => C): Graph[A, C] =
       Graph(rep.mapValues {
         case GrContext(ps, a, ss) =>
           GrContext(ps mapValues (_ map f), a, ss mapValues (_ map f))
