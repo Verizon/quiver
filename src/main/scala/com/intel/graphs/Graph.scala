@@ -80,6 +80,9 @@ class Graphs[Node] {
   def mkGraph[A,B](vs: Seq[LNode[A]], es: Seq[LEdge[B]]): Graph[A,B] =
     empty.addNodes(vs).addEdges(es)
 
+  def safeMkGraph[A,B](vs: Seq[LNode[A]], es: Seq[LEdge[B]]): Graph[A,B] =
+    empty.addNodes(vs).safeAddEdges(es)
+
   /** Build a graph from a list of contexts */
   def buildGraph[A,B](ctxs: Seq[Context[A,B]]): Graph[A,B] =
     ctxs.foldLeft(empty[A,B])(_ & _)
@@ -157,19 +160,33 @@ class Graphs[Node] {
       Graph(rep + (v -> GrContext(Map.empty, l, Map.empty)))
     }
 
-    /** Add an edge to this graph */
-    def addEdge(e: LEdge[B]): Graph[A,B] = {
+    /**
+     * Add an edge to this graph.
+     * Throws an error if the source and target nodes don't exist in the graph.
+     */
+    def addEdge(e: LEdge[B]): Graph[A,B] =
+      safeAddEdge(e,
+        sys.error(s"Can't add edge $e since the source and target nodes don't both exist in the graph."))
+
+    /**
+     * Add an edge to this graph. If the source and target nodes don't exist in this graph,
+     * return the given `failover` graph.
+     */
+    def safeAddEdge(e: LEdge[B], failover: => Graph[A,B] = this): Graph[A,B] = {
       val LEdge(v, w, l) = e
-      def addSuccP(p: GrContext[A,B]) = {
-        val GrContext(ps, lp, ss) = p
-        GrContext(ps, lp, ss.insertWith(w, Vector(l))(_ ++ _))
-      }
-      def addPredP(p: GrContext[A,B]) = {
-        val GrContext(ps, lp, ss) = p
-        GrContext(ps.insertWith(v, Vector(l))(_ ++ _), lp, ss)
-      }
-      val g1 = rep.alter(v)(_ map addSuccP)
-      Graph(g1.alter(w)(_ map addPredP))
+      val ks = rep.keySet
+      if (ks.contains(v) && ks.contains(w)) {
+        def addSuccP(p: GrContext[A,B]) = {
+          val GrContext(ps, lp, ss) = p
+          GrContext(ps, lp, ss.insertWith(w, Vector(l))(_ ++ _))
+        }
+        def addPredP(p: GrContext[A,B]) = {
+          val GrContext(ps, lp, ss) = p
+          GrContext(ps.insertWith(v, Vector(l))(_ ++ _), lp, ss)
+        }
+        val g1 = rep.alter(v)(_ map addSuccP)
+        Graph(g1.alter(w)(_ map addPredP))
+      } else failover
     }
 
     /** Add multiple nodes to this graph */
@@ -179,6 +196,13 @@ class Graphs[Node] {
     /** Add multiple edges to this graph */
     def addEdges(es: Seq[LEdge[B]]): Graph[A,B] =
       es.foldLeft(this)(_ addEdge _)
+
+    /**
+     * Add multiple edges to this graph, ignoring edges whose source and target nodes
+     * don't already exist in the graph.
+     */
+    def safeAddEdges(es: Seq[LEdge[B]]): Graph[A,B] =
+      es.foldLeft(this)(_ safeAddEdge _)
 
     /** Remove a node from this graph */
     def removeNode(v: Node): Graph[A,B] =
