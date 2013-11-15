@@ -8,7 +8,7 @@ class GraphGen[Node: Arbitrary] extends Graphs[Node] {
   def graphGen[A: Arbitrary, B: Arbitrary]: Gen[Graph[A,B]] = for {
     vs <- Gen.listOf(genNode[A])
     es <- Gen.listOf(genEdge[B])
-  } yield mkGraph(vs, es)
+  } yield safeMkGraph(vs, es)
 
   def genNode[A: Arbitrary]: Gen[LNode[A]] = for {
     a <- arbitrary[A]
