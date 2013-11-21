@@ -12,11 +12,20 @@ class Graphs[Node] {
   /** The view of a graph focused on the context surrounding a particular node. */
   case class Context[A,B](inEdges: Adj[B], vertex: Node, label: A, outEdges: Adj[B]) {
 
-    /** All the incoming edges plus outgoing edges to self */
+    /** All the incoming edges plus identity arrows to self */
     def ins: Adj[B] = inEdges ++ outEdges.filter(_._2 == vertex)
 
-    /** All the outgoing edges plus incoming edges to self */
+    /** All the outgoing edges plus identity arrows from self */
     def outs: Adj[B] = outEdges ++ inEdges.filter(_._2 == vertex)
+
+    /** All the targets of outgoing edges */
+    def successors: Vector[Node] = outs.map(_._2)
+
+    /** All the sources of incoming edges */
+    def predecessors: Vector[Node] = ins.map(_._2)
+
+    /** All neighbors of the node */
+    def neighbors: Vector[Node] = (inEdges ++ outEdges).map(_._2)
 
     def toGrContext: GrContext[A,B] = GrContext(fromAdj(inEdges), label, fromAdj(outEdges))
   }
@@ -367,5 +376,82 @@ class Graphs[Node] {
     def updateNodes(ns: Seq[LNode[A]]): Graph[A,B] =
       ns.foldLeft(this)(_ updateNode _)
 
+    /**
+     * Generalized depth-first search.
+     */
+    final def xdfsWith[C](vs: Seq[Node],
+                          d: Context[A, B] => Seq[Node],
+                          f: Context[A, B] => C): Vector[C] =
+      if (vs.isEmpty || isEmpty) Vector()
+      else decomp(vs.head) match {
+        case Decomp(Some(c), g) => f(c) +: g.xdfsWith(vs.tail, d, f)
+        case Decomp(None, g) => g.xdfsWith(vs.tail, d, f)
+      }
+
+    /**
+     * Forward depth-first search.
+     */
+    def dfsWith[C](vs: Seq[Node], f: Context[A, B] => C): Seq[C] =
+      xdfsWith(vs, _.successors, f)
+
+    /** Forward depth-first search. */
+    def dfs(vs: Seq[Node]): Seq[Node] = dfsWith(vs, _.vertex)
+
+    /** Undirected depth-first search */
+    def udfs(vs: Seq[Node]): Seq[Node] = xdfsWith(vs, _.neighbors, _.vertex)
+
+    /** Reverse depth-first search. Follows predecessors. */
+    def rdfs(vs: Seq[Node]): Seq[Node] = xdfsWith(vs, _.predecessors, _.vertex)
+
+    /** Finds the transitive closure of this graph. */
+    def tclose: Graph[A,Unit] = {
+      val ln = labNodes
+      val newEdges = ln.flatMap {
+        case LNode(u, _) => reachable(u).map(v => LEdge(u, v, ()))
+      }
+      empty.addNodes(ln).addEdges(newEdges)
+    }
+
+    /** Finds all the reachable nodes from a given node, using DFS */
+    def reachable(v: Node): Vector[Node] = dff(Seq(v)).flatMap(_.flatten)
+
+    /**
+     * Depth-first forest. Follows successors of the given nodes. The result is
+     * a vector of trees of nodes where each path in each tree is a path through the
+     * graph.
+     */
+    def dff(vs: Seq[Node]): Vector[Tree[Node]] = dffWith(vs, _.vertex)
+
+    /**
+     * Depth-first forest. Follows successors of the given nodes. The result is
+     * a vector of trees of results of passing the context of each node to the function `f`.
+     */
+    def dffWith[C](vs: Seq[Node], f: Context[A, B] => C): Vector[Tree[C]] =
+      xdffWith(vs, _.successors, f)
+
+    /**
+     * Generalized depth-first forest. Uses the function `d` to decide which nodes to
+     * visit next.
+     */
+    def xdffWith[C](vs: Seq[Node],
+                    d: Context[A, B] => Seq[Node],
+                    f: Context[A, B] => C): Vector[Tree[C]] =
+      xdfWith(vs, d, f)._1
+
+    /**
+     * Generalized depth-first forest. Uses the function `d` to decide which nodes to
+     * visit next
+     */
+    def xdfWith[C](vs: Seq[Node],
+                   d: Context[A, B] => Seq[Node],
+                   f: Context[A, B] => C): (Vector[Tree[C]], Graph[A, B]) =
+      if (vs.isEmpty || isEmpty) (Vector(), this)
+      else decomp(vs.head) match {
+        case Decomp(None, g) => g.xdfWith(vs.tail, d, f)
+        case Decomp(Some(c), g) =>
+          val (xs, g2) = g.xdfWith(d(c), d, f)
+          val (ys, g3) = g.xdfWith(vs.tail, d, f)
+          (Tree.node(f(c), xs.toStream) +: ys, g3)
+      }
   }
 }
