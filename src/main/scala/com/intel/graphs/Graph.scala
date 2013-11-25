@@ -384,7 +384,7 @@ class Graphs[Node] {
                           f: Context[A, B] => C): Vector[C] =
       if (vs.isEmpty || isEmpty) Vector()
       else decomp(vs.head) match {
-        case Decomp(Some(c), g) => f(c) +: g.xdfsWith(vs.tail, d, f)
+        case Decomp(Some(c), g) => f(c) +: g.xdfsWith(d(c) ++ vs.tail, d, f)
         case Decomp(None, g) => g.xdfsWith(vs.tail, d, f)
       }
 

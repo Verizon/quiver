@@ -60,4 +60,14 @@ object GraphTests extends Properties("Graph") {
       !empty[String, String].addNode(n1).addNode(n2).addEdge(LEdge(n1.vertex, n2.vertex, el)).isEmpty
     }
 
+  property("DFS should find all successors of a node") =
+    forAll { (ns: List[LNode[Int]], l: Int) =>
+      val g = mkGraph(ns,
+                if (ns.isEmpty) List()
+                else ns.zip(ns.tail).map {
+                  case (a, b) => LEdge(a.vertex, b.vertex, l)
+                })
+      ns.isEmpty || g.dfs(Seq(ns.head.vertex)).toSet == ns.map(_.vertex).toSet
+    }
+
 }
