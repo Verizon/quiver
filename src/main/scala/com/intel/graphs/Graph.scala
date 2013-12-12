@@ -58,7 +58,12 @@ class Graphs[Node] {
   case class Decomp[A,B](ctx: Option[Context[A,B]], rest: Graph[A,B])
 
   /** The same as `Decomp`, only more sure of itself */
-  case class GDecomp[A,B](ctx: Context[A, B], rest: Graph[A, B])
+  case class GDecomp[A,B](ctx: Context[A, B], rest: Graph[A, B]) {
+    def addSucc(node: LNode[A], edge: B) =
+      GDecomp(Context(Vector(edge -> ctx.vertex), node.vertex, node.label, Vector()), rest & ctx)
+    def addPred(node: LNode[A], edge: B) =
+      GDecomp(Context(Vector(), node.vertex, node.label, Vector(edge -> ctx.vertex)), rest & ctx)
+  }
 
   /** The internal representation of a graph */
   type GraphRep[A,B] = Map[Node, GrContext[A,B]]
@@ -375,6 +380,11 @@ class Graphs[Node] {
     /** Update multiple nodes */
     def updateNodes(ns: Seq[LNode[A]]): Graph[A,B] =
       ns.foldLeft(this)(_ updateNode _)
+
+    /** Reverse the direction of all edges */
+    def reverse: Graph[A,B] = gmap {
+      case Context(p, v, l, s) => Context(s, v, l, p)
+    }
 
     /**
      * Generalized depth-first search.
