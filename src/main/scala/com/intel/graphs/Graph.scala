@@ -28,6 +28,12 @@ class Graphs[Node] {
     def neighbors: Vector[Node] = (inEdges ++ outEdges).map(_._2)
 
     def toGrContext: GrContext[A,B] = GrContext(fromAdj(inEdges), label, fromAdj(outEdges))
+
+    /** Insert a successor after the focused node */
+    def addSucc(n: Node, edge: B) = Context(inEdges, vertex, label, outEdges :+ (edge -> n))
+
+    /** Insert a predecessor after the focused node */
+    def addPred(n: Node, edge: B) = Context((edge -> n) +: inEdges, vertex, label, outEdges)
   }
 
   /** Unlabeled Edge */
@@ -55,14 +61,22 @@ class Graphs[Node] {
    * The decomposition of a graph into a detached context focused on one node
    * and the rest of the graph.
    */
-  case class Decomp[A,B](ctx: Option[Context[A,B]], rest: Graph[A,B])
+  case class Decomp[A,B](ctx: Option[Context[A,B]], rest: Graph[A,B]) {
+    def addSucc(node: LNode[A], edge: B): Decomp[A,B] =
+      ctx.map(x => GDecomp(x, rest).addSucc(node, edge).toDecomp).getOrElse(this)
+    def addPred(node: LNode[A], edge: B): Decomp[A,B] =
+      ctx.map(x => GDecomp(x, rest).addPred(node, edge).toDecomp).getOrElse(this)
+    def toGraph: Graph[A,B] = ctx.foldLeft(rest)(_ & _)
+  }
 
   /** The same as `Decomp`, only more sure of itself */
   case class GDecomp[A,B](ctx: Context[A, B], rest: Graph[A, B]) {
-    def addSucc(node: LNode[A], edge: B) =
+    def addSucc(node: LNode[A], edge: B): GDecomp[A,B] =
       GDecomp(Context(Vector(edge -> ctx.vertex), node.vertex, node.label, Vector()), rest & ctx)
-    def addPred(node: LNode[A], edge: B) =
+    def addPred(node: LNode[A], edge: B): GDecomp[A,B] =
       GDecomp(Context(Vector(), node.vertex, node.label, Vector(edge -> ctx.vertex)), rest & ctx)
+    def toDecomp: Decomp[A,B] = Decomp(Some(ctx), rest)
+    def toGraph: Graph[A,B] = rest & ctx
   }
 
   /** The internal representation of a graph */
@@ -76,6 +90,30 @@ class Graphs[Node] {
 
   /** Labeled links to or from a node */
   type Adj[B] = Vector[(B, Node)]
+
+  /**
+   * The decomposition of a graph into two detached
+   * contexts focused on distinguished "first" and "last" nodes.
+   */
+  case class BiDecomp[A,B](first: Context[A,B], last: Context[A,B], rest: Graph[A,B]) {
+    def toGraph: Graph[A,B] = rest & first & last
+
+    /** Appends a successor to the last node in this graph and makes that the last node. */
+    def addSucc(node: LNode[A], edge: B): BiDecomp[A,B] =
+      BiDecomp(first, Context(Vector(edge -> last.vertex), node.vertex, node.label, Vector()), rest & last)
+
+    /** Prepends a predecessor to the first node in this graph and makes that the first node. */
+    def addPred(node: LNode[A], edge: B): BiDecomp[A,B] =
+      BiDecomp(Context(Vector(edge -> first.vertex), node.vertex, node.label, Vector()), last, rest & first)
+
+    /**
+     * Appends one decomposition to another. The first node of this graph will be the first node of the result.
+     * The last node of the given graph will be the last node of the result. The given edge will be added
+     * from the last node of this graph to the first node of the given graph.
+     */
+    def append(b: BiDecomp[A,B], edge: B): BiDecomp[A,B] =
+      BiDecomp(first, b.last, rest union b.rest & last & b.first addEdge LEdge(last.vertex, b.first.vertex, edge))
+  }
 
   implicit def nodeOrder[A](implicit N: Order[Node], A: Order[A]): Order[LNode[A]] =
     Order.order { (a, b) =>
@@ -156,6 +194,15 @@ class Graphs[Node] {
         Decomp(Some(Context(toAdj(pp), n, label, toAdj(s))), Graph(g3))
     }
 
+    def bidecomp(first: Node, last: Node): Option[BiDecomp[A,B]] = {
+      val Decomp(c1, r1) = decomp(first)
+      val Decomp(c2, _) = decomp(last)
+      for {
+        x <- c1
+        y <- c2
+      } yield BiDecomp(x, y, r1.decomp(y.vertex).rest)
+    }
+
     /**
      * Merge the given context into the graph. The context consists of a vertex, its label,
      * its successors, and its predecessors.
@@ -217,6 +264,10 @@ class Graphs[Node] {
      */
     def safeAddEdges(es: Seq[LEdge[B]]): Graph[A,B] =
       es.foldLeft(this)(_ safeAddEdge _)
+
+    /** Adds all the nodes and edges from one graph to another. */
+    def union(g: Graph[A,B]): Graph[A,B] =
+      addNodes(g.labNodes).addEdges(g.labEdges)
 
     /** Remove a node from this graph */
     def removeNode(v: Node): Graph[A,B] =
