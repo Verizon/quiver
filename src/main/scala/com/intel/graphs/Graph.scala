@@ -5,6 +5,7 @@ import scala.collection.immutable.IntMap
 import scalaz.{Node => _, _}
 import scalaz.syntax.std.map._
 import scalaz.syntax.monoid._
+import scalaz.std.vector._
 
 /** A module of graphs, parameterized on the type of the `Node` unique identifier */
 class Graphs[Node] {
@@ -79,6 +80,9 @@ class Graphs[Node] {
     def toGraph: Graph[A,B] = rest & ctx
   }
 
+  /** The same as `Decomp`, but possibly with multiple detached foci */
+  case class MultiDecomp[A,B](ctxs: Vector[Context[A,B]], rest: Graph[A,B])
+
   /** The internal representation of a graph */
   type GraphRep[A,B] = Map[Node, GrContext[A,B]]
 
@@ -120,9 +124,22 @@ class Graphs[Node] {
       N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label)
     }
 
-  implicit def edgeOrder[A](implicit N: Order[Node], A: Order[A]): Order[LEdge[A]] =
+  implicit def ledgeOrder[A](implicit N: Order[Node], A: Order[A]): Order[LEdge[A]] =
     Order.order { (a, b) =>
       N.order(a.from, b.from) |+| N.order(a.to, b.to) |+| A.order(a.label, b.label)
+    }
+
+  implicit def edgeOrder[A](implicit N: Order[Node]): Order[Edge] =
+    Order.order { (a, b) =>
+      N.order(a.from, b.from) |+| N.order(a.to, b.to)
+    }
+
+  implicit def graphOrder[A,B](implicit N: Order[Node], A: Order[A], B: Order[B]): Order[Graph[A, B]] =
+    Order.order { (a, b) =>
+      implicit val L = Order[LNode[A]].toScalaOrdering
+      implicit val E = Order[LEdge[B]].toScalaOrdering
+      Order[Vector[LNode[A]]].order(a.labNodes.sorted, b.labNodes.sorted) |+|
+      Order[Vector[LEdge[B]]].order(a.labEdges.sorted, b.labEdges.sorted)
     }
 
   /** An empty graph */
@@ -215,10 +232,16 @@ class Graphs[Node] {
       Graph(g3)
     }
 
-    /** Add a node to this graph */
+    /**
+     * Add a node to this graph. If this node already exists with a different label,
+     * its label will be replaced with this new one.
+     */
     def addNode(n: LNode[A]): Graph[A,B] = {
       val LNode(v, l) = n
-      Graph(rep + (v -> GrContext(Map.empty, l, Map.empty)))
+      val Decomp(ctx, g) = decomp(v)
+      g & ctx.map {
+        case x:Context[A,B] => x.copy(label = l)
+      }.getOrElse(Context(Vector(), v, l, Vector()))
     }
 
     /**
@@ -514,5 +537,10 @@ class Graphs[Node] {
           val (ys, g3) = g.xdfWith(vs.tail, d, f)
           (Tree.node(f(c), xs.toStream) +: ys, g3)
       }
+  }
+
+  implicit def graphMonoid[A,B]: Monoid[Graph[A,B]] = new Monoid[Graph[A,B]] {
+    def zero = empty
+    def append(g1: Graph[A,B], g2: => Graph[A,B]) = g1 union g2
   }
 }

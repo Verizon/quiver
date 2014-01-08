@@ -21,16 +21,16 @@ object GraphTests extends Properties("Graph") {
 
   property("Adding an edge should yield a map that contains that edge") =
     forAll { (g: Graph[Int, Int], e: LEdge[Int]) =>
-      g.addNode(LNode(e.from, 0)).addNode(LNode(e.to, 0)).safeAddEdge(e).findEdge(e.edge).isDefined
+      g.addNode(LNode(e.from, 0)).addNode(LNode(e.to, 0)).addEdge(e).findEdge(e.edge).isDefined
     }
 
   property("Adding an edge and removing it again yields a graph that doesn't contain that edge") =
     forAll { (g: Graph[Int, Int], e: LEdge[Int]) =>
       g.addNode(LNode(e.from, 0)).
       addNode(LNode(e.to, 0)).
-      safeAddEdge(e).
+      addEdge(e).
       removeLEdge(e).
-      findEdge(e.edge).isEmpty
+      findEdge(e.edge) != Some(e)
     }
 
   property("A graph constructed from nodes and edges should contain those nodes and edges") =
@@ -80,4 +80,25 @@ object GraphTests extends Properties("Graph") {
       ns.isEmpty || g.rdfs(Seq(ns.last.vertex)).toSet == ns.map(_.vertex).toSet
     }
 
+  property("The union of two graphs should contain all the edges and nodes of both graphs") =
+    forAll { (g1: Graph[Int, Int], g2: Graph[Int, Int]) =>
+      val u = g1 union g2
+      g1.edges.forall(u.edges contains _)
+      g1.nodes.forall(u.nodes contains _)
+    }
+
+  property("Graphs with union form a monoid") =
+    forAll { (g1: Graph[Int, Int], g2: Graph[Int, Int], g3: Graph[Int, Int]) =>
+      graphMonoid.monoidLaw.associative(g1, g2, g3)
+      graphMonoid.monoidLaw.leftIdentity(g1)
+      graphMonoid.monoidLaw.rightIdentity(g1)
+    }
+
+  property("Union is commutative (ignoring labels)") =
+    forAll { (g1: Graph[Int, Int], g2: Graph[Int, Int]) =>
+      val u1 = g1 union g2
+      val u2 = g2 union g1
+      implicit val N = Order[Edge].toScalaOrdering
+      u1.edges.sorted == u2.edges.sorted && u1.nodes.sorted == u2.nodes.sorted
+    }
 }
