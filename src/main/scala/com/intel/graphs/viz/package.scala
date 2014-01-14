@@ -1,27 +1,19 @@
 package com.intel.graphs
 
-sealed trait Orient {
-  override def toString = this match {
-    case Portrait => "\trotate = \"0\"\n"
-    case Landscape => "\trotate = \"90\"\n"
-  }
-}
-case object Portrait extends Orient
-case object Landscape extends Orient
+package object viz {
 
-class Viz[A] extends Graphs[A] {
   /** Formats a graph for use with graphviz */
-  def graphviz[A,B](g: Graph[A,B],
-                    title: String = "fgl",
-                    pageSize: (Double, Double) = (8.5, 11.0),
-                    gridSize: (Int, Int) = (1, 1),
-                    orient: Orient = Landscape): String = {
-    def sn(node: LNode[A]) = node match {
+  def graphviz[N,A,B](g: Graph[N,A,B],
+                      title: String = "fgl",
+                      pageSize: (Double, Double) = (8.5, 11.0),
+                      gridSize: (Int, Int) = (1, 1),
+                      orient: Orient = Landscape): String = {
+    def sn(node: LNode[N,A]) = node match {
       case LNode(n, a) =>
         val sa = sl(a)
         if (sa == "") "" else s"\t$n$sa\n"
     }
-    def se(edge: LEdge[B]) = edge match {
+    def se(edge: LEdge[N,B]) = edge match {
       case LEdge(n1, n2, b) => s"\t$n1 -> $n2${sl(b)}\n"
     }
     val n = g.labNodes

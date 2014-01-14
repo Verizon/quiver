@@ -3,27 +3,28 @@ package com.intel.graphs
 import org.scalacheck._
 import org.scalacheck.Arbitrary._
 
-class GraphGen[Node: Arbitrary] extends Graphs[Node] {
+object GraphGen {
 
-  def graphGen[A: Arbitrary, B: Arbitrary]: Gen[Graph[A,B]] = for {
-    vs <- Gen.listOf(genNode[A])
-    es <- Gen.listOf(genEdge[B])
+  def graphGen[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[Graph[N,A,B]] = for {
+    vs <- Gen.listOf(genNode[N,A])
+    es <- Gen.listOf(genEdge[N,B])
   } yield safeMkGraph(vs, es)
 
-  def genNode[A: Arbitrary]: Gen[LNode[A]] = for {
+  def genNode[N: Arbitrary, A: Arbitrary]: Gen[LNode[N,A]] = for {
     a <- arbitrary[A]
-    v <- arbitrary[Node]
+    v <- arbitrary[N]
   } yield LNode(v, a)
 
 
-  def genEdge[A: Arbitrary]: Gen[LEdge[A]] = for {
-    x <- arbitrary[Node]
-    y <- arbitrary[Node]
+  def genEdge[N: Arbitrary, A: Arbitrary]: Gen[LEdge[N,A]] = for {
+    x <- arbitrary[N]
+    y <- arbitrary[N]
     a <- arbitrary[A]
   } yield LEdge(x, y, a)
 
-  implicit def arbitraryEdge[A: Arbitrary] = Arbitrary(genEdge[A])
-  implicit def arbitraryNode[A: Arbitrary] = Arbitrary(genNode[A])
-  implicit def arbitraryGraph[A: Arbitrary, B: Arbitrary] = Arbitrary(graphGen[A,B])
+  implicit def arbitraryEdge[A: Arbitrary, N: Arbitrary] = Arbitrary(genEdge[N,A])
+  implicit def arbitraryNode[A: Arbitrary, N: Arbitrary] = Arbitrary(genNode[N,A])
+  implicit def arbitraryGraph[A: Arbitrary, B: Arbitrary, N: Arbitrary] =
+    Arbitrary(graphGen[N,A,B])
 
 }
