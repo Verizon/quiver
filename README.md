@@ -83,13 +83,13 @@ res2: com.intel.graphs.Graph[Int,Char,Unit] =
 
 scala> e
 res3: com.intel.graphs.Graph[Int,Char,Unit] =
-2:b->[]
 1:a->[((),2)]
+2:b->[]
 
 scala> ab
 res4: com.intel.graphs.Graph[Int,Char,Unit] =
-2:b->[((),1)]
 1:a->[((),2)]
+2:b->[((),1)]
 ```
 
 There are several additional methods defined on `Graph` that make graph construction more convenient. The `addNode` and `addNodes` methods can be used to insert one or more labeled nodes into the graph. The methods `addEdge` and `addEdges` can be used to extend the graph with one or more labeled edges. Similarly, `removeNode`, `removeNodes`, `removeEdge`, and `removeEdges` do what you might expect.
@@ -111,15 +111,27 @@ The fundamental operation for decomposing a graph is given by the method `decomp
 Let's look at some examples:
 
 ```
-TODO: Make this happen
+scala> a decomp 1
+res5: com.intel.graphs.Decomp[Int,Char,Unit] =
+Decomp(Some(Context(Vector(),1,a,Vector())),)
 
-a decomp 1
-loop decomp 1
-ab decomp 1
-e decomp 1
-g3 decomp 1
-a decomp 2
+scala> loop decomp 1
+res6: com.intel.graphs.Decomp[Int,Char,Unit] =
+Decomp(Some(Context(Vector(),1,a,Vector(((),1)))),)
+
+scala> ab decomp 1
+res7: com.intel.graphs.Decomp[Int,Char,Unit] =
+Decomp(Some(Context(Vector(((),2)),1,a,Vector(((),2)))),2:b->[])
+
+scala> e decomp 1
+res8: com.intel.graphs.Decomp[Int,Char,Unit] =
+Decomp(Some(Context(Vector(),1,a,Vector(((),2)))),2:b->[])
+
+scala> a decomp 2
+res9: com.intel.graphs.Decomp[Int,Char,Unit] =
+Decomp(None,1:a->[])
 ```
+
 The `decompAny` method furthermore decomposes the graph on an arbitrary node. It's an error to decompose the empty graph, but `decompAny` will always pick the first node it finds if the graph is nonempty.
 
 ### General-Purpose Operations ###

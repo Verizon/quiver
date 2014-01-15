@@ -380,7 +380,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     nodes.foldLeft("") { (s, n) => decomp(n) match {
       case Decomp(Some(Context(_, v, l, ss)), _) =>
         val sss = ss.mkString(",")
-        s"$v:$l->[$sss]\n$s"
+        val n = if (s.isEmpty) "" else "\n"
+        s"$s$n$v:$l->[$sss]"
       case _ => sys.error("Unpossible!")
     }}
 }
