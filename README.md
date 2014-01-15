@@ -34,7 +34,7 @@ The main class in the library is `Graph[N,A,B]` which represents a graph. The ty
 
 We have two basic functions to build up graphs: the expression `empty` denotes the empty graph, and the expression `g & c` extends an existing graph `g` with a _context_ `c` of type `Context[N,A,B]`.
 
-A `Context[N,A,B]` is a node `v:N` together with two lists of _adjacencies_: one for predecessors and one for successors of `v`. An adjacency (represented by the type `Adj[N,B]`) is a node `a` together with the label of the edge from `v` to `a` (or vice versa). It's called _context_ because it is a view of the graph from the context of a specific node. The context consists of the node itself, its two adjacency lists, and its label.
+A `Context[N,A,B]` is a node `v:N` together with two lists of _adjacencies_: one for predecessors and one for successors of `v` represented by the type Adj[N,B]. An adjacency is a node `a:N` together with the label of type `B` of the edge from `v` to `a` (or vice versa). It's called a _context_ because it is a view of the graph from the context of a specific node. The context consists of the node itself, its two adjacency lists, and its label.
 
 With these two functions, we can construct any graph. Let's look at a few very simple graphs of type `Graph[Int, Char, Unit]`. That is, graphs with integer nodes labeled by characters and unlabeled edges (they are labeled with the empty `()` value of the trivial type `Unit`).
 
@@ -70,10 +70,29 @@ val ab = a & Context(Vector(() -> 1), 2, 'b', Vector(() -> 1))
 To have a textual representation of graphs, the `toString` method is defined to print the adjacency list representation. This means that a graph is shown as a list of labeled nodes, each followed by the list of labeled outgoing edges. For example, the above graphs are printed as follows:
 
 ```
-TODO: Make this happen
+scala> nil
+res0: com.intel.graphs.Graph[Int,Char,Unit] =
+
+scala> a
+res1: com.intel.graphs.Graph[Int,Char,Unit] =
+1:a->[]
+
+scala> loop
+res2: com.intel.graphs.Graph[Int,Char,Unit] =
+1:a->[((),1)]
+
+scala> e
+res3: com.intel.graphs.Graph[Int,Char,Unit] =
+2:b->[]
+1:a->[((),2)]
+
+scala> ab
+res4: com.intel.graphs.Graph[Int,Char,Unit] =
+2:b->[((),1)]
+1:a->[((),2)]
 ```
 
-There are several additional methods defined on `Graph` that make graph construction more convenient. The `addNode` and `addNodes` methods can be used to insert one or more labeled nodes into the graph. The methods `addEdge` and `adEdges` can be used to extend the graph with one or more labeled edges. Similarly, `removeNode`, `removeNodes`, `removeEdge`, and `removeEdges` do what you might expect.
+There are several additional methods defined on `Graph` that make graph construction more convenient. The `addNode` and `addNodes` methods can be used to insert one or more labeled nodes into the graph. The methods `addEdge` and `addEdges` can be used to extend the graph with one or more labeled edges. Similarly, `removeNode`, `removeNodes`, `removeEdge`, and `removeEdges` do what you might expect.
 
 A very useful function for building graphs is `mkGraph`, which just takes a list of nodes and a list of edges and constructs a graph. It is defined in the package `com.intel.graphs`.
 

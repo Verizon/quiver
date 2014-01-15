@@ -181,8 +181,10 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
 
   /** Fold a function over the graph */
   def fold[C](u: C)(f: (Context[N,A,B], C) => C): C = {
-    val GDecomp(c, g) = decompAny
-    if (isEmpty) u else f(c, g.fold(u)(f))
+    if (isEmpty) u else {
+      val GDecomp(c, g) = decompAny
+      f(c, g.fold(u)(f))
+    }
   }
 
   /** Map a function over the graph */
@@ -373,5 +375,13 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
         val (ys, g3) = g.xdfWith(vs.tail, d, f)
         (Tree.node(f(c), xs.toStream) +: ys, g3)
     }
+
+  override def toString: String =
+    nodes.foldLeft("") { (s, n) => decomp(n) match {
+      case Decomp(Some(Context(_, v, l, ss)), _) =>
+        val sss = ss.mkString(",")
+        s"$v:$l->[$sss]\n$s"
+      case _ => sys.error("Unpossible!")
+    }}
 }
 

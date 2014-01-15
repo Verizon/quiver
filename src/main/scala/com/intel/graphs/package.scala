@@ -74,10 +74,14 @@ package object graphs {
     }}), v, lss.tail)
 
   def clearPred[N,A,B](g: GraphRep[N,A,B], v: N, ns: Vector[N]): GraphRep[N,A,B] =
-    clear(g, v, ns, { case GrContext(ps, l, ss) => GrContext(ps - v, l, ss) })
+    if (ns.isEmpty) g else clearPred(g.alter(ns.head)(_ map {
+        case GrContext(ps, l, ss) => GrContext(ps - v, l, ss)
+      }), v, ns.tail)
 
   def clearSucc[N,A,B](g: GraphRep[N,A,B], v: N, ns: Vector[N]): GraphRep[N,A,B] =
-    clear(g, v, ns, { case GrContext(ps, l, ss) => GrContext(ps, l, ss - v) })
+    if (ns.isEmpty) g else clearSucc(g.alter(ns.head)(_ map {
+        case GrContext(ps, l, ss) => GrContext(ps, l, ss - v)
+      }), v, ns.tail)
 
   /** Turn an intmap of vectors of labels into an adjacency list of labeled edges */
   def toAdj[N,B](bs: Map[N, Vector[B]]): Adj[N,B] = bs.toVector.flatMap {
