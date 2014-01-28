@@ -28,9 +28,9 @@ case class Context[N,A,B](inEdges: Adj[N,B], vertex: N, label: A, outEdges: Adj[
 }
 
 /** The label, predecessors, and successors of a given node */
-case class GrContext[N,A,B](inEdges: Map[N, Vector[B]],
+case class GrContext[N,A,B](inEdges: Map[N, Set[B]],
                             label: A,
-                            outEdges: Map[N, Vector[B]]) {
+                            outEdges: Map[N, Set[B]]) {
   def toContext(v: N): Context[N,A,B] = Context(toAdj(inEdges), v, label, toAdj(outEdges))
 }
 

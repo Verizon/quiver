@@ -64,13 +64,13 @@ package object graphs {
   def addSucc[N,A,B](g: GraphRep[N,A,B], v: N, lps: Vector[(B, N)]): GraphRep[N,A,B] =
     if (lps.isEmpty) g else addSucc(g.alter(lps.head._2)(_ map { (x: GrContext[N,A,B]) => x match {
       case GrContext(ps, lp, ss) =>
-        GrContext(ps, lp, ss.insertWith(v, Vector(lps.head._1))(_ ++ _))
+        GrContext(ps, lp, ss.insertWith(v, Set(lps.head._1))(_ ++ _))
     }}), v, lps.tail)
 
   def addPred[N,A,B](g: GraphRep[N,A,B], v: N, lss: Vector[(B, N)]): GraphRep[N,A,B] =
     if (lss.isEmpty) g else addPred(g.alter(lss.head._2)(_ map { (x: GrContext[N,A,B]) => x match {
       case GrContext(ps, lp, ss) =>
-        GrContext(ps.insertWith(v, Vector(lss.head._1))(_ ++ _), lp, ss)
+        GrContext(ps.insertWith(v, Set(lss.head._1))(_ ++ _), lp, ss)
     }}), v, lss.tail)
 
   def clearPred[N,A,B](g: GraphRep[N,A,B], v: N, ns: Vector[N]): GraphRep[N,A,B] =
@@ -83,15 +83,15 @@ package object graphs {
         case GrContext(ps, l, ss) => GrContext(ps, l, ss - v)
       }), v, ns.tail)
 
-  /** Turn an intmap of vectors of labels into an adjacency list of labeled edges */
-  def toAdj[N,B](bs: Map[N, Vector[B]]): Adj[N,B] = bs.toVector.flatMap {
+  /** Turn an intmap of sets of labels into an adjacency list of labeled edges */
+  def toAdj[N,B](bs: Map[N, Set[B]]): Adj[N,B] = bs.toVector.flatMap {
     case (n, ls) => ls.map(m => (m, n))
   }
 
-  /** Turn an adjacency list of labeled edges into an intmap of vectors of labels */
-  def fromAdj[N,B](adj: Adj[N,B]): Map[N, Vector[B]] =
-    adj.foldLeft(Map.empty[N, Vector[B]]) {
-      case (m, (b, n)) => m + (n -> (m.get(n).toVector.flatten :+ b))
+  /** Turn an adjacency list of labeled edges into an intmap of sets of labels */
+  def fromAdj[N,B](adj: Adj[N,B]): Map[N, Set[B]] =
+    adj.foldLeft(Map.empty[N, Set[B]]) {
+      case (m, (b, n)) => m + (n -> (m.get(n).toSet.flatten + b))
     }
 
   implicit def graphMonoid[N,A,B]: Monoid[Graph[N,A,B]] = new Monoid[Graph[N,A,B]] {

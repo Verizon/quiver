@@ -92,11 +92,11 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     if (ks.contains(v) && ks.contains(w)) {
       def addSuccP(p: GrContext[N,A,B]) = {
         val GrContext(ps, lp, ss) = p
-        GrContext(ps, lp, ss.insertWith(w, Vector(l))(_ ++ _))
+        GrContext(ps, lp, ss.insertWith(w, Set(l))(_ ++ _))
       }
       def addPredP(p: GrContext[N,A,B]) = {
         val GrContext(ps, lp, ss) = p
-        GrContext(ps.insertWith(v, Vector(l))(_ ++ _), lp, ss)
+        GrContext(ps.insertWith(v, Set(l))(_ ++ _), lp, ss)
       }
       val g1 = rep.alter(v)(_ map addSuccP)
       Graph(g1.alter(w)(_ map addPredP))

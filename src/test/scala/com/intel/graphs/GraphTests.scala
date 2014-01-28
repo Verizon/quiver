@@ -39,8 +39,6 @@ object GraphTests extends Properties("Graph") {
       val nns = ns.toSet.toList.map((b: N) => LNode(b, i)).sorted
       val ees = es.toSet.toList.filter((x: LEdge[N,Int]) =>
                   ns.contains(x.from) && ns.contains(x.to)
-                ).map((x: LEdge[N,Int]) =>
-                  LEdge(x.from, x.to, i)
                 ).sorted
       val g = safeMkGraph(nns, ees)
       nns == g.labNodes.sorted && ees == g.labEdges.sorted
