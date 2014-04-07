@@ -2,14 +2,14 @@
 logLevel := Level.Warn
 
 resolvers ++= Seq(
-  "Sonatype Nexus Central Repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/central/",
-  "Sonatype Nexus Typesafe Repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/typesafe/",
-  "Sonatype Nexus Sonatype Repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/sonatype/",
-  "Sonatype Nexus Artifactoryonline Repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/artifactoryonline/",
-  "Sonatype Nexus Releases Repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/releases/",
-  "Sonatype Nexus 3rd party repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/thirdparty/",
-  "Sonatype Nexus Spray repository" at "http://nexus.svc.m.infra-host.com/nexus/content/repositories/spray/",
-  Resolver.url("Sonatype Nexus Artifactoryonline Scalasbt Repository", url("http://nexus.svc.m.infra-host.com/nexus/content/repositories/artifactoryonline-scalasbt/"))(Resolver.ivyStylePatterns)
+  "Sonatype Nexus Central Repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/central/",
+  "Sonatype Nexus Typesafe Repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/typesafe/",
+  "Sonatype Nexus Sonatype Repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/sonatype/",
+  "Sonatype Nexus Artifactoryonline Repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/artifactoryonline/",
+  "Sonatype Nexus Releases Repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/releases/",
+  "Sonatype Nexus 3rd party repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/thirdparty/",
+  "Sonatype Nexus Spray repository" at "http://nexus.svc.oncue.com/nexus/content/repositories/spray/",
+  Resolver.url("Sonatype Nexus Artifactoryonline Scalasbt Repository", url("http://nexus.svc.oncue.com/nexus/content/repositories/artifactoryonline-scalasbt/"))(Resolver.ivyStylePatterns)
 )
 
 libraryDependencies ++= Seq(
