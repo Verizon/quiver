@@ -11,8 +11,8 @@ object IntelMediaBuild extends Build {
       val deps = Seq(
          "reaktor" %% "scct" % "0.2.+" % "scct",
          "org.scala-lang" % "scala-library" % "2.10.3",
-         "org.scalaz" %% "scalaz-core" % "7.0.4",
-         "org.scalacheck" %% "scalacheck" % "1.10.1" % "test"
+         "org.scalaz" %% "scalaz-core" % "7.1.0",
+         "org.scalacheck" %% "scalacheck" % "1.12.2" % "test"
       )
   }
 

@@ -3,6 +3,8 @@ package com.intel.graphs
 import org.scalacheck._
 import org.scalacheck.Prop._
 import scalaz._
+import Scalaz._
+
 
 object GraphTests extends Properties("Graph") {
   type N = Byte
