@@ -1,4 +1,4 @@
-package com.intel.graphs
+package oncue.quiver
 
 /**
  * The decomposition of a graph into a detached context focused on one node

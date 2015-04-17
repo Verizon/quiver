@@ -1,4 +1,4 @@
-package com.intel.graphs
+package oncue.quiver
 
 import scalaz._
 import scalaz.syntax.std.map._
