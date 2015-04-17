@@ -1,4 +1,4 @@
-package com.intel.graphs
+package oncue.quiver
 
 import org.scalacheck._
 import org.scalacheck.Prop._

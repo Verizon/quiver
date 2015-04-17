@@ -1,11 +1,11 @@
-package com.intel
+package oncue
 
 import scalaz._
 import scalaz.syntax.std.map._
 import scalaz.syntax.monoid._
 import scalaz.std.vector._
 
-package object graphs {
+package object quiver {
 
   /** The internal representation of a graph */
   type GraphRep[N,A,B] = Map[N, GrContext[N,A,B]]

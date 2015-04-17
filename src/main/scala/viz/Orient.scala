@@ -1,4 +1,4 @@
-package com.intel.graphs
+package oncue.quiver
 package viz
 
 sealed trait Orient {

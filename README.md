@@ -1,21 +1,21 @@
-# FGL/Scala -- A Functional Graph Library #
+# Quiver -- A Functional Graph Library #
 
-The _Functional Graph Library, FGL_ is based on a Haskell library of the same name by Martin Erwig. It ["is a collection of type and function definitions to address graph problems."](http://web.engr.oregonstate.edu/~erwig/fgl/) At present this is not a complete port of Erwig's library, but contains a significant and useful subset.
+_Quiver_ is based on a Haskell library named FGL by Martin Erwig. It ["is a collection of type and function definitions to address graph problems."](http://web.engr.oregonstate.edu/~erwig/fgl/) At present this is not a complete port of Erwig's library, but contains a significant and useful subset.
 
-As the name suggests, FGL is a purely functional library. This means that graphs are represented as immutable algebraic data types with structural sharing, and algorithms are implemented using recursive traversal over these structures. The library contains well-known algorithms such as depth-first search and transitive closure, and provides building blocks that make it easy to define your own functions in addition.
+Quiver is a purely functional library. This means that graphs are represented as immutable algebraic data types with structural sharing, and algorithms are implemented using recursive traversal over these structures. The library contains well-known algorithms such as depth-first search and transitive closure, and provides building blocks that make it easy to define your own functions in addition.
 
 ## Graphs ##
 
 To begin using the library, add the following as a dependency in your SBT build:
 
 ```scala
-libraryDependencies += "com.intel.vod-graphs" %% "fgl" % "2.0"
+libraryDependencies += "oncue" %% "quiver" % "3.0"
 ```
 
 Then import the following package in your source file:
 
 ```scala
-import com.intel.graphs._
+import oncue.quiver._
 ```
 
 The main class in the library is `Graph[N,A,B]` which represents a graph. The type `N` is the type of the nodes themselves--a unique identifier for each node. `A` is the type of the node labels and `B` is the type of the edge labels.
@@ -71,30 +71,30 @@ To have a textual representation of graphs, the `toString` method is defined to 
 
 ```
 scala> nil
-res0: com.intel.graphs.Graph[Int,Char,Unit] =
+res0: oncue.quiver.Graph[Int,Char,Unit] =
 
 scala> a
-res1: com.intel.graphs.Graph[Int,Char,Unit] =
+res1: oncue.quiver.Graph[Int,Char,Unit] =
 1:a->[]
 
 scala> loop
-res2: com.intel.graphs.Graph[Int,Char,Unit] =
+res2: oncue.quiver.Graph[Int,Char,Unit] =
 1:a->[((),1)]
 
 scala> e
-res3: com.intel.graphs.Graph[Int,Char,Unit] =
+res3: oncue.quiver.Graph[Int,Char,Unit] =
 1:a->[((),2)]
 2:b->[]
 
 scala> ab
-res4: com.intel.graphs.Graph[Int,Char,Unit] =
+res4: oncue.quiver.Graph[Int,Char,Unit] =
 1:a->[((),2)]
 2:b->[((),1)]
 ```
 
 There are several additional methods defined on `Graph` that make graph construction more convenient. The `addNode` and `addNodes` methods can be used to insert one or more labeled nodes into the graph. The methods `addEdge` and `addEdges` can be used to extend the graph with one or more labeled edges. Similarly, `removeNode`, `removeNodes`, `removeEdge`, and `removeEdges` do what you might expect.
 
-A very useful function for building graphs is `mkGraph`, which just takes a list of nodes and a list of edges and constructs a graph. It is defined in the package `com.intel.graphs`.
+A very useful function for building graphs is `mkGraph`, which just takes a list of nodes and a list of edges and constructs a graph. It is defined in the package `oncue.quiver`.
 
 ### Extracting Graph Information ###
 
@@ -112,23 +112,23 @@ Let's look at some examples:
 
 ```
 scala> a decomp 1
-res5: com.intel.graphs.Decomp[Int,Char,Unit] =
+res5: oncue.quiver.Decomp[Int,Char,Unit] =
 Decomp(Some(Context(Vector(),1,a,Vector())),)
 
 scala> loop decomp 1
-res6: com.intel.graphs.Decomp[Int,Char,Unit] =
+res6: oncue.quiver.Decomp[Int,Char,Unit] =
 Decomp(Some(Context(Vector(),1,a,Vector(((),1)))),)
 
 scala> ab decomp 1
-res7: com.intel.graphs.Decomp[Int,Char,Unit] =
+res7: oncue.quiver.Decomp[Int,Char,Unit] =
 Decomp(Some(Context(Vector(((),2)),1,a,Vector(((),2)))),2:b->[])
 
 scala> e decomp 1
-res8: com.intel.graphs.Decomp[Int,Char,Unit] =
+res8: oncue.quiver.Decomp[Int,Char,Unit] =
 Decomp(Some(Context(Vector(),1,a,Vector(((),2)))),2:b->[])
 
 scala> a decomp 2
-res9: com.intel.graphs.Decomp[Int,Char,Unit] =
+res9: oncue.quiver.Decomp[Int,Char,Unit] =
 Decomp(None,1:a->[])
 ```
 
