@@ -26,7 +26,7 @@ The main class in the library is `Graph[N,A,B]` which represents a graph. The ty
 
 `LNode[N,A]`: a labeled node. Consists of a pair of `N` and `A`.
 
-`Ledge[N,B]`: a labeled edge. Consists of two `N`s and a `B`.
+`LEdge[N,B]`: a labeled edge. Consists of two `N`s and a `B`.
 
 `Edge[N]`: an unlabeled edge, consisting of two `N`s.
 
