@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{{ site.name }} - {{ page.title }}</title>
+
+    <link rel="stylesheet" href="{{ site.baseurl }}css/styles.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}css/custom.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <a name="top"></a>
+    <div class="wrapper">
+      <header>
+        <h1>{{ site.name }}</h1>
+        <p>Last updated on <em>{{ site.time | date: '%B %d, %Y' }}</em></p>
+
+        <ul>
+          <li><a href="{{ site.github.domain }}{{ site.github.repo }}/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="{{ site.github.domain }}{{ site.github.repo }}/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="{{ site.github.domain }}{{ site.github.repo }}">View On <strong>GitHub</strong></a></li>
+        </ul>
+
+        <hr />
+
+        <ol>
+          <!-- home -->
+          <li><a href="{{ site.baseurl }}">Home</a></li>
+          <li><a href="{{ site.baseurl }}#overview">Overview</a></li>
+
+          <!-- getting started -->
+          <li><a href="{{ site.baseurl }}getting-started">Getting Started</a></li>
+          {% if page.section == 'getting-started' %}
+            <li>
+              <ol>
+                <li><a href="{{ site.baseurl }}getting-started/developers.html">Developers</a></li>
+                <li><a href="{{ site.baseurl }}getting-started/operations.html">Operations</a></li>
+                <li><a href="{{ site.baseurl }}getting-started/visualization.html">Visualizations</a></li>
+                <li><a href="{{ site.baseurl }}getting-started/migration.html">Migration Guides</a></li>
+              </ol>
+            </li>
+          {% endif %}
+
+          <!-- modules -->
+          <li><a href="{{ site.baseurl }}modules">Modules</a></li>
+          {% if page.section == 'modules' %}
+            <li>
+              <ol>
+                <li><a href="{{ site.baseurl }}modules/#elastic">Elastic Search</a></li>
+                <li><a href="{{ site.baseurl }}modules/#riemann">Riemann</a></li>
+                <li><a href="{{ site.baseurl }}modules/#zeromq">ZeroMQ</a></li>
+              </ol>
+            </li>
+          {% endif %}
+
+          <!-- services -->
+          <li><a href="{{ site.baseurl }}services">Services</a></li>
+          {% if page.section == 'services' %}
+            <li>
+              <ol>
+                <li><a href="{{ site.baseurl }}services/#agent">Agent</a></li>
+                <li><a href="{{ site.baseurl }}services/#flask">Flask</a></li>
+                <li><a href="{{ site.baseurl }}services/#chemist">Chemist</a></li>
+              </ol>
+            </li>
+          {% endif %}
+        </ol>
+
+        <hr />
+
+      </header>
+      <section>
+        {{ content }}
+      </section>
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+  </body>
+</html>
