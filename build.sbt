@@ -5,6 +5,8 @@ name := "quiver"
 
 organization := "oncue"
 
+OnCue.baseSettings
+
 scalacOptions ++= Seq(
   "-deprecation",
   "-encoding", "UTF-8",
