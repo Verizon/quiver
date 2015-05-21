@@ -23,6 +23,6 @@ lazy val quiver = project.in(file(".")).aggregate(core,codecs)
 
 lazy val core = project
 
-lazy val codecs = project
+lazy val codecs = project.dependsOn(core)
 
 publish := {}
