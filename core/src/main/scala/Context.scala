@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 
 /** The view of a graph focused on the context surrounding a particular node. */
 case class Context[N,A,B](inEdges: Adj[N,B], vertex: N, label: A, outEdges: Adj[N,B]) {

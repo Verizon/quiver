@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 
 package object viz {
 

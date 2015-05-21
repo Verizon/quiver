@@ -1,4 +1,3 @@
-package oncue
 
 import scalaz._
 import scalaz.syntax.std.map._
