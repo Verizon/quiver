@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 
 import org.scalacheck._
 import org.scalacheck.Arbitrary._
