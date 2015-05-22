@@ -1,4 +1,8 @@
 
+import oncue.build._
+
+OnCue.baseSettings
+
 organization in Global  := "oncue.quiver"
 
 scalaVersion in Global  := "2.10.5"

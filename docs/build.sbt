@@ -2,7 +2,11 @@ import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
 import common.promptSettings
 
-publish := {}
+publish := ()
+
+publishLocal := ()
+
+publishArtifact in (Compile, packageBin) := false
 
 site.settings
 

@@ -1,5 +1,5 @@
-import com.typesafe.sbt.SbtSite.SiteKeys._
-import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
+
+import oncue.build._
 
 OnCue.baseSettings
 
