@@ -6,7 +6,7 @@ import scodec.codecs
 import scalaz.\/
 
 object GraphCodecsTest extends Properties("codecs"){
-  import GraphGen.{arbitraryNode,arbitraryEdge}
+  import GraphGen.{arbitraryNode,arbitraryEdge,arbitraryGraph}
 
   implicit val uint8 = codecs.int32
 
@@ -24,4 +24,5 @@ object GraphCodecsTest extends Properties("codecs"){
 
   roundTrip[LNode[Int,Int]]("nodes")(GraphCodecs.lnode, arbitraryNode)
   roundTrip[LEdge[Int,Int]]("edges")(GraphCodecs.ledge, arbitraryEdge)
+  roundTrip[Graph[Int,Int,Int]]("graph")(GraphCodecs.graph, arbitraryGraph)
 }
