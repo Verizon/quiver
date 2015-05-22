@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 package viz
 
 sealed trait Orient {
@@ -9,4 +9,3 @@ sealed trait Orient {
 }
 case object Portrait extends Orient
 case object Landscape extends Orient
-

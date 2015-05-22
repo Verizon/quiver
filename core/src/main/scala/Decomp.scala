@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 
 /**
  * The decomposition of a graph into a detached context focused on one node

@@ -1,4 +1,4 @@
-package oncue.quiver
+package quiver
 
 import scalaz._
 import scalaz.syntax.std.map._
