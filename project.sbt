@@ -25,4 +25,9 @@ lazy val core = project
 
 lazy val codecs = project.dependsOn(core % "test->test;compile->compile")
 
-publish := {}
+
+publish := ()
+
+publishLocal := ()
+
+publishArtifact in (Compile, packageBin) := false
