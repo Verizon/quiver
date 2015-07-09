@@ -15,4 +15,4 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-site"    % "0.8.1")
 
 addSbtPlugin("org.tpolecat"     % "tut-plugin"  % "0.3.2")
 
-addSbtPlugin("oncue.build" %% "sbt-oncue" % "7.0.+")
+addSbtPlugin("oncue.build" %% "sbt-oncue" % "7.2.+")

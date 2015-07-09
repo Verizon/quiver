@@ -23,9 +23,11 @@ scalacOptions in Global ++= Seq(
   "-Xfuture"
 )
 
-lazy val quiver = project.in(file(".")).aggregate(core,codecs)
+lazy val quiver = project.in(file(".")).aggregate(core,codecs,docs)
 
 lazy val core = project
+
+lazy val docs = project.dependsOn(core, codecs)
 
 lazy val codecs = project.dependsOn(core % "test->test;compile->compile")
 

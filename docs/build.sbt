@@ -1,6 +1,5 @@
 import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
-import common.promptSettings
 
 publish := ()
 
