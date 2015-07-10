@@ -1,22 +1,24 @@
+
 import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.SbtGhPages.GhPagesKeys._
 
-publish := ()
-
-publishLocal := ()
-
-publishArtifact in (Compile, packageBin) := false
+name := "docs"
 
 site.settings
 
 tutSettings
 
-site.addMappingsToSiteDir(tut, "tut")
+site.addMappingsToSiteDir(tut, "")
 
 ghpages.settings
 
 ghpagesNoJekyll := false
 
-includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.yml" | "*.md"
+includeFilter in makeSite := "*.yml" | "*.md" | "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf"
 
 git.remoteRepo := "git@github.oncue.verizon.net:arch/quiver.git"
+
+publish := {}
+
+publishLocal := ()
+
