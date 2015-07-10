@@ -4,12 +4,16 @@ title:  "Home"
 section: "home"
 ---
 
-## Graphs ##
+# Overview
 
-To begin using the library, add the following as a dependency in your SBT build:
+*Quiver* is a Scala library that provides support for modeling [multi-graphs](https://en.wikipedia.org/wiki/Multigraph) which is a network of "nodes" connected by (possibly multiple) "directed edges" between nodes. *Quiver* is useful for modelling state diagrams, network topologies, calculating shortest-path traversals, triangle counter and many, many other common domain problems which can be modelled as graphs.
+
+## Getting Started
+
+To begin using *Quiver*, add the following dependency in your SBT build (check for the latest release by [looking on bintray](https://bintray.com/oncue/releases/quiver/view)):
 
 ```scala
-libraryDependencies += "oncue.quiver" %% "core" % "3.1.+"
+libraryDependencies += "oncue.quiver" %% "core" % "x.x.x"
 ```
 
 Then import the following package in your source file:
@@ -18,9 +22,11 @@ Then import the following package in your source file:
 import quiver._
 ```
 
-### Constructing Graphs ###
+<a name="construction"></a>
 
-We have two basic functions to build up graphs: the expression `empty` denotes the empty graph, and the expression `g & c` extends an existing graph `g` with a _context_ `c` of type `Context[N,A,B]`.
+### Constructing Graphs
+
+*Quiver* has two basic functions to build up graphs: the expression `empty` denotes the empty graph, and the expression `g & c` extends an existing graph `g` with a _context_ `c` of type `Context[N,A,B]`.
 
 A `Context[N,A,B]` is a node `v:N` together with two lists of _adjacencies_: one for predecessors and one for successors of `v` represented by the type Adj[N,B]. An adjacency is a node `a:N` together with the label of type `B` of the edge from `v` to `a` (or vice versa). It's called a _context_ because it is a view of the graph from the context of a specific node. The context consists of the node itself, its two adjacency lists, and its label.
 
@@ -71,6 +77,8 @@ There are several additional methods defined on `Graph` that make graph construc
 
 A very useful function for building graphs is `mkGraph`, which just takes a list of nodes and a list of edges and constructs a graph. It is defined in the package `oncue.quiver`.
 
+<a name="extraction"></a>
+
 ### Extracting Graph Information ###
 
 Several methods on `Graph` let us extract global information about the graph. For example, `isEmpty` will tell us if the graph is empty. We can count the number of nodes in the graph with `countNodes`, and we can get the list of nodes with `nodes`, or the list of nodes and their labels with `labNodes`. Similarly, the methods `edges` and `labEdges` get the lists of plain and labeled edges.
@@ -78,6 +86,8 @@ Several methods on `Graph` let us extract global information about the graph. Fo
 We can also get information about individual nodes: for a graph that contains a node `v`, we can determine `v`'s successors by calling `successors(v)`, predecessors with `predecessors(v)` and both by calling `neighbors(v)`. The outgoing and incoming edges of a node can be accessed with `inEdges` and `outEdges`, respectively, and the number of inbound, outbound, or total connections to a node can be determined with `inDegree`, `outDegree`, and `degree`.
 
 The above methods are all also defined on `Context`, which is particularly useful when looking at the decomposition of a graph.
+
+<a name="decomposistion"></a>
 
 ### Graph Decomposition ###
 
@@ -104,6 +114,8 @@ Two specialized versions of this function, `nmap` and `emap`, allow you to apply
 The `reverse` method swaps the direction of all edges in the graph.
 
 A general fold operation on graph is given by the `fold` method. It successively decomposes all contexts from a graph and combines them in a right-associative way with a binary function of type `(Context[N,A,B], C) => C`, into a single value of some type `C`. It is very similar to the well-known `foldRight` function on lists, but an important difference is that the contexts are decomposed from the graph in an arbitrary order.
+
+<a name="traversal"></a>
 
 ### Graph Traversal ###
 
