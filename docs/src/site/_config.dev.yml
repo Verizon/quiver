@@ -1,7 +1,7 @@
-name: Funnel
+name: Quiver
 markdown: redcarpet
 highlighter: pygments
 baseurl: "/"
 github:
   domain: "https://github.oncue.verizon.net"
-  repo: "/intelmedia/funnel"
+  repo: "/arch/quiver"
