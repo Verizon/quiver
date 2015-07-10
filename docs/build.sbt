@@ -21,4 +21,3 @@ git.remoteRepo := "git@github.oncue.verizon.net:arch/quiver.git"
 publish := {}
 
 publishLocal := ()
-
