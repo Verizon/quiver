@@ -3,13 +3,13 @@
 To begin using the library, add the following as a dependency in your SBT build:
 
 ```scala
-libraryDependencies += "oncue" %% "quiver" % "3.0"
+libraryDependencies += "oncue.quiver" %% "core" % "3.1.+"
 ```
 
 Then import the following package in your source file:
 
 ```tut
-import oncue.quiver._
+import quiver._
 ```
 
 ### Constructing Graphs ###
@@ -23,29 +23,39 @@ With these two functions, we can construct any graph. Let's look at a few very s
 The empty graph:
 
 ```tut
+import quiver._
+
 val nil = empty[Int,Char,Unit]
 ```
 A graph with one node identified as `1`, labeled `a`:
 
 ```tut
+import quiver._
+
 val a = nil & Context(Vector(), 1, 'a', Vector())
 ```
 
 A graph with one node having an edge to itself:
 
 ```tut
+import quiver._
+
 val loop = nil & Context(Vector(), 1, 'a', Vector(() -> 1))
 ```
 
 A graph with one edge `a -> b`:
 
 ```tut
+import quiver._
+
 val e = a & Context(Vector(() -> 1), 2, 'b', Vector())
 ```
 
 A graph with a cycle of two nodes `a <-> b`:
 
 ```tut
+import quiver._
+
 val ab = a & Context(Vector(() -> 1), 2, 'b', Vector(() -> 1))
 ```
 
