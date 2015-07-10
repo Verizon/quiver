@@ -18,6 +18,6 @@ includeFilter in makeSite := "*.yml" | "*.md" | "*.html" | "*.css" | "*.png" | "
 
 git.remoteRepo := "git@github.oncue.verizon.net:arch/quiver.git"
 
-publish := {}
+publish := ()
 
 publishLocal := ()
