@@ -1,3 +1,9 @@
+---
+layout: default
+title:  "Home"
+section: "home"
+---
+
 ## Graphs ##
 
 To begin using the library, add the following as a dependency in your SBT build:
