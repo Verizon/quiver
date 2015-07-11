@@ -3,12 +3,9 @@ common.testSettings
 
 common.publishSettings
 
-resolvers ++= Seq(
-  "scalaz.bintray" at "http://dl.bintray.com/scalaz/releases",
-  "oncue.bintray" at "http://dl.bintray.com/oncue/releases"
-)
+resolvers += Resolver.sonatypeRepo("releases")
 
 libraryDependencies ++= Seq(
-  "org.typelevel"   %% "scodec-core"          % "1.6.+",
-  "oncue.typelevel" %% "shapeless-scalacheck" % "0.4.0" % "test"
+  "org.scodec" %% "scodec-core" % "1.8.1",
+  "org.typelevel" %% "shapeless-scalacheck" % "0.4" % "test"
 )
