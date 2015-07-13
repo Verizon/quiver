@@ -27,7 +27,7 @@ object GraphCodecsTest extends Properties("codecs"){
   implicit val uint8 = codecs.int32
 
   def roundTrip[A](typeName: String)(implicit ca: scodec.Codec[A], aa: Arbitrary[A]): Unit = {
-    property(s"binary encoding round trip - $typeName") = {
+    val _ = property(s"binary encoding round trip - $typeName") = {
       forAll { a: A =>
         val result = for {
           encoded <- ca.encode(a)
