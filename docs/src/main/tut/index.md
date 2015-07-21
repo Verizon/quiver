@@ -4,7 +4,7 @@ title:  "Home"
 section: "home"
 ---
 
-# Overview
+## Overview
 
 *Quiver* is a Scala library that provides support for modeling [multi-graphs](https://en.wikipedia.org/wiki/Multigraph) which is a network of _nodes_ connected by (possibly multiple) _directed edges_ between nodes. *Quiver* is useful for modelling state diagrams, network topologies, vector graphic scenes, calculating shortest-path traversals, and many other common domain problems which can be modelled as graphs.
 
