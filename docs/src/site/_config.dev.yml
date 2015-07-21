@@ -3,5 +3,5 @@ markdown: redcarpet
 highlighter: pygments
 baseurl: "/"
 github:
-  domain: "https://github.oncue.verizon.net"
-  repo: "/arch/quiver"
+  domain: "https://github.com"
+  repo: "/oncue/quiver"

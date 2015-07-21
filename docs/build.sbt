@@ -16,7 +16,7 @@ ghpagesNoJekyll := false
 
 includeFilter in makeSite := "*.yml" | "*.md" | "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf"
 
-git.remoteRepo := "git@github.oncue.verizon.net:arch/quiver.git"
+git.remoteRepo := "git@github.com:oncue/quiver.git"
 
 publish := ()
 
