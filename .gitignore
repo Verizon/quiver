@@ -33,3 +33,5 @@ bin
 .class
 .project
 .ivy2
+gpg.sbt
+

@@ -1,7 +1,5 @@
 
-common.testSettings
-
-common.publishSettings
+common.settings
 
 resolvers += "scalaz.bintray" at "http://dl.bintray.com/scalaz/releases"
 

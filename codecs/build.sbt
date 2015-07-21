@@ -1,7 +1,5 @@
 
-common.testSettings
-
-common.publishSettings
+common.settings
 
 resolvers += Resolver.sonatypeRepo("releases")
 
