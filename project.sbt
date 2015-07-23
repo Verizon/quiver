@@ -1,7 +1,9 @@
 
 organization in Global  := "oncue.quiver"
 
-scalaVersion in Global  := "2.10.4"
+scalaVersion in Global  := "2.11.7"
+
+crossScalaVersions in Global:= Seq("2.11.7", "2.10.4")
 
 scalacOptions in Global ++= Seq(
   "-deprecation",
