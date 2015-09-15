@@ -30,7 +30,7 @@ package object viz {
         if (sa == "") "" else s"\t$n$sa\n"
     }
     def se(edge: LEdge[N,B]) = edge match {
-      case LEdge(n1, n2, b) => s"\t$n1 -> $n2${sl(b)}\n"
+      case LEdge(n1, n2, b) => s"""\t"$n1" -> "$n2"${sl(b)}\n"""
     }
     val n = g.labNodes
     val e = g.labEdges
