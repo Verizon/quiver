@@ -1,5 +1,7 @@
 # Quiver
 
+[![Join the chat at https://gitter.im/oncue/quiver](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/oncue/quiver)
+
 [![Build Status](https://travis-ci.org/oncue/quiver.svg)](https://travis-ci.org/oncue/quiver) 
 [ ![Download](https://api.bintray.com/packages/oncue/releases/quiver/images/download.svg) ](https://bintray.com/oncue/releases/quiver/_latestVersion)
 
