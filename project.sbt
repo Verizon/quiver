@@ -29,8 +29,6 @@ lazy val docs = project.dependsOn(core, codecs)
 
 lazy val codecs = project.dependsOn(core % "test->test;compile->compile")
 
-releaseCrossBuild := true
-
 publishArtifact in (Compile, packageBin) := false
 
 publish := ()
