@@ -1,4 +1,6 @@
 
+common.releaseSettings
+
 organization in Global := "oncue.quiver"
 
 scalaVersion in Global := crossScalaVersions.value.head
