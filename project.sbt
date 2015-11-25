@@ -1,4 +1,6 @@
 
+common.releaseSettings
+
 organization in Global := "oncue.quiver"
 
 scalaVersion in Global := crossScalaVersions.value.head
@@ -28,8 +30,6 @@ lazy val core = project
 lazy val docs = project.dependsOn(core, codecs)
 
 lazy val codecs = project.dependsOn(core % "test->test;compile->compile")
-
-releaseCrossBuild := true
 
 publishArtifact in (Compile, packageBin) := false
 
