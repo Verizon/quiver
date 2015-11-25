@@ -193,7 +193,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   } yield LEdge(node, next, label)
 
   /** A list of all the edges in the graph */
-  def edges = labEdges.map { case LEdge(v, w, _) => Edge(v, w) }
+  def edges: Vector[Edge[N]] = labEdges.map { case LEdge(v, w, _) => Edge(v, w) }
 
   /** Fold a function over the graph */
   def fold[C](u: C)(f: (Context[N,A,B], C) => C): C = {
@@ -392,6 +392,153 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
         (Tree.node(f(c), xs.toStream) +: ys, g3)
     }
 
+  import scala.collection.immutable.Queue
+
+  /**
+   * Breadth-first search (nodes ordered by distance)
+   */
+  def bfsnInternal[C](f: Context[N,A,B] => C, q: Queue[N]): Vector[C] =
+    if (q.isEmpty || isEmpty)
+      Vector()
+    else {
+      val (v, qp) = q.dequeue
+      decomp(v) match {
+        case Decomp(Some(c), g) =>
+          f(c) +: g.bfsnInternal(f, qp enqueue c.successors)
+        case Decomp(None, g) =>
+          g.bfsnInternal(f, qp)
+      }
+    }
+
+  /**
+   * Breadth-first search from the given nodes. The result is a vector of
+   * results of passing the context of each visited node to the function `f`.
+   */
+  def bfsnWith[C](f: Context[N,A,B] => C, vs: Seq[N]): Seq[C] =
+    bfsnInternal(f, Queue(vs:_*))
+
+  /**
+   * Breadth-first search from the given nodes. The result is the successors of
+   * `vs`, with immediate successors first.
+   */
+  def bfsn(vs: Seq[N]): Seq[N] =
+    bfsnWith(_.vertex, vs)
+
+  /**
+   * Breadth-first search from the given node. The result is a vector of results
+   * of passing the context of each visited to the function `f`.
+   */
+  def bfsWith[C](f: Context[N,A,B] => C, v: N): Seq[C] =
+    bfsnInternal(f, Queue(v))
+
+  /**
+   * Breadth-first search from the given node. The result is ordered by distance
+   * from the node `v`.
+   */
+  def bfs(v: N): Seq[N] =
+    bfsWith(_.vertex, v)
+
+  /**
+   * Breadth-first search giving the distance of each node from the search nodes.
+   */
+  def leveln(vs: Seq[(N,Int)]): Seq[(N,Int)] =
+    if (vs.isEmpty) Seq()
+    else if (isEmpty) Seq()
+    else {
+      val (v,j) = vs.head
+      decomp(v) match {
+        case Decomp(Some(c), g) =>
+          (v, j) +: g.leveln(vs.tail ++ c.successors.map(s => (s, (j+1))))
+        case Decomp(None, g) =>
+          g.leveln(vs.tail)
+      }
+    }
+
+  /**
+   * Breadth-first search giving the distance of each node from the node `v`.
+   */
+  def level(v: N): Seq[(N,Int)] =
+    leveln(Seq((v, 0)))
+
+  /** Breadth-first edges */
+  def bfenInternal(q: Queue[Edge[N]]): Vector[Edge[N]] =
+    if (q.isEmpty || isEmpty) Vector()
+    else {
+      val (Edge(u,v), qp) = q.dequeue
+      decomp(v) match {
+        case Decomp(Some(c), g) =>
+          Edge(u,v) +: g.bfenInternal(qp.enqueue(c.outEdges.map(_.edge)))
+        case Decomp(None, g) =>
+          g.bfenInternal(qp)
+      }
+    }
+
+  /**
+   * Breadth-first search remembering predecessor information.
+   * Gives transient edges starting from the targets of the given edges,
+   * in breadth-first order.
+   */
+  def bfen(es: Seq[Edge[N]]): Seq[Edge[N]] =
+    bfenInternal(Queue(es:_*))
+
+  /**
+   * Breadth-first search remembering predecessor information.
+   * Gives transient edges in breadth-first order, starting from the given node.
+   */
+  def bfe(v: N): Seq[Edge[N]] =
+    bfen(Seq(Edge(v,v)))
+
+  /**
+   * Utility function for breadth-first search tree.
+   */
+  def bf(q: Queue[Path[N]]): RTree[N] =
+    if (q.isEmpty || isEmpty) Stream()
+    else {
+      val (p, qp) = q.dequeue
+      if (p.isEmpty) Stream(p)
+      else decomp(p.head) match {
+        case Decomp(Some(c), g) => p #:: g.bf(qp.enqueue(c.successors.map(_ +: p)))
+        case Decomp(None, g) => g bf qp
+      }
+    }
+
+  /**
+   * Breadth-first search tree. The result is a list of paths through the graph
+   * from the given vertex, in breadth-first order.
+   */
+  def bft(v: N): RTree[N] =
+    bf(Queue(Vector(v)))
+
+  /** The shortest path from vertex `s` to vertex `t` */
+  def esp(s: N, t: N): Option[Path[N]] =
+    getPath(t, bft(s))
+
+  /** Utility function for labeled breadth-first search tree */
+  def lbf(q: Queue[LPath[N,B]]): LRTree[N,B] =
+    if (q.isEmpty || isEmpty) Stream()
+    else {
+      val (p, qp) = q.dequeue
+      if (p.isEmpty) Stream(p)
+      else decomp(p.head._2) match {
+        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(_ +: p)))
+        case Decomp(None, g) => g lbf qp
+      }
+    }
+
+  /** Breadth-first search tree with labeled paths */
+  def lbft(v: N): LRTree[N,B] = {
+    val out = outEdges(v)
+    if (out.isEmpty) Stream(Vector())
+    else {
+      val LEdge(vp, _, l) = out.head
+      lbf(Queue(Vector(l -> vp)))
+    }
+  }
+
+  /** Shortest path from vertex `s` to vertex `t`, with labels */
+  def lesp(s: N, t: N): Option[LPath[N,B]] =
+    getLPath(t, lbft(s))
+
   override def toString: String =
     nodes.foldLeft("") { (s, n) => decomp(n) match {
       case Decomp(Some(Context(_, v, l, ss)), _) =>
@@ -400,5 +547,6 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
         s"$s$n$v:$l->[$sss]"
       case _ => sys.error("Unpossible!")
     }}
+
 }
 

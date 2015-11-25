@@ -17,13 +17,21 @@
 package quiver
 
 /** The view of a graph focused on the context surrounding a particular node. */
-case class Context[N,A,B](inEdges: Adj[N,B], vertex: N, label: A, outEdges: Adj[N,B]) {
+case class Context[N,A,B](inAdj: Adj[N,B], vertex: N, label: A, outAdj: Adj[N,B]) {
 
-  /** All the incoming edges plus identity arrows to self */
-  def ins: Adj[N,B] = inEdges ++ outEdges.filter(_._2 == vertex)
+  /** Adjacency list for all the incoming edges plus identity arrows to self */
+  def ins: Adj[N,B] = inAdj ++ outAdj.filter(_._2 == vertex)
 
-  /** All the outgoing edges plus identity arrows from self */
-  def outs: Adj[N,B] = outEdges ++ inEdges.filter(_._2 == vertex)
+  /** Adjacency list for all the outgoing edges plus identity arrows from self */
+  def outs: Adj[N,B] = outAdj ++ inAdj.filter(_._2 == vertex)
+
+  /** Labeled edges into the focused node, including identity arrows to self */
+  def inEdges: Vector[LEdge[N,B]] =
+    ins.map { case (b, n) => LEdge(n, vertex, b) }
+
+  /** Labeled edges from the focused node, including identity arrows from self */
+  def outEdges: Vector[LEdge[N,B]] =
+    outs.map { case (b, n) => LEdge(vertex, n, b) }
 
   /** All the targets of outgoing edges */
   def successors: Vector[N] = outs.map(_._2)
@@ -32,21 +40,23 @@ case class Context[N,A,B](inEdges: Adj[N,B], vertex: N, label: A, outEdges: Adj[
   def predecessors: Vector[N] = ins.map(_._2)
 
   /** All neighbors of the node */
-  def neighbors: Vector[N] = (inEdges ++ outEdges).map(_._2)
+  def neighbors: Vector[N] = (inAdj ++ outAdj).map(_._2)
 
-  def toGrContext: GrContext[N,A,B] = GrContext(fromAdj(inEdges), label, fromAdj(outEdges))
+  def toGrContext: GrContext[N,A,B] = GrContext(fromAdj(inAdj), label, fromAdj(outAdj))
 
   /** Insert a successor after the focused node */
-  def addSucc(n: N, edge: B) = Context(inEdges, vertex, label, outEdges :+ (edge -> n))
+  def addSucc(n: N, edge: B): Context[N,A,B] =
+    Context(inAdj, vertex, label, outAdj :+ (edge -> n))
 
   /** Insert a predecessor after the focused node */
-  def addPred(n: N, edge: B) = Context((edge -> n) +: inEdges, vertex, label, outEdges)
+  def addPred(n: N, edge: B): Context[N,A,B] =
+    Context((edge -> n) +: inAdj, vertex, label, outAdj)
 }
 
 /** The label, predecessors, and successors of a given node */
-case class GrContext[N,A,B](inEdges: Map[N, Set[B]],
+case class GrContext[N,A,B](inAdj: Map[N, Set[B]],
                             label: A,
-                            outEdges: Map[N, Set[B]]) {
-  def toContext(v: N): Context[N,A,B] = Context(toAdj(inEdges), v, label, toAdj(outEdges))
+                            outAdj: Map[N, Set[B]]) {
+  def toContext(v: N): Context[N,A,B] = Context(toAdj(inAdj), v, label, toAdj(outAdj))
 }
 

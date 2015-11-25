@@ -33,6 +33,17 @@ package object quiver {
   /** Labeled links to or from a node */
   type Adj[N,B] = Vector[(B, N)]
 
+  /** Inward directed tree as a list of paths */
+  type RTree[N] = Stream[Path[N]]
+
+  /** Inward directed tree as a list of labeled paths */
+  type LRTree[N,A] = Stream[LPath[N,A]]
+
+  /** Unlabeled path through a graph */
+  type Path[N] = Vector[N]
+
+  /** Labeled path through a graph */
+  type LPath[N,A] = Adj[N,A]
 
   implicit def nodeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LNode[N,A]] =
     Order.order { (a, b) =>
@@ -108,6 +119,17 @@ package object quiver {
       case (m, (b, n)) => m + (n -> (m.get(n).toSet.flatten + b))
     }
 
+  /** Find the first path in a search tree that starts with the given node */
+  def getPath[N](v: N, t: RTree[N]): Option[Path[N]] =
+    t.find(_.head == v).map(_.reverse)
+
+  /**
+   * Find the first path in a labeled search tree that starts with the given node
+   */
+  def getLPath[N,A](v: N, t: LRTree[N,A]): Option[LPath[N,A]] =
+    t.find(_.head._2 == v).map(_.reverse)
+
+  /** The monoid of graph unions */
   implicit def graphMonoid[N,A,B]: Monoid[Graph[N,A,B]] = new Monoid[Graph[N,A,B]] {
     def zero = empty
     def append(g1: Graph[N,A,B], g2: => Graph[N,A,B]) = g1 union g2
