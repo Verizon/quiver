@@ -25,6 +25,12 @@ object GraphTests extends Properties("Graph") {
   type N = Byte
   import GraphGen._
 
+  def connect(ns: List[LNode[N,Int]], l: Int): Graph[N,Int,Int] =
+    mkGraph(ns, if (ns.isEmpty) List()
+                else ns.zip(ns.tail).map {
+                  case (a, b) => LEdge(a.vertex, b.vertex, l)
+                })
+
   property("Adding a node to a graph yields a graph that contains that node") =
     forAll { (g: Graph[N,Int,Int], n: LNode[N,Int]) =>
       (g addNode n) contains n.vertex
@@ -79,22 +85,21 @@ object GraphTests extends Properties("Graph") {
 
   property("DFS should find all descendants of a node") =
     forAll { (ns: List[LNode[N,Int]], l: Int) =>
-      val g = mkGraph(ns,
-                if (ns.isEmpty) List()
-                else ns.zip(ns.tail).map {
-                  case (a, b) => LEdge(a.vertex, b.vertex, l)
-                })
+      val g = connect(ns, l)
       ns.isEmpty || g.dfs(Seq(ns.head.vertex)).toSet == ns.map(_.vertex).toSet
     }
 
   property("RDFS should find all ancestors of a node") =
     forAll { (ns: List[LNode[N,Int]], l: Int) =>
-      val g = mkGraph(ns,
-                if (ns.isEmpty) List()
-                else ns.zip(ns.tail).map {
-                  case (a, b) => LEdge(a.vertex, b.vertex, l)
-                })
+      val g = connect(ns, l)
       ns.isEmpty || g.rdfs(Seq(ns.last.vertex)).toSet == ns.map(_.vertex).toSet
+    }
+
+  property("BFS should find all descendants of a node") =
+    forAll { (ns: List[LNode[N,Int]], l: Int) =>
+      val g = connect(ns, l)
+      val bfs = if (ns.isEmpty) Set() else g.bfs(ns.head.vertex).toSet
+      ns.isEmpty || g.bfs(ns.head.vertex).toSet == ns.map(_.vertex).toSet
     }
 
   property("The union of two graphs should contain all the edges and nodes of both graphs") =
