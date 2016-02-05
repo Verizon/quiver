@@ -36,8 +36,8 @@ case class LNode[N,A](vertex: N, label: A) {
 }
 
 /**
- * An implementation of an inductive graph using `Map`.
- * Nodes are labeled with `A`, and edges are labeled with `B`.
+ * An implementation of an inductive graph where nodes of type
+ * `N `are labeled with `A`, and edges are labeled with `B`.
  */
 case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   def isEmpty = rep.isEmpty
