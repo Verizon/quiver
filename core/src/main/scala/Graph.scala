@@ -72,7 +72,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * the deterministic inverse of `decomp` and obeys the following laws:
    *
    * `(g & c) decomp c.vertex == Decomp(Some(c), g)`
-   * `(g decomp c).rest & c == g`
+   * `(g decomp c.vertex).rest & c == g`
    */
   def &(ctx: Context[N,A,B]): Graph[N,A,B] = {
     val Context(p, v, l, s) = ctx
