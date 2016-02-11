@@ -131,4 +131,12 @@ object GraphTests extends Properties("Graph") {
       implicit val N = Order[Edge[N]].toScalaOrdering
       u1.edges.sorted == u2.edges.sorted && u1.nodes.sorted == u2.nodes.sorted
     }
+
+  property("Folding on contexts equals folding on nodes and edges") =
+    forAll { (g: Graph[N,Int,Int]) =>
+      (g.labNodes.map(_.label).sum, g.labEdges.map(_.label).sum) == g.fold((0,0)) {
+        case (Context(ins, v, a, outs), (accn, acce)) =>
+          (a + accn, (ins ++ outs).map(_._1).sum + acce)
+      }
+    }
 }
