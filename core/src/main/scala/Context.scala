@@ -51,6 +51,8 @@ case class Context[N,A,B](inAdj: Adj[N,B], vertex: N, label: A, outAdj: Adj[N,B]
   /** Insert a predecessor after the focused node */
   def addPred(n: N, edge: B): Context[N,A,B] =
     Context((edge -> n) +: inAdj, vertex, label, outAdj)
+
+  def toGraph: Graph[N,A,B] = empty & this
 }
 
 /** The label, predecessors, and successors of a given node */
