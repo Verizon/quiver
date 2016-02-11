@@ -208,6 +208,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     c.map(x => f(x, g.fold(u)(f))) getOrElse u
   }
 
+  /** Get all the contexts in the graph, as a vector */
   def contexts: Vector[Context[N,A,B]] =
     fold(Vector[Context[N,A,B]]())(_ +: _)
 
