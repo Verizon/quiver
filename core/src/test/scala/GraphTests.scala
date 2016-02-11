@@ -31,6 +31,14 @@ object GraphTests extends Properties("Graph") {
                   case (a, b) => LEdge(a.vertex, b.vertex, l)
                 })
 
+  property("embed and decomp are inverses of each other") =
+    forAll { (g: Graph[N,Int,Int], c: Context[N,Int,Int]) =>
+      (((g & c) decomp c.vertex) match {
+        case Decomp(Some(c2), g2) => (g2 & c2) == (g & c)
+      }) &&
+      (((g decomp c.vertex).rest & c) == (g & c))
+    }
+
   property("Adding a node to a graph yields a graph that contains that node") =
     forAll { (g: Graph[N,Int,Int], n: LNode[N,Int]) =>
       (g addNode n) contains n.vertex
