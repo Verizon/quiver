@@ -67,16 +67,24 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   }
 
   /**
-   * Merge the given context into the graph. The context consists of a vertex, its label,
-   * its successors, and its predecessors.
+   * Embed the given context in the graph. If the context's vertex is already in
+   * the graph, removes the old context from the graph first. This operation is
+   * the deterministic inverse of `decomp` and obeys the following laws:
+   *
+   * `(g & c) decomp c.vertex == Decomp(Some(c), g)`
+   * `(g decomp c.vertex).rest & c == (g & c)`
    */
   def &(ctx: Context[N,A,B]): Graph[N,A,B] = {
     val Context(p, v, l, s) = ctx
-    val g1 = rep + (v -> GrContext(fromAdj(p), l, fromAdj(s)))
+    val r = decomp(v).rest.rep
+    val g1 = r + (v -> GrContext(fromAdj(p), l, fromAdj(s)))
     val g2 = addSucc(g1, v, p)
     val g3 = addPred(g2, v, s)
     Graph(g3)
   }
+
+  /** Alias for `&` */
+  def embed(ctx: Context[N,A,B]): Graph[N,A,B] = &(ctx)
 
   /**
    * Add a node to this graph. If this node already exists with a different label,
@@ -175,12 +183,11 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * Decompose this graph into the context for an arbitrarily chosen node
    * and the rest of the graph.
    */
-  def decompAny: GDecomp[N,A,B] = labNodes match {
-    case Vector() => sys.error("Cannot decompose an empty graph")
-    case vs =>
-      val Decomp(Some(c), g) = decomp(vs.head.vertex)
-      GDecomp(c, g)
-  }
+  def decompAny: Decomp[N,A,B] =
+    if (isEmpty)
+      Decomp(None, this)
+    else
+      decomp(rep.head._1)
 
   /** The number of nodes in this graph */
   def countNodes: Int = rep.size
@@ -197,10 +204,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
 
   /** Fold a function over the graph */
   def fold[C](u: C)(f: (Context[N,A,B], C) => C): C = {
-    if (isEmpty) u else {
-      val GDecomp(c, g) = decompAny
-      f(c, g.fold(u)(f))
-    }
+    val Decomp(c, g) = decompAny
+    c.map(x => f(x, g.fold(u)(f))) getOrElse u
   }
 
   /** Map a function over the graph */
