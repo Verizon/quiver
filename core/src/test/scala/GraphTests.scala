@@ -139,4 +139,24 @@ object GraphTests extends Properties("Graph") {
           (a + accn, (ins ++ outs).map(_._1).sum + acce)
       }
     }
+
+  property("The roots of a graph have no incoming edges from other nodes") = forAll {
+    (ns: List[LNode[N,Int]], es: List[LEdge[N,Int]], i: Int) =>
+      val g = safeMkGraph(ns, es)
+      val vs = ns.map(_.vertex).toSet
+      val roots = vs.filterNot(n => es.find { e =>
+        e.to === n && vs.contains(e.from) && (e.from /== n)
+      }.isDefined)
+      s"Found ${g.roots} expected ${roots}" |: g.roots === roots
+    }
+
+  property("The leaves of a graph have no outgoing edges from other nodes") = forAll {
+    (ns: List[LNode[N,Int]], es: List[LEdge[N,Int]], i: Int) =>
+      val g = safeMkGraph(ns, es)
+      val vs = ns.map(_.vertex).toSet
+      val leaves = vs.filterNot(n => es.find { e =>
+        e.from === n && vs.contains(e.to) && (e.to /== n)
+      }.isDefined)
+      s"Found ${g.leaves} expected ${leaves}" |: g.leaves === leaves
+    }
 }

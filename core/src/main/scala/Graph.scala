@@ -548,6 +548,25 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   def lesp(s: N, t: N): Option[LPath[N,B]] =
     getLPath(t, lbft(s))
 
+  /**
+   * Find starting and ending nodes. An ending node `n` in graph `g` has `f(g,n)`
+   * containing no nodes other than `n`.
+   */
+  def endNode(f: (Graph[N,A,B], N) => Seq[N], n: N): Boolean = {
+    val ns = f(this, n)
+    ns.isEmpty || ns.toSet == Set(n)
+  }
+
+  /** Find all nodes that match the given ending criteria. */
+  def endBy(f: (Graph[N,A,B], N) => Seq[N]): Seq[N] =
+    nodes.filter(n => endNode(f, n))
+
+  /** Find the roots of the graph. A root is a node which has no incoming edges. */
+  def roots: Set[N] = endBy(_ predecessors _).toSet
+
+  /** Find the leaves of the graph. A leaf is a node which as no outgoing edges. */
+  def leaves: Set[N] = endBy(_ successors _).toSet
+
   override def toString: String =
     nodes.foldLeft("") { (s, n) => decomp(n) match {
       case Decomp(Some(Context(_, v, l, ss)), _) =>
