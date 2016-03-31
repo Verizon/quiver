@@ -39,33 +39,52 @@ case class LNode[N,A](vertex: N, label: A) {
  *
  * @groupname basic Basic Graph Operations
  * @groupprio basic 10
- * @groupname decomposition Structural Decomposition
+ *
+ * @groupname decomposition Graph Decomposition
+ * @groupdesc decomposition Structural decomposition of a graph
  * @groupprio decomposition 20
- * @groupname projection Projection
- * @groupprio projection 25
- * @groupdesc projection Functions for projecting out the components of a graph.
+ *
  * @groupname composition Graph Composition
  * @groupprio composition 30
+ *
  * @groupname mutation Deletion and Modification
  * @groupprio mutation 40
+ *
+ * @groupname projection Projection
+ * @groupprio projection 45
+ * @groupdesc projection Functions for extracting global information about a graph
+ *
  * @groupname inspection Graph Inspection
  * @groupprio inspection 50
+ * @groupdesc inspection Functions for extracting information about individual nodes and edges in a graph
+ *
  * @groupname foldmaps Folds and Maps
  * @groupprio foldmaps 60
+ *
+ * @groupname filters Filters
+ * @groupprio filters 65
+ * @groupdesc filters Functions for filtering the graph based on predicates on nodes and leaves
+ *
  * @groupname dfs Depth-First Search
  * @groupdesc dfs Algorithms for depth-first traversal.
  * @groupprio dfs 70
+ *
  * @groupname bfs Breadth-First Search
  * @groupdesc bfs Algorithms for breadth-first traversal.
  * @groupprio bfs 80
+ *
  * @groupname ends Roots and Leaves
- * @groupdesc ends Queries for starting and ending nodes, roots, and leaves.
- * @groupprio ends 60
+ * @groupdesc ends Queries to find starting and ending nodes, roots, and leaves.
+ * @groupprio ends 90
+ *
+ * @groupname classification Graph Classification
+ * @groupdesc classification Classification functions on graphs
+ * @groupprio classification 100
  */
 case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   /**
    * Check if the graph is empty
-   * @group inspection
+   * @group projection
    */
   def isEmpty = rep.isEmpty
 
@@ -353,10 +372,18 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     fold(Vector[Context[N,A,B]]())(_ +: _)
 
   /**
+   * Get all the contexts for which the given property is true
+   * @group projection
+   */
+  def select(p: Context[N,A,B] => Boolean): Vector[Context[N,A,B]] =
+    fold(Vector[Context[N,A,B]]())((c, cs) => if (p(c)) c +: cs else cs)
+
+  /**
    * The number of nodes in this graph
    * @group projection
    */
   def countNodes: Int = rep.size
+
 
   /**
    * Fold a function over the graph
@@ -399,6 +426,25 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     Graph(rep.map {
       case (k, GrContext(ps, a, ss)) => f(k) -> GrContext(ps mapKeys f, a, ss mapKeys f)
     })
+
+  /**
+   * Filter based on an edge property. Retains edges that match the property.
+   * @group filters
+   */
+  def efilter(f: LEdge[N,B] => Boolean): Graph[N,A,B] =
+    fold(quiver.empty[N,A,B]) {
+      case (Context(p, v, l, s), g) =>
+        val pp = p.filter { case (b, u) => f(LEdge(u,v,b)) }
+        val ss = s.filter { case (b, w) => f(LEdge(v,w,b)) }
+        Context(pp, v, l, ss) & g
+    }
+
+  /**
+   * Filter based on an edge label property. Retains edges whose labels match the property.
+   * @group filters
+   */
+  def elfilter(f: B => Boolean): Graph[N,A,B] =
+    efilter { case LEdge(_,_,b) => f(b) }
 
   /**
    * Returns true if the given node is in the graph, otherwise false
@@ -808,6 +854,29 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * @group ends
    */
   def leaves: Set[N] = endBy(_ successors _).toSet
+
+  /**
+   * Check if this graph has any loops, which connect a node to itself.
+   * @group classification
+   */
+  def hasLoop: Boolean =
+    !select(c => c.successors contains c.vertex).isEmpty
+
+  /**
+   * Check if this graph has multiple edges connecting any two nodes
+   * @group classification
+   */
+  def hasMulti: Boolean =
+    !select { c =>
+      val succs = c.successors
+      succs.toSet.size != succs.size
+    }.isEmpty
+
+  /**
+   * Check whether this graph is simple. A simple graph has no loops and no multi-edges.
+   * @group classification
+   */
+  def isSimple: Boolean = !hasMulti && !hasLoop
 
   override def toString: String =
     nodes.foldLeft("") { (s, n) => decomp(n) match {

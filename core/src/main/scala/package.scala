@@ -19,47 +19,85 @@ import scalaz.syntax.std.map._
 import scalaz.syntax.monoid._
 import scalaz.std.vector._
 
+/**
+ * @groupname creation Graph Construction
+ * @groupprio creation 10
+ *
+ * @groupname types Type Aliases
+ * @groupprio types 20
+ *
+ * @groupname instances Type Class Instances
+ * @groupprio instances 30
+ */
 package object quiver {
 
-  /** The internal representation of a graph */
+  /**
+   * The internal representation of a graph
+   * @group types
+   */
   type GraphRep[N,A,B] = Map[N, GrContext[N,A,B]]
 
-  /** Quasi-unlabeled node */
+  /**
+   * Quasi-unlabeled node
+   * @group types
+   */
   type UNode[N] = LNode[N,Unit]
 
-  /** Quasi-unlabaled edge */
+  /**
+   * Quasi-unlabaled edge
+   * @group types
+   */
   type UEdge[N] = LEdge[N,Unit]
 
-  /** Labeled links to or from a node */
+  /**
+   * Labeled links to or from a node
+   * @group types
+   */
   type Adj[N,B] = Vector[(B, N)]
 
-  /** Inward directed tree as a list of paths */
+  /**
+   * Inward directed tree as a list of paths
+   * @group types
+   */
   type RTree[N] = Stream[Path[N]]
 
-  /** Inward directed tree as a list of labeled paths */
+  /**
+   * Inward directed tree as a list of labeled paths
+   * @group types
+   */
   type LRTree[N,A] = Stream[LPath[N,A]]
 
-  /** Unlabeled path through a graph */
+  /**
+   * Unlabeled path through a graph
+   * @group types
+   */
   type Path[N] = Vector[N]
 
-  /** Labeled path through a graph */
+  /**
+   * Labeled path through a graph
+   * @group types
+   */
   type LPath[N,A] = Adj[N,A]
 
+  /** @group instances */
   implicit def nodeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LNode[N,A]] =
     Order.order { (a, b) =>
       N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label)
     }
 
+  /** @group instances */
   implicit def ledgeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LEdge[N,A]] =
     Order.order { (a, b) =>
       N.order(a.from, b.from) |+| N.order(a.to, b.to) |+| A.order(a.label, b.label)
     }
 
+  /** @group instances */
   implicit def edgeOrder[N,A](implicit N: Order[N]): Order[Edge[N]] =
     Order.order { (a, b) =>
       N.order(a.from, b.from) |+| N.order(a.to, b.to)
     }
 
+  /** @group instances */
   implicit def graphOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Graph[N,A,B]] =
     Order.order { (a, b) =>
       implicit val L = Order[LNode[N,A]].toScalaOrdering
@@ -68,17 +106,58 @@ package object quiver {
       Order[Vector[LEdge[N,B]]].order(a.labEdges.sorted, b.labEdges.sorted)
     }
 
-  /** An empty graph */
+  /**
+   * An empty graph
+   * @group creation
+   */
   def empty[N,A,B]: Graph[N,A,B] = Graph(Map.empty[N, GrContext[N,A,B]])
 
-  /** Create a graph from lists of labeled nodes and edges */
+  /**
+   * Create a graph from lists of labeled nodes and edges
+   * @group creation
+   */
   def mkGraph[N,A,B](vs: Seq[LNode[N,A]], es: Seq[LEdge[N,B]]): Graph[N,A,B] =
     empty.addNodes(vs).addEdges(es)
 
+  /**
+   * Create a graph that is a cycle of the given nodes
+   * @group creation
+   */
+  def cycle[N](vs: Seq[N]): Graph[N,Unit,Unit] =
+    mkGraph(vs.map(LNode(_, ())),
+      if (vs.isEmpty) Seq()
+      else (vs, vs.tail ++ Seq(vs.head)).zipped.map(LEdge[N,Unit](_, _, ())))
+
+  /**
+   * Create a directed star graph of degree `n`
+   * @group creation
+   */
+  def star(n: Int): Graph[Int,Unit,Unit] =
+    mkGraph(Range(0,n).map(LNode(_, ())), Range(1,n).map(v => LEdge(1,v,())))
+
+  /**
+   * Create an `(n,k)`-banana tree, which is an undirected graph obtained by connecting one leaf
+   * of each of `n` copies of a `k`-star graph with a single root vertex `v` that is distinct
+   * from all the stars.
+   */
+  def banana(n: Int, k: Int): Graph[Int,Unit,Unit] =
+    Range(0,n).map { n =>
+      val j = n * k + 1
+      star(k).vmap(_ + j).addNode(LNode(0, ())).addEdge(LEdge(0, n * k + 1, ()))
+    }.foldLeft(empty[Int,Unit,Unit])(_ union _).undir
+
+  /**
+   * Build a graph from lists of labeled nodes and edges, ignoring edges that
+   * reference missing nodes
+   * @group creation
+   */
   def safeMkGraph[N,A,B](vs: Seq[LNode[N,A]], es: Seq[LEdge[N,B]]): Graph[N,A,B] =
     empty.addNodes(vs).safeAddEdges(es)
 
-  /** Build a graph from a list of contexts */
+  /**
+   * Build a graph from a list of contexts
+   * @group creation
+   */
   def buildGraph[N,A,B](ctxs: Seq[Context[N,A,B]]): Graph[N,A,B] =
     ctxs.foldLeft(empty[N,A,B])(_ & _)
 
@@ -129,7 +208,10 @@ package object quiver {
   def getLPath[N,A](v: N, t: LRTree[N,A]): Option[LPath[N,A]] =
     t.find(_.head._2 == v).map(_.reverse)
 
-  /** The monoid of graph unions */
+  /**
+   * The monoid of graph unions
+   * @group instances
+   */
   implicit def graphMonoid[N,A,B]: Monoid[Graph[N,A,B]] = new Monoid[Graph[N,A,B]] {
     def zero = empty
     def append(g1: Graph[N,A,B], g2: => Graph[N,A,B]) = g1 union g2
