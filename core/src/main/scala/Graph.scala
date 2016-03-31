@@ -63,7 +63,7 @@ case class LNode[N,A](vertex: N, label: A) {
  *
  * @groupname filters Filters
  * @groupprio filters 65
- * @groupdesc filters Functions for filtering the graph based on predicates on nodes and leaves
+ * @groupdesc filters Functions for filtering the graph based on predicates on nodes and edges
  *
  * @groupname dfs Depth-First Search
  * @groupdesc dfs Algorithms for depth-first traversal.
