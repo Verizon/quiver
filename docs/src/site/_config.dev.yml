@@ -5,3 +5,4 @@ baseurl: "/"
 github:
   domain: "https://github.com"
   repo: "/oncue/quiver"
+apiurl: "/api"
