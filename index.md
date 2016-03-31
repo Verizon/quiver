@@ -42,7 +42,7 @@ scala> import quiver._
 import quiver._
 
 scala> val nil = empty[Int,Char,Unit]
-nil: quiver.Graph[Int,Char,Unit] = 
+nil: quiver.Graph[Int,Char,Unit] =
 ```
 
 A graph with one node identified as `1`, labeled `a`:
@@ -74,7 +74,7 @@ scala> import quiver._
 import quiver._
 
 scala> val e = a & Context(Vector(() -> 1), 2, 'b', Vector())
-e: quiver.Graph[Int,Char,Unit] = 
+e: quiver.Graph[Int,Char,Unit] =
 1:a->[((),2)]
 2:b->[]
 ```
@@ -86,7 +86,7 @@ scala> import quiver._
 import quiver._
 
 scala> val ab = a & Context(Vector(() -> 1), 2, 'b', Vector(() -> 1))
-ab: quiver.Graph[Int,Char,Unit] = 
+ab: quiver.Graph[Int,Char,Unit] =
 1:a->[((),2)]
 2:b->[((),1)]
 ```

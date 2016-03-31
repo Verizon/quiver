@@ -1,0 +1,826 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>quiver - quiver</title>
+          <meta name="description" content="quiver - quiver" />
+          <meta name="keywords" content="quiver quiver" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'quiver.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../lib/package_big.png" />
+        
+        <h1>quiver</h1><span class="permalink">
+      <a href="../index.html#quiver.package" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">quiver</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/oncue/quiver/blob/master/core/src/main/scala/package.scala" target="_blank">package.scala</a></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                <li class="group out"><span>Grouped</span></li>
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="quiver"><span>quiver</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="quiver.Adj" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="Adj[N,B]=Vector[(B,N)]"></a>
+      <a id="Adj[N,B]:Adj[N,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Adj</span><span class="tparams">[<span name="N">N</span>, <span name="B">B</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[(<span class="extype" name="quiver.Adj.B">B</span>, <span class="extype" name="quiver.Adj.N">N</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Adj[N,B]=Vector[(B,N)]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Labeled links to or from a node</p>
+    </li><li name="quiver.BiDecomp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BiDecomp[N,A,B]extendsProductwithSerializable"></a>
+      <a id="BiDecomp[N,A,B]:BiDecomp[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="BiDecomp.html"><span class="name">BiDecomp</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="first">first: <a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.BiDecomp.N">N</span>, <span class="extype" name="quiver.BiDecomp.A">A</span>, <span class="extype" name="quiver.BiDecomp.B">B</span>]</span>, <span name="last">last: <a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.BiDecomp.N">N</span>, <span class="extype" name="quiver.BiDecomp.A">A</span>, <span class="extype" name="quiver.BiDecomp.B">B</span>]</span>, <span name="rest">rest: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.BiDecomp.N">N</span>, <span class="extype" name="quiver.BiDecomp.A">A</span>, <span class="extype" name="quiver.BiDecomp.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@BiDecomp[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The decomposition of a graph into two detached
+contexts focused on distinguished &quot;first&quot; and &quot;last&quot; nodes.</p>
+    </li><li name="quiver.Context" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Context[N,A,B]extendsProductwithSerializable"></a>
+      <a id="Context[N,A,B]:Context[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Context.html"><span class="name">Context</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="inAdj">inAdj: <a href="#Adj[N,B]=Vector[(B,N)]" class="extmbr" name="quiver.Adj">Adj</a>[<span class="extype" name="quiver.Context.N">N</span>, <span class="extype" name="quiver.Context.B">B</span>]</span>, <span name="vertex">vertex: <span class="extype" name="quiver.Context.N">N</span></span>, <span name="label">label: <span class="extype" name="quiver.Context.A">A</span></span>, <span name="outAdj">outAdj: <a href="#Adj[N,B]=Vector[(B,N)]" class="extmbr" name="quiver.Adj">Adj</a>[<span class="extype" name="quiver.Context.N">N</span>, <span class="extype" name="quiver.Context.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Context[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The view of a graph focused on the context surrounding a particular node.</p>
+    </li><li name="quiver.Decomp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Decomp[N,A,B]extendsProductwithSerializable"></a>
+      <a id="Decomp[N,A,B]:Decomp[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Decomp.html"><span class="name">Decomp</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="ctx">ctx: <span class="extype" name="scala.Option">Option</span>[<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Decomp.N">N</span>, <span class="extype" name="quiver.Decomp.A">A</span>, <span class="extype" name="quiver.Decomp.B">B</span>]]</span>, <span name="rest">rest: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Decomp.N">N</span>, <span class="extype" name="quiver.Decomp.A">A</span>, <span class="extype" name="quiver.Decomp.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Decomp[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The decomposition of a graph into a detached context focused on one node
+and the rest of the graph.</p>
+    </li><li name="quiver.Edge" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Edge[N]extendsProductwithSerializable"></a>
+      <a id="Edge[N]:Edge[N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Edge.html"><span class="name">Edge</span></a><span class="tparams">[<span name="N">N</span>]</span><span class="params">(<span name="from">from: <span class="extype" name="quiver.Edge.N">N</span></span>, <span name="to">to: <span class="extype" name="quiver.Edge.N">N</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Edge[N]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver.GDecomp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GDecomp[N,A,B]extendsProductwithSerializable"></a>
+      <a id="GDecomp[N,A,B]:GDecomp[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GDecomp.html"><span class="name">GDecomp</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="ctx">ctx: <a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]</span>, <span name="rest">rest: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@GDecomp[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The same as <code>Decomp</code>, only more sure of itself</p>
+    </li><li name="quiver.GrContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GrContext[N,A,B]extendsProductwithSerializable"></a>
+      <a id="GrContext[N,A,B]:GrContext[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GrContext.html"><span class="name">GrContext</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="inAdj">inAdj: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="quiver.GrContext.N">N</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="quiver.GrContext.B">B</span>]]</span>, <span name="label">label: <span class="extype" name="quiver.GrContext.A">A</span></span>, <span name="outAdj">outAdj: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="quiver.GrContext.N">N</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="quiver.GrContext.B">B</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@GrContext[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The label, predecessors, and successors of a given node</p>
+    </li><li name="quiver.Graph" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Graph[N,A,B]extendsProductwithSerializable"></a>
+      <a id="Graph[N,A,B]:Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Graph.html"><span class="name">Graph</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="rep">rep: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Graph[N,A,B]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An implementation of an inductive graph where nodes of type
+<code>N </code>are labeled with <code>A</code>, and edges are labeled with <code>B</code>.</p>
+    </li><li name="quiver.GraphRep" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]"></a>
+      <a id="GraphRep[N,A,B]:GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GraphRep</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="quiver.GraphRep.N">N</span>, <a href="GrContext.html" class="extype" name="quiver.GrContext">GrContext</a>[<span class="extype" name="quiver.GraphRep.N">N</span>, <span class="extype" name="quiver.GraphRep.A">A</span>, <span class="extype" name="quiver.GraphRep.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The internal representation of a graph</p>
+    </li><li name="quiver.LEdge" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LEdge[N,A]extendsProductwithSerializable"></a>
+      <a id="LEdge[N,A]:LEdge[N,A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LEdge.html"><span class="name">LEdge</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span name="from">from: <span class="extype" name="quiver.LEdge.N">N</span></span>, <span name="to">to: <span class="extype" name="quiver.LEdge.N">N</span></span>, <span name="label">label: <span class="extype" name="quiver.LEdge.A">A</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@LEdge[N,A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver.LNode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LNode[N,A]extendsProductwithSerializable"></a>
+      <a id="LNode[N,A]:LNode[N,A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LNode.html"><span class="name">LNode</span></a><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span name="vertex">vertex: <span class="extype" name="quiver.LNode.N">N</span></span>, <span name="label">label: <span class="extype" name="quiver.LNode.A">A</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@LNode[N,A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver.LPath" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="LPath[N,A]=quiver.package.Adj[N,A]"></a>
+      <a id="LPath[N,A]:LPath[N,A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">LPath</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[(<span class="extype" name="quiver.LPath.A">A</span>, <span class="extype" name="quiver.LPath.N">N</span>)]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@LPath[N,A]=quiver.package.Adj[N,A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Labeled path through a graph</p>
+    </li><li name="quiver.LRTree" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="LRTree[N,A]=Stream[quiver.package.LPath[N,A]]"></a>
+      <a id="LRTree[N,A]:LRTree[N,A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">LRTree</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Stream">Stream</span>[<a href="#LPath[N,A]=quiver.package.Adj[N,A]" class="extmbr" name="quiver.LPath">LPath</a>[<span class="extype" name="quiver.LRTree.N">N</span>, <span class="extype" name="quiver.LRTree.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@LRTree[N,A]=Stream[quiver.package.LPath[N,A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Inward directed tree as a list of labeled paths</p>
+    </li><li name="quiver.Path" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="Path[N]=Vector[N]"></a>
+      <a id="Path[N]:Path[N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Path</span><span class="tparams">[<span name="N">N</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Vector">Vector</span>[<span class="extype" name="quiver.Path.N">N</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@Path[N]=Vector[N]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unlabeled path through a graph</p>
+    </li><li name="quiver.RTree" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="RTree[N]=Stream[quiver.package.Path[N]]"></a>
+      <a id="RTree[N]:RTree[N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">RTree</span><span class="tparams">[<span name="N">N</span>]</span><span class="result"> = <span class="extype" name="scala.collection.immutable.Stream">Stream</span>[<a href="#Path[N]=Vector[N]" class="extmbr" name="quiver.Path">Path</a>[<span class="extype" name="quiver.RTree.N">N</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@RTree[N]=Stream[quiver.package.Path[N]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Inward directed tree as a list of paths</p>
+    </li><li name="quiver.UEdge" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="UEdge[N]=quiver.LEdge[N,Unit]"></a>
+      <a id="UEdge[N]:UEdge[N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">UEdge</span><span class="tparams">[<span name="N">N</span>]</span><span class="result"> = <a href="LEdge.html" class="extype" name="quiver.LEdge">LEdge</a>[<span class="extype" name="quiver.UEdge.N">N</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@UEdge[N]=quiver.LEdge[N,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Quasi-unlabaled edge</p>
+    </li><li name="quiver.UNode" visbl="pub" data-isabs="false" fullComment="no" group="types">
+      <a id="UNode[N]=quiver.LNode[N,Unit]"></a>
+      <a id="UNode[N]:UNode[N]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">UNode</span><span class="tparams">[<span name="N">N</span>]</span><span class="result"> = <a href="LNode.html" class="extype" name="quiver.LNode">LNode</a>[<span class="extype" name="quiver.UNode.N">N</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@UNode[N]=quiver.LNode[N,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Quasi-unlabeled node</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="quiver.GraphCodecs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GraphCodecs"></a>
+      <a id="GraphCodecs:GraphCodecs"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="GraphCodecs$.html"><span class="name">GraphCodecs</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@GraphCodecs" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#addPred" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addPred[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,lss:Vector[(B,N)]):quiver.package.GraphRep[N,A,B]"></a>
+      <a id="addPred[N,A,B](GraphRep[N,A,B],N,Vector[(B,N)]):GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addPred</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="g">g: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.addPred.N">N</span>, <span class="extype" name="quiver.addPred.A">A</span>, <span class="extype" name="quiver.addPred.B">B</span>]</span>, <span name="v">v: <span class="extype" name="quiver.addPred.N">N</span></span>, <span name="lss">lss: <span class="extype" name="scala.Vector">Vector</span>[(<span class="extype" name="quiver.addPred.B">B</span>, <span class="extype" name="quiver.addPred.N">N</span>)]</span>)</span><span class="result">: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.addPred.N">N</span>, <span class="extype" name="quiver.addPred.A">A</span>, <span class="extype" name="quiver.addPred.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@addPred[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,lss:Vector[(B,N)]):quiver.package.GraphRep[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#addSucc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addSucc[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,lps:Vector[(B,N)]):quiver.package.GraphRep[N,A,B]"></a>
+      <a id="addSucc[N,A,B](GraphRep[N,A,B],N,Vector[(B,N)]):GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addSucc</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="g">g: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.addSucc.N">N</span>, <span class="extype" name="quiver.addSucc.A">A</span>, <span class="extype" name="quiver.addSucc.B">B</span>]</span>, <span name="v">v: <span class="extype" name="quiver.addSucc.N">N</span></span>, <span name="lps">lps: <span class="extype" name="scala.Vector">Vector</span>[(<span class="extype" name="quiver.addSucc.B">B</span>, <span class="extype" name="quiver.addSucc.N">N</span>)]</span>)</span><span class="result">: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.addSucc.N">N</span>, <span class="extype" name="quiver.addSucc.A">A</span>, <span class="extype" name="quiver.addSucc.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@addSucc[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,lps:Vector[(B,N)]):quiver.package.GraphRep[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#banana" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="banana(n:Int,k:Int):quiver.Graph[Int,Unit,Unit]"></a>
+      <a id="banana(Int,Int):Graph[Int,Unit,Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">banana</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>, <span name="k">k: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Unit">Unit</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@banana(n:Int,k:Int):quiver.Graph[Int,Unit,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create an <code>(n,k)</code>-banana tree, which is an undirected graph obtained by connecting one leaf
+of each of <code>n</code> copies of a <code>k</code>-star graph with a single root vertex <code>v</code> that is distinct
+from all the stars.</p>
+    </li><li name="quiver#buildGraph" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="buildGraph[N,A,B](ctxs:Seq[quiver.Context[N,A,B]]):quiver.Graph[N,A,B]"></a>
+      <a id="buildGraph[N,A,B](Seq[Context[N,A,B]]):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">buildGraph</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="ctxs">ctxs: <span class="extype" name="scala.Seq">Seq</span>[<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.buildGraph.N">N</span>, <span class="extype" name="quiver.buildGraph.A">A</span>, <span class="extype" name="quiver.buildGraph.B">B</span>]]</span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.buildGraph.N">N</span>, <span class="extype" name="quiver.buildGraph.A">A</span>, <span class="extype" name="quiver.buildGraph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@buildGraph[N,A,B](ctxs:Seq[quiver.Context[N,A,B]]):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Build a graph from a list of contexts</p>
+    </li><li name="quiver#clear" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="clear[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N],f:quiver.GrContext[N,A,B]=&gt;quiver.GrContext[N,A,B]):quiver.package.GraphRep[N,A,B]"></a>
+      <a id="clear[N,A,B](GraphRep[N,A,B],N,Vector[N],(GrContext[N,A,B])⇒GrContext[N,A,B]):GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clear</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="g">g: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clear.N">N</span>, <span class="extype" name="quiver.clear.A">A</span>, <span class="extype" name="quiver.clear.B">B</span>]</span>, <span name="v">v: <span class="extype" name="quiver.clear.N">N</span></span>, <span name="ns">ns: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="quiver.clear.N">N</span>]</span>, <span name="f">f: (<a href="GrContext.html" class="extype" name="quiver.GrContext">GrContext</a>[<span class="extype" name="quiver.clear.N">N</span>, <span class="extype" name="quiver.clear.A">A</span>, <span class="extype" name="quiver.clear.B">B</span>]) ⇒ <a href="GrContext.html" class="extype" name="quiver.GrContext">GrContext</a>[<span class="extype" name="quiver.clear.N">N</span>, <span class="extype" name="quiver.clear.A">A</span>, <span class="extype" name="quiver.clear.B">B</span>]</span>)</span><span class="result">: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clear.N">N</span>, <span class="extype" name="quiver.clear.A">A</span>, <span class="extype" name="quiver.clear.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@clear[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N],f:quiver.GrContext[N,A,B]=&gt;quiver.GrContext[N,A,B]):quiver.package.GraphRep[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#clearPred" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="clearPred[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N]):quiver.package.GraphRep[N,A,B]"></a>
+      <a id="clearPred[N,A,B](GraphRep[N,A,B],N,Vector[N]):GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clearPred</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="g">g: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clearPred.N">N</span>, <span class="extype" name="quiver.clearPred.A">A</span>, <span class="extype" name="quiver.clearPred.B">B</span>]</span>, <span name="v">v: <span class="extype" name="quiver.clearPred.N">N</span></span>, <span name="ns">ns: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="quiver.clearPred.N">N</span>]</span>)</span><span class="result">: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clearPred.N">N</span>, <span class="extype" name="quiver.clearPred.A">A</span>, <span class="extype" name="quiver.clearPred.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@clearPred[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N]):quiver.package.GraphRep[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#clearSucc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="clearSucc[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N]):quiver.package.GraphRep[N,A,B]"></a>
+      <a id="clearSucc[N,A,B](GraphRep[N,A,B],N,Vector[N]):GraphRep[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clearSucc</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="g">g: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clearSucc.N">N</span>, <span class="extype" name="quiver.clearSucc.A">A</span>, <span class="extype" name="quiver.clearSucc.B">B</span>]</span>, <span name="v">v: <span class="extype" name="quiver.clearSucc.N">N</span></span>, <span name="ns">ns: <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="quiver.clearSucc.N">N</span>]</span>)</span><span class="result">: <a href="#GraphRep[N,A,B]=Map[N,quiver.GrContext[N,A,B]]" class="extmbr" name="quiver.GraphRep">GraphRep</a>[<span class="extype" name="quiver.clearSucc.N">N</span>, <span class="extype" name="quiver.clearSucc.A">A</span>, <span class="extype" name="quiver.clearSucc.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@clearSucc[N,A,B](g:quiver.package.GraphRep[N,A,B],v:N,ns:Vector[N]):quiver.package.GraphRep[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver#cycle" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="cycle[N](vs:Seq[N]):quiver.Graph[N,Unit,Unit]"></a>
+      <a id="cycle[N](Seq[N]):Graph[N,Unit,Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cycle</span><span class="tparams">[<span name="N">N</span>]</span><span class="params">(<span name="vs">vs: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="quiver.cycle.N">N</span>]</span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.cycle.N">N</span>, <span class="extype" name="scala.Unit">Unit</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@cycle[N](vs:Seq[N]):quiver.Graph[N,Unit,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a graph that is a cycle of the given nodes</p>
+    </li><li name="quiver#edgeOrder" visbl="pub" data-isabs="false" fullComment="no" group="instances">
+      <a id="edgeOrder[N,A](implicitN:scalaz.Order[N]):scalaz.Order[quiver.Edge[N]]"></a>
+      <a id="edgeOrder[N,A](Order[N]):Order[Edge[N]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">edgeOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.edgeOrder.N">N</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="Edge.html" class="extype" name="quiver.Edge">Edge</a>[<span class="extype" name="quiver.edgeOrder.N">N</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@edgeOrder[N,A](implicitN:scalaz.Order[N]):scalaz.Order[quiver.Edge[N]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="quiver#empty" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="empty[N,A,B]:quiver.Graph[N,A,B]"></a>
+      <a id="empty[N,A,B]:Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">empty</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.empty.N">N</span>, <span class="extype" name="quiver.empty.A">A</span>, <span class="extype" name="quiver.empty.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@empty[N,A,B]:quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An empty graph</p>
+    </li><li name="quiver#fromAdj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="fromAdj[N,B](adj:quiver.package.Adj[N,B]):Map[N,Set[B]]"></a>
+      <a id="fromAdj[N,B](Adj[N,B]):Map[N,Set[B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fromAdj</span><span class="tparams">[<span name="N">N</span>, <span name="B">B</span>]</span><span class="params">(<span name="adj">adj: <a href="#Adj[N,B]=Vector[(B,N)]" class="extmbr" name="quiver.Adj">Adj</a>[<span class="extype" name="quiver.fromAdj.N">N</span>, <span class="extype" name="quiver.fromAdj.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="quiver.fromAdj.N">N</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="quiver.fromAdj.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@fromAdj[N,B](adj:quiver.package.Adj[N,B]):Map[N,Set[B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Turn an adjacency list of labeled edges into an intmap of sets of labels</p>
+    </li><li name="quiver#getLPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getLPath[N,A](v:N,t:quiver.package.LRTree[N,A]):Option[quiver.package.LPath[N,A]]"></a>
+      <a id="getLPath[N,A](N,LRTree[N,A]):Option[LPath[N,A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getLPath</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span name="v">v: <span class="extype" name="quiver.getLPath.N">N</span></span>, <span name="t">t: <a href="#LRTree[N,A]=Stream[quiver.package.LPath[N,A]]" class="extmbr" name="quiver.LRTree">LRTree</a>[<span class="extype" name="quiver.getLPath.N">N</span>, <span class="extype" name="quiver.getLPath.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="#LPath[N,A]=quiver.package.Adj[N,A]" class="extmbr" name="quiver.LPath">LPath</a>[<span class="extype" name="quiver.getLPath.N">N</span>, <span class="extype" name="quiver.getLPath.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@getLPath[N,A](v:N,t:quiver.package.LRTree[N,A]):Option[quiver.package.LPath[N,A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Find the first path in a labeled search tree that starts with the given node
+</p>
+    </li><li name="quiver#getPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getPath[N](v:N,t:quiver.package.RTree[N]):Option[quiver.package.Path[N]]"></a>
+      <a id="getPath[N](N,RTree[N]):Option[Path[N]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getPath</span><span class="tparams">[<span name="N">N</span>]</span><span class="params">(<span name="v">v: <span class="extype" name="quiver.getPath.N">N</span></span>, <span name="t">t: <a href="#RTree[N]=Stream[quiver.package.Path[N]]" class="extmbr" name="quiver.RTree">RTree</a>[<span class="extype" name="quiver.getPath.N">N</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="#Path[N]=Vector[N]" class="extmbr" name="quiver.Path">Path</a>[<span class="extype" name="quiver.getPath.N">N</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@getPath[N](v:N,t:quiver.package.RTree[N]):Option[quiver.package.Path[N]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Find the first path in a search tree that starts with the given node</p>
+    </li><li name="quiver#graphMonoid" visbl="pub" data-isabs="false" fullComment="no" group="instances">
+      <a id="graphMonoid[N,A,B]:scalaz.Monoid[quiver.Graph[N,A,B]]"></a>
+      <a id="graphMonoid[N,A,B]:Monoid[Graph[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">graphMonoid</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="result">: <span class="extype" name="scalaz.Monoid">Monoid</span>[<a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.graphMonoid.N">N</span>, <span class="extype" name="quiver.graphMonoid.A">A</span>, <span class="extype" name="quiver.graphMonoid.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@graphMonoid[N,A,B]:scalaz.Monoid[quiver.Graph[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The monoid of graph unions</p>
+    </li><li name="quiver#graphOrder" visbl="pub" data-isabs="false" fullComment="no" group="instances">
+      <a id="graphOrder[N,A,B](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A],implicitB:scalaz.Order[B]):scalaz.Order[quiver.Graph[N,A,B]]"></a>
+      <a id="graphOrder[N,A,B](Order[N],Order[A],Order[B]):Order[Graph[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">graphOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.graphOrder.N">N</span>]</span>, <span name="A">A: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.graphOrder.A">A</span>]</span>, <span name="B">B: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.graphOrder.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.graphOrder.N">N</span>, <span class="extype" name="quiver.graphOrder.A">A</span>, <span class="extype" name="quiver.graphOrder.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@graphOrder[N,A,B](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A],implicitB:scalaz.Order[B]):scalaz.Order[quiver.Graph[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="quiver#ledgeOrder" visbl="pub" data-isabs="false" fullComment="no" group="instances">
+      <a id="ledgeOrder[N,A](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A]):scalaz.Order[quiver.LEdge[N,A]]"></a>
+      <a id="ledgeOrder[N,A](Order[N],Order[A]):Order[LEdge[N,A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ledgeOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.ledgeOrder.N">N</span>]</span>, <span name="A">A: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.ledgeOrder.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="LEdge.html" class="extype" name="quiver.LEdge">LEdge</a>[<span class="extype" name="quiver.ledgeOrder.N">N</span>, <span class="extype" name="quiver.ledgeOrder.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@ledgeOrder[N,A](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A]):scalaz.Order[quiver.LEdge[N,A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="quiver#mkGraph" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="mkGraph[N,A,B](vs:Seq[quiver.LNode[N,A]],es:Seq[quiver.LEdge[N,B]]):quiver.Graph[N,A,B]"></a>
+      <a id="mkGraph[N,A,B](Seq[LNode[N,A]],Seq[LEdge[N,B]]):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mkGraph</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="vs">vs: <span class="extype" name="scala.Seq">Seq</span>[<a href="LNode.html" class="extype" name="quiver.LNode">LNode</a>[<span class="extype" name="quiver.mkGraph.N">N</span>, <span class="extype" name="quiver.mkGraph.A">A</span>]]</span>, <span name="es">es: <span class="extype" name="scala.Seq">Seq</span>[<a href="LEdge.html" class="extype" name="quiver.LEdge">LEdge</a>[<span class="extype" name="quiver.mkGraph.N">N</span>, <span class="extype" name="quiver.mkGraph.B">B</span>]]</span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.mkGraph.N">N</span>, <span class="extype" name="quiver.mkGraph.A">A</span>, <span class="extype" name="quiver.mkGraph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@mkGraph[N,A,B](vs:Seq[quiver.LNode[N,A]],es:Seq[quiver.LEdge[N,B]]):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a graph from lists of labeled nodes and edges</p>
+    </li><li name="quiver#nodeOrder" visbl="pub" data-isabs="false" fullComment="no" group="instances">
+      <a id="nodeOrder[N,A](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A]):scalaz.Order[quiver.LNode[N,A]]"></a>
+      <a id="nodeOrder[N,A](Order[N],Order[A]):Order[LNode[N,A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nodeOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.nodeOrder.N">N</span>]</span>, <span name="A">A: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.nodeOrder.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="LNode.html" class="extype" name="quiver.LNode">LNode</a>[<span class="extype" name="quiver.nodeOrder.N">N</span>, <span class="extype" name="quiver.nodeOrder.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@nodeOrder[N,A](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A]):scalaz.Order[quiver.LNode[N,A]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="quiver#safeMkGraph" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="safeMkGraph[N,A,B](vs:Seq[quiver.LNode[N,A]],es:Seq[quiver.LEdge[N,B]]):quiver.Graph[N,A,B]"></a>
+      <a id="safeMkGraph[N,A,B](Seq[LNode[N,A]],Seq[LEdge[N,B]]):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">safeMkGraph</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="vs">vs: <span class="extype" name="scala.Seq">Seq</span>[<a href="LNode.html" class="extype" name="quiver.LNode">LNode</a>[<span class="extype" name="quiver.safeMkGraph.N">N</span>, <span class="extype" name="quiver.safeMkGraph.A">A</span>]]</span>, <span name="es">es: <span class="extype" name="scala.Seq">Seq</span>[<a href="LEdge.html" class="extype" name="quiver.LEdge">LEdge</a>[<span class="extype" name="quiver.safeMkGraph.N">N</span>, <span class="extype" name="quiver.safeMkGraph.B">B</span>]]</span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.safeMkGraph.N">N</span>, <span class="extype" name="quiver.safeMkGraph.A">A</span>, <span class="extype" name="quiver.safeMkGraph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@safeMkGraph[N,A,B](vs:Seq[quiver.LNode[N,A]],es:Seq[quiver.LEdge[N,B]]):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Build a graph from lists of labeled nodes and edges, ignoring edges that
+reference missing nodes</p>
+    </li><li name="quiver#star" visbl="pub" data-isabs="false" fullComment="no" group="creation">
+      <a id="star(n:Int):quiver.Graph[Int,Unit,Unit]"></a>
+      <a id="star(Int):Graph[Int,Unit,Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">star</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Unit">Unit</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@star(n:Int):quiver.Graph[Int,Unit,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a directed star graph of degree <code>n</code></p>
+    </li><li name="quiver#toAdj" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="toAdj[N,B](bs:Map[N,Set[B]]):quiver.package.Adj[N,B]"></a>
+      <a id="toAdj[N,B](Map[N,Set[B]]):Adj[N,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toAdj</span><span class="tparams">[<span name="N">N</span>, <span name="B">B</span>]</span><span class="params">(<span name="bs">bs: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="quiver.toAdj.N">N</span>, <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="quiver.toAdj.B">B</span>]]</span>)</span><span class="result">: <a href="#Adj[N,B]=Vector[(B,N)]" class="extmbr" name="quiver.Adj">Adj</a>[<span class="extype" name="quiver.toAdj.N">N</span>, <span class="extype" name="quiver.toAdj.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@toAdj[N,B](bs:Map[N,Set[B]]):quiver.package.Adj[N,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Turn an intmap of sets of labels into an adjacency list of labeled edges</p>
+    </li><li name="quiver.viz" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="viz"></a>
+      <a id="viz:viz"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="viz/package.html"><span class="name">viz</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@viz" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="creation">
+              <h3>Graph Construction</h3>
+              
+            </div><div class="group" name="types">
+              <h3>Type Aliases</h3>
+              
+            </div><div class="group" name="instances">
+              <h3>Type Class Instances</h3>
+              
+            </div><div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

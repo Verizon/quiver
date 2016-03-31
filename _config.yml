@@ -1,7 +1,8 @@
 name: Quiver
 markdown: redcarpet
 highlighter: pygments
-baseurl: "/quiver/"
+baseurl: "/quiver"
 github:
   domain: "https://github.com"
   repo: "/oncue/quiver"
+apiurl: "/quiver/api"
