@@ -23,6 +23,8 @@ scalacOptions in Global ++= Seq(
   "-Xfuture"
 )
 
+scalacOptions in (Compile,doc) := Seq("-groups", "-implicits")
+
 lazy val quiver = project.in(file(".")).aggregate(core,codecs,docs)
 
 lazy val core = project
