@@ -137,8 +137,9 @@ package object quiver {
 
   /**
    * Create an `(n,k)`-banana tree, which is an undirected graph obtained by connecting one leaf
-   * of each of `n` copies of a `k`-star graph with a single root vertex `v` that is distinct
+   * of each of `n` copies of a `k`-star graph with a single root vertex that is distinct
    * from all the stars.
+   * @group creation
    */
   def banana(n: Int, k: Int): Graph[Int,Unit,Unit] =
     Range(0,n).map { n =>

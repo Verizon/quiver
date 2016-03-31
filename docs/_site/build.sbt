@@ -8,7 +8,7 @@ site.settings
 
 tutSettings
 
-site.addMappingsToSiteDir(tut, "")
+site.addMappingsToSiteDir(tut, "tut")
 
 unidocSettings
 

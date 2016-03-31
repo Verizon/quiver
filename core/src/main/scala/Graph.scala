@@ -653,7 +653,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   import scala.collection.immutable.Queue
 
   /**
-   * Breadth-first search (nodes ordered by distance)
+   * Utility function for breadth-first search (nodes ordered by distance)
    * @group bfs
    */
   def bfsnInternal[C](f: Context[N,A,B] => C, q: Queue[N]): Vector[C] =
@@ -735,9 +735,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     bfenInternal(Queue(es:_*))
 
   /**
-   * Breadth-first edges using the given queue of starting edges.
-   * This operation can be useful in writing your own custom breadth-first
-   * edge queries.
+   * Utility function for breadth-first search, remembering predecessor information.
    * @group bfs
    */
   def bfenInternal(q: Queue[Edge[N]]): Vector[Edge[N]] =
@@ -827,8 +825,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     getLPath(t, lbft(s))
 
   /**
-   * Find starting and ending nodes. An ending node `n` in graph `g` has `f(g,n)`
-   * containing no nodes other than `n`.
+   * Check if the given node is an end node according to the given criteria.
+   * An ending node `n` in graph `g` has `f(g,n)` containing no nodes other than `n`.
    * @group ends
    */
   def endNode(f: (Graph[N,A,B], N) => Seq[N], n: N): Boolean = {
@@ -850,10 +848,24 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   def roots: Set[N] = endBy(_ predecessors _).toSet
 
   /**
+   * Check if the given node is a root of this graph
+   * @group ends
+   */
+  def isRoot(n: N): Boolean =
+    endNode(_ predecessors _, n)
+
+  /**
    * Find the leaves of the graph. A leaf is a node which as no outgoing edges.
    * @group ends
    */
   def leaves: Set[N] = endBy(_ successors _).toSet
+
+  /**
+   * Check if the given node is a leaf of this graph
+   * @group ends
+   */
+  def isLeaf(n: N): Boolean =
+    endNode(_ successors _, n)
 
   /**
    * Check if this graph has any loops, which connect a node to itself.

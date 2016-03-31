@@ -1,0 +1,125 @@
+<h2 id="overview">Overview</h2>
+
+<p><em>Quiver</em> is a Scala library that provides support for modeling <a href="https://en.wikipedia.org/wiki/Multigraph">multi-graphs</a> which is a network of <em>nodes</em> connected by (possibly multiple) <em>directed edges</em> between nodes. <em>Quiver</em> is useful for modelling state diagrams, network topologies, vector graphic scenes, calculating shortest-path traversals, and many other common domain problems which can be modelled as graphs.</p>
+
+<p><em>Quiver</em> is based on Martin Erwig’s <em><a href="http://web.engr.oregonstate.edu/~erwig/fgl/haskell/">Functional Graph Library</a></em>.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>To begin using <em>Quiver</em>, add the following dependency in your SBT build (check for the latest release by <a href="https://bintray.com/oncue/releases/quiver/view">looking on bintray</a>):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"oncue.quiver"</span> <span class="o">%%</span> <span class="s">"core"</span> <span class="o">%</span> <span class="s">"x.x.x"</span>
+</code></pre>
+</div>
+
+<p>Then import the following package in your source file:</p>
+
+<pre><code class="language-tut">import quiver._
+</code></pre>
+
+<p><a name="construction"></a></p>
+
+<h3 id="constructing-graphs">Constructing Graphs</h3>
+
+<p><em>Quiver</em> has two basic functions to build up graphs: the expression <code class="highlighter-rouge">empty</code> denotes the empty graph, and the expression <code class="highlighter-rouge">g &amp; c</code> extends an existing graph <code class="highlighter-rouge">g</code> with a <em>context</em> <code class="highlighter-rouge">c</code> of type <code class="highlighter-rouge">Context[N,A,B]</code>.</p>
+
+<p>A <code class="highlighter-rouge">Context[N,A,B]</code> is a node <code class="highlighter-rouge">v:N</code> together with two lists of <em>adjacencies</em>: one for predecessors and one for successors of <code class="highlighter-rouge">v</code> represented by the type <code class="highlighter-rouge">Adj[N,B]</code>. An adjacency is a node <code class="highlighter-rouge">a:N</code> together with a label of type <code class="highlighter-rouge">B</code> of the edge from <code class="highlighter-rouge">v</code> to <code class="highlighter-rouge">a</code> (or vice versa). It’s called a <em>context</em> because it is a view of the graph from the context of a specific node. The context consists of the node itself, its two adjacency lists, and its label.</p>
+
+<p>With these two functions, we can construct any graph. Let’s look at a few very simple graphs of type <code class="highlighter-rouge">Graph[Int, Char, Unit]</code>. That is, graphs with integer nodes labeled by characters and unlabeled edges (they are labeled with the empty <code class="highlighter-rouge">()</code> value of the trivial type <code class="highlighter-rouge">Unit</code>).</p>
+
+<p>The empty graph:</p>
+
+<pre><code class="language-tut">import quiver._
+
+val nil = empty[Int,Char,Unit]
+</code></pre>
+
+<p>A graph with one node identified as <code class="highlighter-rouge">1</code>, labeled <code class="highlighter-rouge">a</code>:</p>
+
+<pre><code class="language-tut">import quiver._
+
+val a = nil &amp; Context(Vector(), 1, 'a', Vector())
+</code></pre>
+
+<p>A graph with one node having an edge to itself:</p>
+
+<pre><code class="language-tut">import quiver._
+
+val loop = nil &amp; Context(Vector(), 1, 'a', Vector(() -&gt; 1))
+</code></pre>
+
+<p>The <code class="highlighter-rouge">toString</code> method is defined to print the adjacency list representation. This means that a graph is shown as a list of labeled nodes, each followed by the list of labeled outgoing edges.</p>
+
+<p>Here is a graph with two nodes, <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code>, and one edge <code class="highlighter-rouge">a -&gt; b</code>:</p>
+
+<pre><code class="language-tut">import quiver._
+
+val e = a &amp; Context(Vector(() -&gt; 1), 2, 'b', Vector())
+</code></pre>
+
+<p>A graph with a cycle of two nodes <code class="highlighter-rouge">a &lt;-&gt; b</code>:</p>
+
+<pre><code class="language-tut">import quiver._
+
+val ab = a &amp; Context(Vector(() -&gt; 1), 2, 'b', Vector(() -&gt; 1))
+</code></pre>
+
+<p>The convention in quiver is that two edges like this with the same label going in opposite directions are equivalent to an <em>undirected</em> edge.</p>
+
+<p>There are several additional methods defined on <code class="highlighter-rouge">Graph</code> that make graph construction more convenient. The <code class="highlighter-rouge">addNode</code> and <code class="highlighter-rouge">addNodes</code> methods can be used to insert one or more labeled nodes into the graph. The methods <code class="highlighter-rouge">addEdge</code> and <code class="highlighter-rouge">addEdges</code> can be used to extend the graph with one or more labeled edges. Similarly, <code class="highlighter-rouge">removeNode</code>, <code class="highlighter-rouge">removeNodes</code>, <code class="highlighter-rouge">removeEdge</code>, and <code class="highlighter-rouge">removeEdges</code> do what you might expect.</p>
+
+<p>A very useful function for building graphs is <code class="highlighter-rouge">mkGraph</code>, which just takes a list of nodes and a list of edges and constructs a graph. It is defined in the package <code class="highlighter-rouge">oncue.quiver</code>.</p>
+
+<p><a name="extraction"></a></p>
+
+<h3 id="extracting-graph-information">Extracting Graph Information</h3>
+
+<p>Several methods on <code class="highlighter-rouge">Graph</code> let us extract global information about the graph. For example, <code class="highlighter-rouge">isEmpty</code> will tell us if the graph is empty. We can count the number of nodes in the graph with <code class="highlighter-rouge">countNodes</code>, and we can get the list of nodes with <code class="highlighter-rouge">nodes</code>, or the list of nodes and their labels with <code class="highlighter-rouge">labNodes</code>. Similarly, the methods <code class="highlighter-rouge">edges</code> and <code class="highlighter-rouge">labEdges</code> get the lists of plain and labeled edges.</p>
+
+<p>We can also get information about individual nodes: for a graph that contains a node <code class="highlighter-rouge">v</code>, we can determine <code class="highlighter-rouge">v</code>’s successors by calling <code class="highlighter-rouge">successors(v)</code>, predecessors with <code class="highlighter-rouge">predecessors(v)</code> and both by calling <code class="highlighter-rouge">neighbors(v)</code>. The outgoing and incoming edges of a node can be accessed with <code class="highlighter-rouge">inEdges</code> and <code class="highlighter-rouge">outEdges</code>, respectively, and the number of inbound, outbound, or total connections to a node can be determined with <code class="highlighter-rouge">inDegree</code>, <code class="highlighter-rouge">outDegree</code>, and <code class="highlighter-rouge">degree</code>.</p>
+
+<p>The above methods are all also defined on <code class="highlighter-rouge">Context</code>, which is particularly useful when looking at the decomposition of a graph.</p>
+
+<p><a name="decomposistion"></a></p>
+
+<h3 id="graph-decomposition">Graph Decomposition</h3>
+
+<p>The fundamental operation for decomposing a graph is given by the method <code class="highlighter-rouge">decomp</code>. When we say <code class="highlighter-rouge">g decomp v</code>, the result is a <code class="highlighter-rouge">Decomp(c,t)</code>, a <em>decomposition</em> of a graph <code class="highlighter-rouge">g</code> into <code class="highlighter-rouge">c:Option[Context]</code>, the context of node <code class="highlighter-rouge">v</code> (if it exists, otherwise <code class="highlighter-rouge">None</code>), and the remainder of the graph, <code class="highlighter-rouge">t</code>, which does not contain the node <code class="highlighter-rouge">v</code>. We can regard <code class="highlighter-rouge">decomp</code> as the inverse of <code class="highlighter-rouge">&amp;</code> in that <code class="highlighter-rouge">(g &amp; c).decomp == Decomp(Some(c), g)</code>.</p>
+
+<p>Let’s look at some examples:</p>
+
+<pre><code class="language-tut">a decomp 1
+loop decomp 1
+ab decomp 1
+e decomp 1
+a decomp 2
+</code></pre>
+
+<p>The <code class="highlighter-rouge">decompAny</code> method furthermore decomposes the graph on an arbitrary node. This operation is <em>unsafe</em> in the same way as taking the <code class="highlighter-rouge">head</code> of a <code class="highlighter-rouge">List</code>. It’s an error to decompose the empty graph, but <code class="highlighter-rouge">decompAny</code> will always pick the first node it finds if the graph is nonempty.</p>
+
+<h3 id="general-purpose-operations">General-Purpose Operations</h3>
+
+<p>The method <code class="highlighter-rouge">gmap</code> applies a function to all contexts of the graph. It takes a function of type <code class="highlighter-rouge">Context[N,A,B] =&gt; Context[N,C,D]</code> and produces a new graph with all the contexts transformed by the function.</p>
+
+<p>Two specialized versions of this function, <code class="highlighter-rouge">nmap</code> and <code class="highlighter-rouge">emap</code>, allow you to apply a function over all the node and edge labels, respectively.</p>
+
+<p>The <code class="highlighter-rouge">reverse</code> method swaps the direction of all edges in the graph.</p>
+
+<p>A general fold operation on graph is given by the <code class="highlighter-rouge">fold</code> method. It successively decomposes all contexts from a graph and combines them in a right-associative way with a binary function of type <code class="highlighter-rouge">(Context[N,A,B], C) =&gt; C</code>, into a single value of some type <code class="highlighter-rouge">C</code>. It is very similar to the well-known <code class="highlighter-rouge">foldRight</code> function on lists, but an important difference is that the contexts are decomposed from the graph in an arbitrary order.</p>
+
+<p><a name="traversal"></a></p>
+
+<h3 id="graph-traversal">Graph Traversal</h3>
+
+<p>Depth-first search is one of the most basic and important graph algorithms. A depth-first traversal of a graph essentially means to visit each node in the graph once by visiting successors before siblings.</p>
+
+<p>The <code class="highlighter-rouge">dfs</code> method on <code class="highlighter-rouge">Graph</code> yields a <code class="highlighter-rouge">Seq[N]</code> which is the sequence of all the nodes in the graph, in the order visited. It takes a <code class="highlighter-rouge">Seq[N]</code> as its argument which is the list of nodes from which to start the search.</p>
+
+<p>The <code class="highlighter-rouge">dff</code> method computes a depth-first spanning tree, which keeps the edges that have been traversed to reach all the nodes. It actually returns a <em>list</em> of trees because the graph might not be connected. A list of trees is also called a <em>forest</em>, hence the name <code class="highlighter-rouge">dff</code> or “depth-first forest”.</p>
+
+<p>The data type <code class="highlighter-rouge">Tree</code> and functions for computing pre- and postorder lists of nodes are defined by the <code class="highlighter-rouge">scalaz.Tree</code> data type which is part of the <a href="http://github.com/scalaz/scalaz"><code class="highlighter-rouge">Scalaz</code></a> library.</p>
+
+<p>Many different functions are provided by <code class="highlighter-rouge">Graph</code> for depth-first search. For example, <code class="highlighter-rouge">rdfs</code> is a depth-first search that follows predecessors rather than successors. And a very general depth-first traversal is provided by <code class="highlighter-rouge">xdfsWith</code>. It takes a function <code class="highlighter-rouge">d</code> of type <code class="highlighter-rouge">Context[N,A,B] =&gt; Seq[N]</code> to determine for each context visited which nodes to visit next, and a function <code class="highlighter-rouge">Context[N,A,B] =&gt; C</code> to compute a value for that context. The method then returns a <code class="highlighter-rouge">Vector[C]</code> of those computed values.</p>
+
+<p>Functions for breadth-first search, shortest paths, voronoi diagrams, minimum spanning trees, and finding independent node sets are not yet provided by the library but could easily be added or written by the user.</p>
+
