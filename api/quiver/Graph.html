@@ -375,7 +375,7 @@ Gives transient edges in breadth-first order, starting from the given node.</p><
       <p class="shortcomment cmt">Breadth-first search remembering predecessor information.</p><div class="fullcomment"><div class="comment cmt"><p>Breadth-first search remembering predecessor information.
 Gives transient edges starting from the targets of the given edges,
 in breadth-first order.</p></div></div>
-    </li><li name="quiver.Graph#bfenInternal" visbl="pub" data-isabs="false" fullComment="yes" group="bfs">
+    </li><li name="quiver.Graph#bfenInternal" visbl="pub" data-isabs="false" fullComment="no" group="bfs">
       <a id="bfenInternal(q:scala.collection.immutable.Queue[quiver.Edge[N]]):Vector[quiver.Edge[N]]"></a>
       <a id="bfenInternal(Queue[Edge[N]]):Vector[Edge[N]]"></a>
       <h4 class="signature">
@@ -391,9 +391,7 @@ in breadth-first order.</p></div></div>
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Breadth-first edges using the given queue of starting edges.</p><div class="fullcomment"><div class="comment cmt"><p>Breadth-first edges using the given queue of starting edges.
-This operation can be useful in writing your own custom breadth-first
-edge queries.</p></div></div>
+      <p class="shortcomment cmt">Utility function for breadth-first search, remembering predecessor information.</p>
     </li><li name="quiver.Graph#bfs" visbl="pub" data-isabs="false" fullComment="yes" group="bfs">
       <a id="bfs(v:N):Seq[N]"></a>
       <a id="bfs(N):Seq[N]"></a>
@@ -464,7 +462,7 @@ of passing the context of each visited to the function <code>f</code>.</p></div>
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Breadth-first search (nodes ordered by distance)</p>
+      <p class="shortcomment cmt">Utility function for breadth-first search (nodes ordered by distance)</p>
     </li><li name="quiver.Graph#bfsnWith" visbl="pub" data-isabs="false" fullComment="yes" group="bfs">
       <a id="bfsnWith[C](f:quiver.Context[N,A,B]=&gt;C,vs:Seq[N]):Seq[C]"></a>
       <a id="bfsnWith[C]((Context[N,A,B])⇒C,Seq[N]):Seq[C]"></a>
@@ -857,8 +855,8 @@ the deterministic inverse of <code>decomp</code> and obeys the following laws:</
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Find starting and ending nodes.</p><div class="fullcomment"><div class="comment cmt"><p>Find starting and ending nodes. An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code>
-containing no nodes other than <code>n</code>.</p></div></div>
+      <p class="shortcomment cmt">Check if the given node is an end node according to the given criteria.</p><div class="fullcomment"><div class="comment cmt"><p>Check if the given node is an end node according to the given criteria.
+An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> containing no nodes other than <code>n</code>.</p></div></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a>
       <a id="ensuring((Graph[N,A,B])⇒Boolean,⇒Any):Graph[N,A,B]"></a>
@@ -1211,6 +1209,40 @@ containing no nodes other than <code>n</code>.</p></div></div>
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="quiver.Graph#isLeaf" visbl="pub" data-isabs="false" fullComment="no" group="ends">
+      <a id="isLeaf(n:N):Boolean"></a>
+      <a id="isLeaf(N):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isLeaf</span><span class="params">(<span name="n">n: <span class="extype" name="quiver.Graph.N">N</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@isLeaf(n:N):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Check if the given node is a leaf of this graph</p>
+    </li><li name="quiver.Graph#isRoot" visbl="pub" data-isabs="false" fullComment="no" group="ends">
+      <a id="isRoot(n:N):Boolean"></a>
+      <a id="isRoot(N):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isRoot</span><span class="params">(<span name="n">n: <span class="extype" name="quiver.Graph.N">N</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@isRoot(n:N):Boolean" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Check if the given node is a root of this graph</p>
     </li><li name="quiver.Graph#isSimple" visbl="pub" data-isabs="false" fullComment="yes" group="classification">
       <a id="isSimple:Boolean"></a>
       <a id="isSimple:Boolean"></a>
