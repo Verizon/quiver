@@ -150,7 +150,7 @@ object GraphTests extends Properties("Graph") {
       s"Found ${g.roots} expected ${roots}" |: g.roots === roots
     }
 
-  property("The leaves of a graph have no outgoing edges from other nodes") = forAll {
+  property("The leaves of a graph have no outgoing edges to other nodes") = forAll {
     (ns: List[LNode[N,Int]], es: List[LEdge[N,Int]], i: Int) =>
       val g = safeMkGraph(ns, es)
       val vs = ns.map(_.vertex).toSet
