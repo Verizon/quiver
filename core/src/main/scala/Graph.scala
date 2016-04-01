@@ -396,6 +396,12 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def countNodes: Int = rep.size
 
+  /**
+   * Get all the contexts of this graph, as a graph.
+   * @group projection
+   */
+  def contextGraph: Graph[N,Context[N,A,B],B] =
+    gmap { c => c.copy(label = c) }
 
   /**
    * Fold a function over the graph. Note that each successive context received by the
