@@ -750,7 +750,7 @@ a vector of trees of results of passing the context of each node to the function
       </a>
     </span>
       <p class="shortcomment cmt">A list of all the edges in the graph</p>
-    </li><li name="quiver.Graph#efilter" visbl="pub" data-isabs="false" fullComment="yes" group="filters">
+    </li><li name="quiver.Graph#efilter" visbl="pub" data-isabs="false" fullComment="no" group="filters">
       <a id="efilter(f:quiver.LEdge[N,B]=&gt;Boolean):quiver.Graph[N,A,B]"></a>
       <a id="efilter((LEdge[N,B])⇒Boolean):Graph[N,A,B]"></a>
       <h4 class="signature">
@@ -766,8 +766,8 @@ a vector of trees of results of passing the context of each node to the function
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Filter based on an edge property.</p><div class="fullcomment"><div class="comment cmt"><p>Filter based on an edge property. Retains edges that match the property.</p></div></div>
-    </li><li name="quiver.Graph#elfilter" visbl="pub" data-isabs="false" fullComment="yes" group="filters">
+      <p class="shortcomment cmt">The subgraph containing only edges that match the property</p>
+    </li><li name="quiver.Graph#elfilter" visbl="pub" data-isabs="false" fullComment="no" group="filters">
       <a id="elfilter(f:B=&gt;Boolean):quiver.Graph[N,A,B]"></a>
       <a id="elfilter((B)⇒Boolean):Graph[N,A,B]"></a>
       <h4 class="signature">
@@ -783,7 +783,7 @@ a vector of trees of results of passing the context of each node to the function
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Filter based on an edge label property.</p><div class="fullcomment"><div class="comment cmt"><p>Filter based on an edge label property. Retains edges whose labels match the property.</p></div></div>
+      <p class="shortcomment cmt">The subgraph containing only edges whose labels match the property</p>
     </li><li name="quiver.Graph#emap" visbl="pub" data-isabs="false" fullComment="no" group="foldmaps">
       <a id="emap[C](f:B=&gt;C):quiver.Graph[N,A,C]"></a>
       <a id="emap[C]((B)⇒C):Graph[N,A,C]"></a>
@@ -975,6 +975,23 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
       </a>
     </span>
       <p class="shortcomment cmt">The shortest path from vertex <code>s</code> to vertex <code>t</code></p>
+    </li><li name="quiver.Graph#filterMap" visbl="pub" data-isabs="false" fullComment="no" group="filters">
+      <a id="filterMap[C,D](f:quiver.Context[N,A,B]=&gt;Option[quiver.Context[N,C,D]]):quiver.Graph[N,C,D]"></a>
+      <a id="filterMap[C,D]((Context[N,A,B])⇒Option[Context[N,C,D]]):Graph[N,C,D]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filterMap</span><span class="tparams">[<span name="C">C</span>, <span name="D">D</span>]</span><span class="params">(<span name="f">f: (<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]) ⇒ <span class="extype" name="scala.Option">Option</span>[<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.filterMap.C">C</span>, <span class="extype" name="quiver.Graph.filterMap.D">D</span>]]</span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.filterMap.C">C</span>, <span class="extype" name="quiver.Graph.filterMap.D">D</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@filterMap[C,D](f:quiver.Context[N,A,B]=&gt;Option[quiver.Context[N,C,D]]):quiver.Graph[N,C,D]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Build a graph out of a partial map of the contexts in this graph.</p>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -1311,6 +1328,40 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
       </a>
     </span>
       <p class="shortcomment cmt">Find the label for a node</p>
+    </li><li name="quiver.Graph#labfilter" visbl="pub" data-isabs="false" fullComment="no" group="filters">
+      <a id="labfilter(p:A=&gt;Boolean):quiver.Graph[N,A,B]"></a>
+      <a id="labfilter((A)⇒Boolean):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">labfilter</span><span class="params">(<span name="p">p: (<span class="extype" name="quiver.Graph.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@labfilter(p:A=&gt;Boolean):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The subgraph containing only nodes whose labels match the property</p>
+    </li><li name="quiver.Graph#labnfilter" visbl="pub" data-isabs="false" fullComment="no" group="filters">
+      <a id="labnfilter(p:quiver.LNode[N,A]=&gt;Boolean):quiver.Graph[N,A,B]"></a>
+      <a id="labnfilter((LNode[N,A])⇒Boolean):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">labnfilter</span><span class="params">(<span name="p">p: (<a href="LNode.html" class="extype" name="quiver.LNode">LNode</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@labnfilter(p:quiver.LNode[N,A]=&gt;Boolean):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The subgraph containing only labelled nodes that match the property</p>
     </li><li name="quiver.Graph#lbf" visbl="pub" data-isabs="false" fullComment="no" group="bfs">
       <a id="lbf(q:scala.collection.immutable.Queue[quiver.LPath[N,B]]):quiver.LRTree[N,B]"></a>
       <a id="lbf(Queue[LPath[N,B]]):LRTree[N,B]"></a>
@@ -1447,6 +1498,23 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
       </a>
     </span>
       <p class="shortcomment cmt">Find the neighbors of a node</p>
+    </li><li name="quiver.Graph#nfilter" visbl="pub" data-isabs="false" fullComment="no" group="filters">
+      <a id="nfilter(p:N=&gt;Boolean):quiver.Graph[N,A,B]"></a>
+      <a id="nfilter((N)⇒Boolean):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nfilter</span><span class="params">(<span name="p">p: (<span class="extype" name="quiver.Graph.N">N</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@nfilter(p:N=&gt;Boolean):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The subgraph containing only nodes that match the property</p>
     </li><li name="quiver.Graph#nmap" visbl="pub" data-isabs="false" fullComment="no" group="foldmaps">
       <a id="nmap[C](f:A=&gt;C):quiver.Graph[N,C,B]"></a>
       <a id="nmap[C]((A)⇒C):Graph[N,C,B]"></a>
@@ -1806,6 +1874,23 @@ don't already exist in the graph.</p>
       </a>
     </span>
       <p class="shortcomment cmt">Get all the contexts for which the given property is true</p>
+    </li><li name="quiver.Graph#subgraph" visbl="pub" data-isabs="false" fullComment="no" group="filters">
+      <a id="subgraph(vs:Seq[N]):quiver.Graph[N,A,B]"></a>
+      <a id="subgraph(Seq[N]):Graph[N,A,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subgraph</span><span class="params">(<span name="vs">vs: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="quiver.Graph.N">N</span>]</span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@subgraph(vs:Seq[N]):quiver.Graph[N,A,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The subgraph containing only the given nodes</p>
     </li><li name="quiver.Graph#successors" visbl="pub" data-isabs="false" fullComment="no" group="inspection">
       <a id="successors(v:N):Vector[N]"></a>
       <a id="successors(N):Vector[N]"></a>
@@ -2238,8 +2323,8 @@ visit next.</p></div></div>
               <h3>Folds and Maps</h3>
               
             </div><div class="group" name="filters">
-              <h3>Filters</h3>
-              <div class="comment cmt"><p>Functions for filtering the graph based on predicates on nodes and leaves</p></div>
+              <h3>Subgraphs</h3>
+              
             </div><div class="group" name="dfs">
               <h3>Depth-First Search</h3>
               <div class="comment cmt"><p>Algorithms for depth-first traversal.</p></div>

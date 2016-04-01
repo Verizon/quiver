@@ -713,6 +713,24 @@ from all the stars.</p>
       </a>
     </span>
       <p class="shortcomment cmt"></p>
+    </li><li name="quiver#poset" visbl="pub" data-isabs="false" fullComment="yes" group="creation">
+      <a id="poset[N,A](ns:Seq[(N,A)])(implicitN:PartialOrdering[N]):quiver.Graph[N,A,Unit]"></a>
+      <a id="poset[N,A](Seq[(N,A)])(PartialOrdering[N]):Graph[N,A,Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">poset</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>]</span><span class="params">(<span name="ns">ns: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="quiver.poset.N">N</span>, <span class="extype" name="quiver.poset.A">A</span>)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scala.PartialOrdering">PartialOrdering</span>[<span class="extype" name="quiver.poset.N">N</span>]</span>)</span><span class="result">: <a href="Graph.html" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.poset.N">N</span>, <span class="extype" name="quiver.poset.A">A</span>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@poset[N,A](ns:Seq[(N,A)])(implicitN:PartialOrdering[N]):quiver.Graph[N,A,Unit]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Build a graph from elements of a partially ordered set.</p><div class="fullcomment"><div class="comment cmt"><p>Build a graph from elements of a partially ordered set.
+The resulting graph has an edge from vertex <code>x</code> to vertex <code>y</code> precisely when <code>x &lt;= y</code>.</p></div></div>
     </li><li name="quiver#safeMkGraph" visbl="pub" data-isabs="false" fullComment="no" group="creation">
       <a id="safeMkGraph[N,A,B](vs:Seq[quiver.LNode[N,A]],es:Seq[quiver.LEdge[N,B]]):quiver.Graph[N,A,B]"></a>
       <a id="safeMkGraph[N,A,B](Seq[LNode[N,A]],Seq[LEdge[N,B]]):Graph[N,A,B]"></a>
