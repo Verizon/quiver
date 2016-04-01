@@ -162,6 +162,19 @@ package object quiver {
   def buildGraph[N,A,B](ctxs: Seq[Context[N,A,B]]): Graph[N,A,B] =
     ctxs.foldLeft(empty[N,A,B])(_ & _)
 
+  /**
+   * Build a graph from elements of a partially ordered set.
+   * The resulting graph has an edge from vertex `x` to vertex `y` precisely when `x <= y`.
+   * @group creation
+   */
+  def poset[N,A](ns: Seq[(N,A)])(implicit N: PartialOrdering[N]) =
+    mkGraph(
+      ns.map { case (n, a) => LNode(n, a) },
+      for {
+        x <- ns
+        y <- ns.filter(n => N.lteq(x._1,n._1))
+      } yield LEdge(x._1, y._1, ()))
+
   def clear[N,A,B](g: GraphRep[N,A,B], v: N, ns: Vector[N],
                    f: GrContext[N,A,B] => GrContext[N,A,B]): GraphRep[N,A,B] =
     if (ns.isEmpty) g else clear(g.alter(ns.head)(_ map f), v, ns.tail, f)

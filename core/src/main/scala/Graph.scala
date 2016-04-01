@@ -61,9 +61,8 @@ case class LNode[N,A](vertex: N, label: A) {
  * @groupname foldmaps Folds and Maps
  * @groupprio foldmaps 60
  *
- * @groupname filters Filters
+ * @groupname filters Subgraphs
  * @groupprio filters 65
- * @groupdesc filters Functions for filtering the graph based on predicates on nodes and edges
  *
  * @groupname dfs Depth-First Search
  * @groupdesc dfs Algorithms for depth-first traversal.
@@ -365,18 +364,31 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   def edges: Vector[Edge[N]] = labEdges.map { case LEdge(v, w, _) => Edge(v, w) }
 
   /**
-   * Get all the contexts in the graph, as a vector
+   * Get all the contexts in the graph, as a vector. Note that the resulting contexts may
+   * overlap, in the sense that successive contexts in the result will contain vertices
+   * from previous contexts as well.
    * @group projection
    */
   def contexts: Vector[Context[N,A,B]] =
-    fold(Vector[Context[N,A,B]]())(_ +: _)
+    rep.map { case (v, c) => c.toContext(v) }.toVector
 
   /**
-   * Get all the contexts for which the given property is true
+   * Project out (non-overlapping) contexts for which the given property is true.
+   * Note that the contexts will not overlap, in the sense that successive contexts in
+   * the result will not contain the vertices at the focus of previous contexts.
    * @group projection
    */
   def select(p: Context[N,A,B] => Boolean): Vector[Context[N,A,B]] =
     fold(Vector[Context[N,A,B]]())((c, cs) => if (p(c)) c +: cs else cs)
+
+  /**
+   * Get all the contexts for which the given property is true. Note that the resulting
+   * contexts may overlap, in the sense that successive contexts in the result may contain
+   * vertices from previous contexts.
+   * @group projection
+   */
+  def selectAll(p: Context[N,A,B] => Boolean): Vector[Context[N,A,B]] =
+    rep.flatMap { case (v, c) => Some(c.toContext(v)) filter p }.toVector
 
   /**
    * The number of nodes in this graph
@@ -386,13 +398,27 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
 
 
   /**
-   * Fold a function over the graph
+   * Fold a function over the graph. Note that each successive context received by the
+   * function will not contain vertices at the focus of previously received contexts.
+   * The first context will be an arbitrarily chosen context of this graph, but the
+   * next context will be arbitrarily chosen from a graph with the first context removed,
+   * and so on.
    * @group foldmaps
    */
   def fold[C](u: C)(f: (Context[N,A,B], C) => C): C = {
     val Decomp(c, g) = decompAny
     c.map(x => f(x, g.fold(u)(f))) getOrElse u
   }
+
+  /**
+   * Fold a function over all the contexts in the graph. Each context received by the
+   * function will be an arbitrarily chosen context of this graph. Contrary to `fold`,
+   * this visits every node of the graph and gives you all incoming and outgoing adjacencies
+   * for each node.
+   * @group foldmaps
+   */
+  def foldAll[C](u: C)(f: (Context[N,A,B], C) => C): C =
+    rep.foldLeft(u) { case (acc, (v, ctx)) => f(ctx toContext v, acc) }
 
   /**
    * Map a function over the graph
@@ -428,7 +454,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     })
 
   /**
-   * Filter based on an edge property. Retains edges that match the property.
+   * The subgraph containing only edges that match the property
    * @group filters
    */
   def efilter(f: LEdge[N,B] => Boolean): Graph[N,A,B] =
@@ -440,11 +466,48 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     }
 
   /**
-   * Filter based on an edge label property. Retains edges whose labels match the property.
+   * The subgraph containing only edges whose labels match the property
    * @group filters
    */
   def elfilter(f: B => Boolean): Graph[N,A,B] =
     efilter { case LEdge(_,_,b) => f(b) }
+
+  /**
+   * Build a graph out of a partial map of the contexts in this graph.
+   * @group filters
+   */
+  def filterMap[C,D](f: Context[N,A,B] => Option[Context[N,C,D]]): Graph[N,C,D] =
+    fold(quiver.empty[N,C,D]) { (c, g) => f(c).fold(g)(g & _) }
+
+  /**
+   * The subgraph containing only labelled nodes that match the property
+   * @group filters
+   */
+  def labnfilter(p: LNode[N,A] => Boolean): Graph[N,A,B] =
+    removeNodes(labNodes.filter(!p(_)).map(_.vertex))
+
+  /**
+   * The subgraph containing only nodes that match the property
+   * @group filters
+   */
+  def nfilter(p: N => Boolean): Graph[N,A,B] =
+    labnfilter(n => p(n.vertex))
+
+  /**
+   * The subgraph containing only nodes whose labels match the property
+   * @group filters
+   */
+  def labfilter(p: A => Boolean): Graph[N,A,B] =
+    labnfilter(n => p(n.label))
+
+  /**
+   * The subgraph containing only the given nodes
+   * @group filters
+   */
+  def subgraph(vs: Seq[N]): Graph[N,A,B] = {
+    val s = vs.toSet
+    nfilter(s contains _)
+  }
 
   /**
    * Returns true if the given node is in the graph, otherwise false
