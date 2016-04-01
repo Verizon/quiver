@@ -47,21 +47,48 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   def map[C](f: A => C): GDecomp[N,C,B] = extend(x => f(x.label))
 
   /**
-   * Recursively decompose the graph, passing each decomposition to the given function, storing the results as labels.
-   * The resulting decomposition has the exact same structure as this one, just redecorated with new labels.
+   * Recursively decompose the graph, passing each decomposition to the given function,
+   * storing the results as labels. The resulting decomposition has the exact same structure as
+   * this one, just redecorated with new labels. This differs from `redecorate` in that calls to
+   * `f` see successively smaller subgraphs as each decomposition removes a node.
    */
   def extend[C](f: GDecomp[N,A,B] => C): GDecomp[N,C,B] =
     GDecomp(ctx.copy(label = f(this)),
             rest.decompAny.toGDecomp.map(_.extend(f).toGraph).getOrElse(empty))
+
+  /**
+   * Decompose the graph on each node in turn, and apply the given function on each such "rotation",
+   * storing the results as labels. The resulting decomposition has the exact same structure as
+   * this one, just redecorated with new labels. This differs from `extend` in that each call to `f`
+   * sees the entire graph from different perspectives.
+   */
+  def redecorate[C](f: GDecomp[N,A,B] => C): GDecomp[N,C,B] =
+    GDecomp(ctx.copy(label = f(this)),
+            rest.gmap { c => c.copy(label = f(rest.decomp(c.vertex).toGDecomp.get)) })
 }
 
 object GDecomp {
+  /*
+  // `GDecomp` is a comonad in at least two distinct ways.
+  // The one commented out here exposes the structure of recursive decompositions,
+  // and is given by `GDecomp.extend`. The other one is given by `redecorate`, and is
+  // the "all rotations" comonad. The latter seems the more useful one for most
+  // graph algorithms.
+
+  implicit def gDecompComonad[N,B]: Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] =
+  new Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] {
+    def copoint[A](as: GDecomp[N,A,B]) = as.label
+    def map[A,C](as: GDecomp[N,A,B])(f: A => C) = as map f
+    def cobind[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
+      as extend f
+  }*/
+
   implicit def gDecompComonad[N,B]: Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] =
     new Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] {
       def copoint[A](as: GDecomp[N,A,B]) = as.label
       def map[A,C](as: GDecomp[N,A,B])(f: A => C) = as map f
       def cobind[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
-        as extend f
+        as redecorate f
     }
 }
 
