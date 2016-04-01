@@ -16,6 +16,8 @@
 //: ----------------------------------------------------------------------------
 package quiver
 
+import scalaz.Comonad
+
 /**
  * The decomposition of a graph into a detached context focused on one node
  * and the rest of the graph.
@@ -26,6 +28,7 @@ case class Decomp[N,A,B](ctx: Option[Context[N,A,B]], rest: Graph[N,A,B]) {
   def addPred(node: LNode[N,A], edge: B): Decomp[N,A,B] =
     ctx.map(x => GDecomp(x, rest).addPred(node, edge).toDecomp).getOrElse(this)
   def toGraph: Graph[N,A,B] = ctx.foldLeft(rest)(_ & _)
+  def toGDecomp: Option[GDecomp[N,A,B]] = ctx.map(c => GDecomp(c, rest))
 }
 
 /** The same as `Decomp`, only more sure of itself */
@@ -38,6 +41,16 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   def toGraph: Graph[N,A,B] = rest & ctx
 }
 
+object GDecomp {
+  implicit def gDecompComonad[N,B]: Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] =
+    new Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] {
+      def copoint[A](as: GDecomp[N,A,B]) = as.ctx.label
+      def map[A,C](as: GDecomp[N,A,B])(f: A => C) = cobind(as)(f compose copoint)
+      def cobind[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
+        GDecomp(as.ctx.copy(label = f(as)),
+                as.rest.decompAny.toGDecomp.map(extend(_)(f).toGraph).getOrElse(empty))
+    }
+}
 
 /**
  * The decomposition of a graph into two detached

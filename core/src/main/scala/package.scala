@@ -106,6 +106,18 @@ package object quiver {
       Order[Vector[LEdge[N,B]]].order(a.labEdges.sorted, b.labEdges.sorted)
     }
 
+  implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] =
+    Order.order { (a, b) =>
+      import scalaz.std.vector._
+      import scalaz.std.tuple._
+      N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label) |+| Order[Adj[N,B]].order(a.inAdj, b.inAdj) |+| Order[Adj[N,B]].order(a.outAdj, b.outAdj)
+    }
+
+  implicit def gdecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
+    Order.order { (a, b) =>
+      contextOrder[N,A,B].order(a.ctx, b.ctx) |+| graphOrder[N,A,B].order(a.rest, b.rest)
+    }
+
   /**
    * An empty graph
    * @group creation

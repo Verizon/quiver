@@ -401,7 +401,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * @group projection
    */
   def contextGraph: Graph[N,Context[N,A,B],B] =
-    gmap { c => c.copy(label = c) }
+    redecorate(identity)
 
   /**
    * Fold a function over the graph. Note that each successive context received by the
@@ -432,6 +432,13 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def gmap[C,D](f: Context[N,A,B] => Context[N,C,D]): Graph[N,C,D] =
     Graph(rep.map { case (k, v) => k -> f(v.toContext(k)).toGrContext })
+
+  /**
+   * Map a function over the contexts of this graph, and put the results in the labels.
+   * @group foldmaps
+   */
+  def redecorate[C](f: Context[N,A,B] => C): Graph[N,C,B] =
+    gmap { c => c.copy(label = f(c)) }
 
   /**
    * Map a function over the node labels in the graph

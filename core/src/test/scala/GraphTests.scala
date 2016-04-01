@@ -20,6 +20,7 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 import scalaz._
 import Scalaz._
+import scalaz.scalacheck.ScalazProperties._
 
 object GraphTests extends Properties("Graph") {
   type N = Byte
@@ -159,4 +160,8 @@ object GraphTests extends Properties("Graph") {
       }.isDefined)
       s"Found ${g.leaves} expected ${leaves}" |: g.leaves === leaves
     }
+
+  import GDecomp._
+
+  property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
 }
