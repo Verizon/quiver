@@ -39,16 +39,29 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
     GDecomp(Context(Vector(), node.vertex, node.label, Vector(edge -> ctx.vertex)), rest & ctx)
   def toDecomp: Decomp[N,A,B] = Decomp(Some(ctx), rest)
   def toGraph: Graph[N,A,B] = rest & ctx
+
+  /** Get the label of the node under focus */
+  def label: A = ctx.label
+
+  /** Map over the labels in this decomposition */
+  def map[C](f: A => C): GDecomp[N,C,B] = extend(x => f(x.label))
+
+  /**
+   * Recursively decompose the graph, passing each decomposition to the given function, storing the results as labels.
+   * The resulting decomposition has the exact same structure as this one, just redecorated with new labels.
+   */
+  def extend[C](f: GDecomp[N,A,B] => C): GDecomp[N,C,B] =
+    GDecomp(ctx.copy(label = f(this)),
+            rest.decompAny.toGDecomp.map(_.extend(f).toGraph).getOrElse(empty))
 }
 
 object GDecomp {
   implicit def gDecompComonad[N,B]: Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] =
     new Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] {
-      def copoint[A](as: GDecomp[N,A,B]) = as.ctx.label
-      def map[A,C](as: GDecomp[N,A,B])(f: A => C) = cobind(as)(f compose copoint)
+      def copoint[A](as: GDecomp[N,A,B]) = as.label
+      def map[A,C](as: GDecomp[N,A,B])(f: A => C) = as map f
       def cobind[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
-        GDecomp(as.ctx.copy(label = f(as)),
-                as.rest.decompAny.toGDecomp.map(extend(_)(f).toGraph).getOrElse(empty))
+        as extend f
     }
 }
 
