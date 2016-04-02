@@ -163,5 +163,5 @@ object GraphTests extends Properties("Graph") {
 
   import GDecomp._
 
-  property("GDecomp is a lawful comonad (via `redecorate`)") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
+  property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
 }

@@ -19,7 +19,7 @@ package quiver
 import scalaz.Comonad
 
 /**
- * The decomposition of a graph into a detached context focused on one node
+ * The decomposition of a graph into possibly a detached context focused on one node,
  * and the rest of the graph.
  */
 case class Decomp[N,A,B](ctx: Option[Context[N,A,B]], rest: Graph[N,A,B]) {
@@ -31,7 +31,10 @@ case class Decomp[N,A,B](ctx: Option[Context[N,A,B]], rest: Graph[N,A,B]) {
   def toGDecomp: Option[GDecomp[N,A,B]] = ctx.map(c => GDecomp(c, rest))
 }
 
-/** The same as `Decomp`, only more sure of itself */
+/**
+ * The decomposition of a graph into a detached context focused on one node,
+ * and the rest of the graph.
+ */
 case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   def addSucc(node: LNode[N,A], edge: B): GDecomp[N,A,B] =
     GDecomp(Context(Vector(edge -> ctx.vertex), node.vertex, node.label, Vector()), rest & ctx)
@@ -65,6 +68,50 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   def redecorate[C](f: GDecomp[N,A,B] => C): GDecomp[N,C,B] =
     GDecomp(ctx.copy(label = f(this)),
             rest.gmap { c => c.copy(label = f(rest.decomp(c.vertex).toGDecomp.get)) })
+
+  /**
+   * Decompose the graph on the nodes returned by `f`.
+   * _O(n)_ in the degree of the focused node.
+   */
+  def move(f: Context[N,A,B] => Vector[N]): Vector[GDecomp[N,A,B]] =
+    for {
+      n <- f(ctx)
+      d <- rest.decomp(n).toGDecomp
+    } yield d
+
+  /**
+   * Decompose the graph on successors of the focused node, following
+   * outgoing edges labeled with `b`
+   * _O(n)_ in the degree of the focused node.
+   */
+  def forward(b: B): Vector[GDecomp[N,A,B]] =
+    move(c => c.outs flatMap {
+      case (l, n) => if (l == b) Vector(n) else Vector()
+    })
+
+  /**
+   * Decompose the graph on predecessors of the focused node, following
+   * incoming edges labeled with `b`
+   * _O(n)_ in the degree of the focused node.
+   */
+  def back(b: B): Vector[GDecomp[N,A,B]] =
+    move(c => c.ins flatMap {
+      case (l, n) => if (l == b) Vector(n) else Vector()
+    })
+
+  /**
+   * Decompose the graph on predecessors of the focused node
+   * _O(n)_ in the outdegree of the focused node.
+   */
+  def ins: Vector[GDecomp[N,A,B]] =
+    move(_.ins.map(_._2))
+
+  /**
+   * Decompose the graph on successors of the focused node
+   * _O(n)_ in the indegree of the focused node.
+   */
+  def outs: Vector[GDecomp[N,A,B]] =
+    move(_.outs.map(_._2))
 }
 
 object GDecomp {
