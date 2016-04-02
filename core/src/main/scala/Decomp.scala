@@ -71,7 +71,7 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
 
   /**
    * Decompose the graph on the nodes returned by `f`.
-   * _O(n)_ in the degree of the focused node.
+   * ''O(n)'' in the degree of the focused node.
    */
   def move(f: Context[N,A,B] => Vector[N]): Vector[GDecomp[N,A,B]] =
     for {
@@ -82,7 +82,7 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   /**
    * Decompose the graph on successors of the focused node, following
    * outgoing edges labeled with `b`
-   * _O(n)_ in the degree of the focused node.
+   * ''O(n)'' in the degree of the focused node.
    */
   def forward(b: B): Vector[GDecomp[N,A,B]] =
     move(c => c.outs flatMap {
@@ -92,7 +92,7 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
   /**
    * Decompose the graph on predecessors of the focused node, following
    * incoming edges labeled with `b`
-   * _O(n)_ in the degree of the focused node.
+   * ''O(n)'' in the degree of the focused node.
    */
   def back(b: B): Vector[GDecomp[N,A,B]] =
     move(c => c.ins flatMap {
@@ -101,14 +101,14 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
 
   /**
    * Decompose the graph on predecessors of the focused node
-   * _O(n)_ in the outdegree of the focused node.
+   * ''O(n)'' in the outdegree of the focused node.
    */
   def ins: Vector[GDecomp[N,A,B]] =
     move(_.ins.map(_._2))
 
   /**
    * Decompose the graph on successors of the focused node
-   * _O(n)_ in the indegree of the focused node.
+   * ''O(n)'' in the indegree of the focused node.
    */
   def outs: Vector[GDecomp[N,A,B]] =
     move(_.outs.map(_._2))
