@@ -1,5 +1,5 @@
 name: Quiver
-highlighter: pygments
+highlighter: rouge
 baseurl: "/"
 github:
   domain: "https://github.com"
