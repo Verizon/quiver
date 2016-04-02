@@ -575,7 +575,24 @@ if present, and the graph with those nodes removed.</p>
     </span>
       <p class="shortcomment cmt">Find the context for the given node.</p><div class="fullcomment"><div class="comment cmt"><p>Find the context for the given node. Causes an error if the node is not
 present in the graph.</p></div></div>
-    </li><li name="quiver.Graph#contexts" visbl="pub" data-isabs="false" fullComment="no" group="projection">
+    </li><li name="quiver.Graph#contextGraph" visbl="pub" data-isabs="false" fullComment="no" group="projection">
+      <a id="contextGraph:quiver.Graph[N,quiver.Context[N,A,B],B]"></a>
+      <a id="contextGraph:Graph[N,Context[N,A,B],B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contextGraph</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>], <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@contextGraph:quiver.Graph[N,quiver.Context[N,A,B],B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Get all the contexts of this graph, as a graph.</p>
+    </li><li name="quiver.Graph#contexts" visbl="pub" data-isabs="false" fullComment="yes" group="projection">
       <a id="contexts:Vector[quiver.Context[N,A,B]]"></a>
       <a id="contexts:Vector[Context[N,A,B]]"></a>
       <h4 class="signature">
@@ -591,7 +608,9 @@ present in the graph.</p></div></div>
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Get all the contexts in the graph, as a vector</p>
+      <p class="shortcomment cmt">Get all the contexts in the graph, as a vector.</p><div class="fullcomment"><div class="comment cmt"><p>Get all the contexts in the graph, as a vector. Note that the resulting contexts may
+overlap, in the sense that successive contexts in the result will contain vertices
+from previous contexts as well.</p></div></div>
     </li><li name="quiver.Graph#countNodes" visbl="pub" data-isabs="false" fullComment="no" group="projection">
       <a id="countNodes:Int"></a>
       <a id="countNodes:Int"></a>
@@ -1032,7 +1051,7 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
       </a>
     </span>
       <p class="shortcomment cmt">Find an edge between two nodes</p>
-    </li><li name="quiver.Graph#fold" visbl="pub" data-isabs="false" fullComment="no" group="foldmaps">
+    </li><li name="quiver.Graph#fold" visbl="pub" data-isabs="false" fullComment="yes" group="foldmaps">
       <a id="fold[C](u:C)(f:(quiver.Context[N,A,B],C)=&gt;C):C"></a>
       <a id="fold[C](C)((Context[N,A,B],C)⇒C):C"></a>
       <h4 class="signature">
@@ -1048,7 +1067,31 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Fold a function over the graph</p>
+      <p class="shortcomment cmt">Fold a function over the graph.</p><div class="fullcomment"><div class="comment cmt"><p>Fold a function over the graph. Note that each successive context received by the
+function will not contain vertices at the focus of previously received contexts.
+The first context will be an arbitrarily chosen context of this graph, but the
+next context will be arbitrarily chosen from a graph with the first context removed,
+and so on.</p></div></div>
+    </li><li name="quiver.Graph#foldAll" visbl="pub" data-isabs="false" fullComment="yes" group="foldmaps">
+      <a id="foldAll[C](u:C)(f:(quiver.Context[N,A,B],C)=&gt;C):C"></a>
+      <a id="foldAll[C](C)((Context[N,A,B],C)⇒C):C"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">foldAll</span><span class="tparams">[<span name="C">C</span>]</span><span class="params">(<span name="u">u: <span class="extype" name="quiver.Graph.foldAll.C">C</span></span>)</span><span class="params">(<span name="f">f: (<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>], <span class="extype" name="quiver.Graph.foldAll.C">C</span>) ⇒ <span class="extype" name="quiver.Graph.foldAll.C">C</span></span>)</span><span class="result">: <span class="extype" name="quiver.Graph.foldAll.C">C</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@foldAll[C](u:C)(f:(quiver.Context[N,A,B],C)=&gt;C):C" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Fold a function over all the contexts in the graph.</p><div class="fullcomment"><div class="comment cmt"><p>Fold a function over all the contexts in the graph. Each context received by the
+function will be an arbitrarily chosen context of this graph. Contrary to <code>fold</code>,
+this visits every node of the graph and gives you all incoming and outgoing adjacencies
+for each node.</p></div></div>
     </li><li name="scala.Predef.StringFormat#formatted" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="formatted(fmtstr:String):String"></a>
       <a id="formatted(String):String"></a>
@@ -1685,6 +1728,23 @@ An ending node <code>n</code> in graph <code>g</code> has <code>f(g,n)</code> co
       </a>
     </span>
       <p class="shortcomment cmt">Finds all the reachable nodes from a given node, using DFS</p>
+    </li><li name="quiver.Graph#redecorate" visbl="pub" data-isabs="false" fullComment="no" group="foldmaps">
+      <a id="redecorate[C](f:quiver.Context[N,A,B]=&gt;C):quiver.Graph[N,C,B]"></a>
+      <a id="redecorate[C]((Context[N,A,B])⇒C):Graph[N,C,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">redecorate</span><span class="tparams">[<span name="C">C</span>]</span><span class="params">(<span name="f">f: (<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]) ⇒ <span class="extype" name="quiver.Graph.redecorate.C">C</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.Graph">Graph</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.redecorate.C">C</span>, <span class="extype" name="quiver.Graph.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@redecorate[C](f:quiver.Context[N,A,B]=&gt;C):quiver.Graph[N,C,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Map a function over the contexts of this graph, and put the results in the labels.</p>
     </li><li name="quiver.Graph#removeEdge" visbl="pub" data-isabs="false" fullComment="no" group="mutation">
       <a id="removeEdge(e:quiver.Edge[N]):quiver.Graph[N,A,B]"></a>
       <a id="removeEdge(Edge[N]):Graph[N,A,B]"></a>
@@ -1857,7 +1917,7 @@ return the given <code>failover</code> graph.</p></div></div>
     </span>
       <p class="shortcomment cmt">Add multiple edges to this graph, ignoring edges whose source and target nodes
 don't already exist in the graph.</p>
-    </li><li name="quiver.Graph#select" visbl="pub" data-isabs="false" fullComment="no" group="projection">
+    </li><li name="quiver.Graph#select" visbl="pub" data-isabs="false" fullComment="yes" group="projection">
       <a id="select(p:quiver.Context[N,A,B]=&gt;Boolean):Vector[quiver.Context[N,A,B]]"></a>
       <a id="select((Context[N,A,B])⇒Boolean):Vector[Context[N,A,B]]"></a>
       <h4 class="signature">
@@ -1873,7 +1933,28 @@ don't already exist in the graph.</p>
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Get all the contexts for which the given property is true</p>
+      <p class="shortcomment cmt">Project out (non-overlapping) contexts for which the given property is true.</p><div class="fullcomment"><div class="comment cmt"><p>Project out (non-overlapping) contexts for which the given property is true.
+Note that the contexts will not overlap, in the sense that successive contexts in
+the result will not contain the vertices at the focus of previous contexts.</p></div></div>
+    </li><li name="quiver.Graph#selectAll" visbl="pub" data-isabs="false" fullComment="yes" group="projection">
+      <a id="selectAll(p:quiver.Context[N,A,B]=&gt;Boolean):Vector[quiver.Context[N,A,B]]"></a>
+      <a id="selectAll((Context[N,A,B])⇒Boolean):Vector[Context[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">selectAll</span><span class="params">(<span name="p">p: (<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.Graph.N">N</span>, <span class="extype" name="quiver.Graph.A">A</span>, <span class="extype" name="quiver.Graph.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.Graph@selectAll(p:quiver.Context[N,A,B]=&gt;Boolean):Vector[quiver.Context[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Get all the contexts for which the given property is true.</p><div class="fullcomment"><div class="comment cmt"><p>Get all the contexts for which the given property is true. Note that the resulting
+contexts may overlap, in the sense that successive contexts in the result may contain
+vertices from previous contexts.</p></div></div>
     </li><li name="quiver.Graph#subgraph" visbl="pub" data-isabs="false" fullComment="no" group="filters">
       <a id="subgraph(vs:Seq[N]):quiver.Graph[N,A,B]"></a>
       <a id="subgraph(Seq[N]):Graph[N,A,B]"></a>

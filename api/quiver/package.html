@@ -156,7 +156,7 @@ contexts focused on distinguished &quot;first&quot; and &quot;last&quot; nodes.<
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">The decomposition of a graph into a detached context focused on one node
+      <p class="shortcomment cmt">The decomposition of a graph into possibly a detached context focused on one node,
 and the rest of the graph.</p>
     </li><li name="quiver.Edge" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Edge[N]extendsProductwithSerializable"></a>
@@ -191,7 +191,8 @@ and the rest of the graph.</p>
         <img src="../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">The same as <code>Decomp</code>, only more sure of itself</p>
+      <p class="shortcomment cmt">The decomposition of a graph into a detached context focused on one node,
+and the rest of the graph.</p>
     </li><li name="quiver.GrContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="GrContext[N,A,B]extendsProductwithSerializable"></a>
       <a id="GrContext[N,A,B]:GrContext[N,A,B]"></a>
@@ -387,7 +388,24 @@ and the rest of the graph.</p>
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="quiver.GraphCodecs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="quiver.GDecomp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GDecomp"></a>
+      <a id="GDecomp:GDecomp"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="GDecomp$.html"><span class="name">GDecomp</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@GDecomp" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="quiver.GraphCodecs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="GraphCodecs"></a>
       <a id="GraphCodecs:GraphCodecs"></a>
       <h4 class="signature">
@@ -525,6 +543,23 @@ from all the stars.</p>
       </a>
     </span>
       
+    </li><li name="quiver#contextOrder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="contextOrder[N,A,B](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A],implicitB:scalaz.Order[B]):scalaz.Order[quiver.Context[N,A,B]]"></a>
+      <a id="contextOrder[N,A,B](Order[N],Order[A],Order[B]):Order[Context[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contextOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="N">N: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.contextOrder.N">N</span>]</span>, <span name="A">A: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.contextOrder.A">A</span>]</span>, <span name="B">B: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.contextOrder.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.contextOrder.N">N</span>, <span class="extype" name="quiver.contextOrder.A">A</span>, <span class="extype" name="quiver.contextOrder.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@contextOrder[N,A,B](implicitN:scalaz.Order[N],implicitA:scalaz.Order[A],implicitB:scalaz.Order[B]):scalaz.Order[quiver.Context[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="quiver#cycle" visbl="pub" data-isabs="false" fullComment="no" group="creation">
       <a id="cycle[N](vs:Seq[N]):quiver.Graph[N,Unit,Unit]"></a>
       <a id="cycle[N](Seq[N]):Graph[N,Unit,Unit]"></a>
@@ -593,6 +628,23 @@ from all the stars.</p>
       </a>
     </span>
       <p class="shortcomment cmt">Turn an adjacency list of labeled edges into an intmap of sets of labels</p>
+    </li><li name="quiver#gdecompOrder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="gdecompOrder[N,A,B](implicitevidence$1:scalaz.Order[N],implicitevidence$2:scalaz.Order[A],implicitevidence$3:scalaz.Order[B]):scalaz.Order[quiver.GDecomp[N,A,B]]"></a>
+      <a id="gdecompOrder[N,A,B](Order[N],Order[A],Order[B]):Order[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">gdecompOrder</span><span class="tparams">[<span name="N">N</span>, <span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.gdecompOrder.N">N</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.gdecompOrder.A">A</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scalaz.Order">Order</span>[<span class="extype" name="quiver.gdecompOrder.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="scalaz.Order">Order</span>[<a href="GDecomp.html" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.gdecompOrder.N">N</span>, <span class="extype" name="quiver.gdecompOrder.A">A</span>, <span class="extype" name="quiver.gdecompOrder.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.package@gdecompOrder[N,A,B](implicitevidence$1:scalaz.Order[N],implicitevidence$2:scalaz.Order[A],implicitevidence$3:scalaz.Order[B]):scalaz.Order[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="quiver#getLPath" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="getLPath[N,A](v:N,t:quiver.package.LRTree[N,A]):Option[quiver.package.LPath[N,A]]"></a>
       <a id="getLPath[N,A](N,LRTree[N,A]):Option[LPath[N,A]]"></a>

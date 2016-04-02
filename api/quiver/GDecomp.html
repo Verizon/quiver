@@ -28,10 +28,12 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img alt="Class" src="../lib/class_big.png" />
+        <a href="GDecomp$.html" title="See companion object"><img alt="Class/Object" src="../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="package.html" class="extype" name="quiver">quiver</a></p>
-        <h1>GDecomp</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="package.html" class="extype" name="quiver">package quiver</a>
+        <h1><a href="GDecomp$.html" title="See companion object">GDecomp</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="GDecomp$.html" title="See companion object">object GDecomp</a>
+            | <a href="package.html" class="extype" name="quiver">package quiver</a>
           </div></span></h3><span class="permalink">
       <a href="../index.html#quiver.GDecomp" title="Permalink" target="_top">
         <img src="../lib/permalink.png" alt="Permalink" />
@@ -49,7 +51,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The same as <code>Decomp</code>, only more sure of itself</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/oncue/quiver/blob/master/core/src/main/scala/Decomp.scala" target="_blank">Decomp.scala</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The decomposition of a graph into a detached context focused on one node,
+and the rest of the graph.
+</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/oncue/quiver/blob/master/core/src/main/scala/Decomp.scala" target="_blank">Decomp.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -266,6 +270,25 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="quiver.GDecomp#back" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="back(b:B):Vector[quiver.GDecomp[N,A,B]]"></a>
+      <a id="back(B):Vector[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">back</span><span class="params">(<span name="b">b: <span class="extype" name="quiver.GDecomp.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@back(b:B):Vector[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on predecessors of the focused node, following
+incoming edges labeled with <code>b</code>
+_O(n)_ in the degree of the focused node.</p>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -407,6 +430,28 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="quiver.GDecomp#extend" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="extend[C](f:quiver.GDecomp[N,A,B]=&gt;C):quiver.GDecomp[N,C,B]"></a>
+      <a id="extend[C]((GDecomp[N,A,B])⇒C):GDecomp[N,C,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">extend</span><span class="tparams">[<span name="C">C</span>]</span><span class="params">(<span name="f">f: (<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]) ⇒ <span class="extype" name="quiver.GDecomp.extend.C">C</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.extend.C">C</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@extend[C](f:quiver.GDecomp[N,A,B]=&gt;C):quiver.GDecomp[N,C,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Recursively decompose the graph, passing each decomposition to the given function,
+storing the results as labels.</p><div class="fullcomment"><div class="comment cmt"><p>Recursively decompose the graph, passing each decomposition to the given function,
+storing the results as labels. The resulting decomposition has the exact same structure as
+this one, just redecorated with new labels. This differs from <code>redecorate</code> in that calls to
+<code>f</code> see successively smaller subgraphs as each decomposition removes a node.
+</p></div></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -454,6 +499,25 @@
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="quiver.GDecomp#forward" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="forward(b:B):Vector[quiver.GDecomp[N,A,B]]"></a>
+      <a id="forward(B):Vector[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">forward</span><span class="params">(<span name="b">b: <span class="extype" name="quiver.GDecomp.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@forward(b:B):Vector[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on successors of the focused node, following
+outgoing edges labeled with <code>b</code>
+_O(n)_ in the degree of the focused node.</p>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -471,6 +535,24 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="quiver.GDecomp#ins" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ins:Vector[quiver.GDecomp[N,A,B]]"></a>
+      <a id="ins:Vector[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ins</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@ins:Vector[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on predecessors of the focused node
+_O(n)_ in the outdegree of the focused node.</p>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -488,6 +570,59 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="quiver.GDecomp#label" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="label:A"></a>
+      <a id="label:A"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">label</span><span class="result">: <span class="extype" name="quiver.GDecomp.A">A</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@label:A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Get the label of the node under focus</p>
+    </li><li name="quiver.GDecomp#map" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="map[C](f:A=&gt;C):quiver.GDecomp[N,C,B]"></a>
+      <a id="map[C]((A)⇒C):GDecomp[N,C,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="C">C</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="quiver.GDecomp.A">A</span>) ⇒ <span class="extype" name="quiver.GDecomp.map.C">C</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.map.C">C</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@map[C](f:A=&gt;C):quiver.GDecomp[N,C,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Map over the labels in this decomposition</p>
+    </li><li name="quiver.GDecomp#move" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="move(f:quiver.Context[N,A,B]=&gt;Vector[N]):Vector[quiver.GDecomp[N,A,B]]"></a>
+      <a id="move((Context[N,A,B])⇒Vector[N]):Vector[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">move</span><span class="params">(<span name="f">f: (<a href="Context.html" class="extype" name="quiver.Context">Context</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]) ⇒ <span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="quiver.GDecomp.N">N</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@move(f:quiver.Context[N,A,B]=&gt;Vector[N]):Vector[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on the nodes returned by <code>f</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Decompose the graph on the nodes returned by <code>f</code>.
+_O(n)_ in the degree of the focused node.
+</p></div></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -539,6 +674,46 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="quiver.GDecomp#outs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="outs:Vector[quiver.GDecomp[N,A,B]]"></a>
+      <a id="outs:Vector[GDecomp[N,A,B]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">outs</span><span class="result">: <span class="extype" name="scala.Vector">Vector</span>[<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@outs:Vector[quiver.GDecomp[N,A,B]]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on successors of the focused node
+_O(n)_ in the indegree of the focused node.</p>
+    </li><li name="quiver.GDecomp#redecorate" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="redecorate[C](f:quiver.GDecomp[N,A,B]=&gt;C):quiver.GDecomp[N,C,B]"></a>
+      <a id="redecorate[C]((GDecomp[N,A,B])⇒C):GDecomp[N,C,B]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">redecorate</span><span class="tparams">[<span name="C">C</span>]</span><span class="params">(<span name="f">f: (<a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.A">A</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]) ⇒ <span class="extype" name="quiver.GDecomp.redecorate.C">C</span></span>)</span><span class="result">: <a href="" class="extype" name="quiver.GDecomp">GDecomp</a>[<span class="extype" name="quiver.GDecomp.N">N</span>, <span class="extype" name="quiver.GDecomp.redecorate.C">C</span>, <span class="extype" name="quiver.GDecomp.B">B</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#quiver.GDecomp@redecorate[C](f:quiver.GDecomp[N,A,B]=&gt;C):quiver.GDecomp[N,C,B]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Decompose the graph on each node in turn, and apply the given function on each such &quot;rotation&quot;,
+storing the results as labels.</p><div class="fullcomment"><div class="comment cmt"><p>Decompose the graph on each node in turn, and apply the given function on each such &quot;rotation&quot;,
+storing the results as labels. The resulting decomposition has the exact same structure as
+this one, just redecorated with new labels. This differs from <code>extend</code> in that each call to <code>f</code>
+sees the entire graph from different perspectives.
+</p></div></div>
     </li><li name="quiver.GDecomp#rest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="rest:quiver.Graph[N,A,B]"></a>
       <a id="rest:Graph[N,A,B]"></a>
