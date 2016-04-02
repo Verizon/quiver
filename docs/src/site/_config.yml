@@ -1,5 +1,4 @@
 name: Quiver
-markdown: redcarpet
 highlighter: pygments
 baseurl: "/quiver/"
 github:
