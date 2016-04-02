@@ -107,7 +107,7 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
     move(_.ins.map(_._2))
 
   /**
-   * Decompose the graph on successors of the focused node
+   * Decompose the graph on successors of the focused node.
    * ''O(n)'' in the indegree of the focused node.
    */
   def outs: Vector[GDecomp[N,A,B]] =
