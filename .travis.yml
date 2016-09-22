@@ -19,7 +19,7 @@ script:
       if [ $RELEASE_ON_PUSH = 'false' ]; then
         sbt validate
       else
-        sbt 'release with-defaults'
+        sbt ++$TRAVIS_SCALA_VERSION 'release with-defaults'
       fi
     else
       sbt validate
