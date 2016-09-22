@@ -1,7 +1,5 @@
 
-common.releaseSettings
-
-organization in Global := "oncue.quiver"
+organization in Global := "io.verizon.quiver"
 
 scalaVersion in Global := crossScalaVersions.value.head
 
@@ -38,3 +36,34 @@ publishArtifact in (Compile, packageBin) := false
 publish := ()
 
 publishLocal := ()
+
+//////////////////// needed for publishing to central ////////////////////
+
+sonatypeProfileName in Global := "io.verizon"
+
+pomExtra in Global := {
+  <developers>
+    <developer>
+      <id>timperrett</id>
+      <name>Timothy Perrett</name>
+      <url>http://github.com/timperrett</url>
+    </developer>
+    <developer>
+      <id>runarorama</id>
+      <name>Runar Bjarnason</name>
+      <url>http://github.com/runarorama</url>
+    </developer>
+    <developer>
+      <id>stew</id>
+      <name>Stew O'Connor</name>
+      <url>http://github.com/stew</url>
+    </developer>
+  </developers>
+}
+
+licenses in Global := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+
+homepage in Global := Some(url("http://verizon.github.io/quiver/"))
+
+scmInfo in Global := Some(ScmInfo(url("https://github.com/verizon/quiver"),
+                                      "git@github.com:verizon/quiver.git"))
