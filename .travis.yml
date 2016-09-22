@@ -10,18 +10,29 @@ branches:
   only:
   - master
 
+before_script:
+  - "if [ $TRAVIS_PULL_REQUEST = 'false' ]; then git checkout -qf $TRAVIS_BRANCH; fi"
+
 script:
-  - ./travis-build
+  - |
+    if [ $TRAVIS_PULL_REQUEST = 'false' ]; then
+      if [ $RELEASE_ON_PUSH = 'false' ]; then
+        sbt validate
+      else
+        sbt 'release with-defaults'
+      fi
+    else
+      sbt validate
+    fi
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-
-env:
-  global:
-    - secure: "qazTydvIef0f024xysveNsBZZB8WMnGw/iF7+IDiL0AuWn79EvsyCEgZb6Kktgs1egn6bsObSFBH7ECiuiLmjtSkbPwFN2RheyZQpRlpr5bzG2BBc+EeH+T88f5BwK70HGVnT/LielJHjpRYryH/QA9gcUjko8OIF0UrtNEfEsfp8xpeJxlHkF5ULueUGKtBvKWCQWwyVU8FW/2N7zpSv2JOAsjr3lPcMaQTo/Y0hMp/XHwB2oAbnO1pg8Yw1dNiUFCQxpXwRxoROhN0dQpP8Ns6GTUEF22CMFhr06lbj+G0aQ3dvV2FTj4QwjcBgqqHgYdMHr2QaMmkywJ0IFpm7G3/wQPEMwNS2D1lSufc9DqPlV92ddMm5u2+lXzVO/4XqR4eBOBk2U+JnUtIogE4fJZ0Y+CV3p7AsJ7LqlJ8R+RGS60BlETa/JjRx/fkDuUzRPFCmeseI7A3b9QGscd9mUhG0YzZZwcDfnTf9/FkX7N222Im8B8oW8zMV7URDYn7MQxqIDZ7SJxkGskgGiknoqkq1dkwnhjz83yZO7HJ0cQMUgMvncVCC06Me+sh7W6g6T8YUY0PvBD7V+YJgjrCjORz9OX/Mpuz6pSMLoon1LJuw9HYXpeLckVkuTJ1rFCFPAGpF3a3CH/LER06e8/cAxbPNftcl7tGfBrsnjVdjQk="
-    - secure: "nfXE3X5piZB1DX7mSiVmHFND3kp0ZFdYSFoPBNZltgUHlyGK9LDRDvx0IiQGt2yluBPoRseAysePUoJXMcfIXz4FLJfqqa3pTwy6mgFmOBTp+3t4wtpws5yA+v254mFgB64WzDMxIfCmqWc/I+/FV2lolvhYPrxu+h/2Yi5L1yWGIXhk7G4H/biuveD/jhRZA9Yt/BwJXzWkzFRg/QaEizlu/OiFnABXf8hG0gYUD0HzaXmQ3wIPiHMhiqAMpcYVkPikgaookHke1DloCwkWb6GCjfZMR9bJQWESsaJ7tkE5iat6NQiVQHCqdWsUH+T0kE5J8kUj4nzdbe+1NmVKH1QjFLK6XEQ0SjRtIJs71yOwrtWWt11dwW5T6DQGYmzFjW4kcPhUF0hZzS7JG2NgdK+Wdc2syC9jxn3aGoqYRryUElQgekeqn9mgvwKCoAqfL22I6iyvnmpl9PP6rCmzTUESfQahIWuOFfDDeevhkZ4xr1/RMCR4n+ZrB0gloQrcdd52qtLIQbS+g04ziuLs9mmczO9aOa+bN+WnPoche88n4AS0VyjgWUZ96NwVTP+xm+mbb8jA7rcKT5bs34BRP8KYtvoknnHnJKxLwYUHzUC4spPFThfTmUBk6NSAhAzgb7CgX8rshVykiuO3LtFM8TGwcHIq3Pk71aF98jPM3ek="
-    - secure: "YXgGai8QpWOoSf9horzQoYBSd6QL+aZmw6gTVxIru+/JRlt4+UFeErdkw9LjAfUEzc32qhnWGKrOo3Dkk0seOSZd695K/MrlK8ef18Ee87/QT2nZ4GjuE+r/NW6ud/EjsQVG50eEepx81mdu2nX+79Owc2WZ1LahlGHT4HJVP2bc3/heDhd3/Fjt8ooHqW7jvM09jtXda9JKNbkQzbo/L9C5wBrxywrPr5xU7SFDlt8PQZgDLW5s0/sG1mMJTbRrxfPihehe4KQlMnMm35lCUg/cac8rYKiw+OHiTZlmnrbl69dmJDjqDGeoOZvhGkhxqdFjhKb205lUxvQovZGgaA6HOcXsX8X1JjJ83rf5T92cLft08nA4oqhNQLr/u4Cbaxn/msMSBjWjmR+uaEg55QM+aezLzwM92+z7QlRTIxk5bSpi4MFmT1nMD/Kf7WlbJ6y2ktnb2h2qSVWuJqqGZ9qdsUlbtTmj72BKn8VZgakDNjOWJSgxnybmUPWFv/RQ6RZ+nBMS4SEz0QGQsvpbyibG/Na4gj5VmVem7AiGGMg0tn3L50uZgz2W6FyZ58sTCxG91mV2GCEc2czuILlTF1LfrHXsaRRihPb6VKpMBj7woleZZzRMPvBYdlbzZnWQbWKRneqpFy1ohPUChdwR8mK+2+vZZUNPCh9if9XZG3o="
 
 cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+
+env:
+  global:
+    - secure: "E7d1nSnfbp7A09/GVWhMN+BgSOhML5NRAOAIwooW4h1MI6MUMK881TJOz0/B3HhubsbUKWT1IpQ6OqNsAS2N7cUvG5+cjdpaRrp0z1i2RBARKmwbF3MsiRWV8M0aEUIBRNHe12wktFZMVHR55FAVO942Z1kqhQyW8Tn1gooBgzc="
+    - secure: "hdSfTIepwVaQLuI+MRLOZmg2w1gwgIHd9PzISPJig8gInylPI+HH4SZ+I+pmY1Iz6bQCOLo/n3PZjlXFmj7m4CTd2oCpvuISNB3PvL4Vyl3EbwXm0ZGX/yE4teNpO54K/OjHa8Qi/8ZloCZdGuUretfXty29NqFgmCrhh6CShGg="
