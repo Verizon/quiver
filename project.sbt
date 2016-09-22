@@ -31,15 +31,11 @@ lazy val docs = project.dependsOn(core, codecs)
 
 lazy val codecs = project.dependsOn(core % "test->test;compile->compile")
 
-publishArtifact in (Compile, packageBin) := false
-
-publish := ()
-
-publishLocal := ()
+enablePlugins(DisablePublishingPlugin)
 
 //////////////////// needed for publishing to central ////////////////////
 
-sonatypeProfileName in Global := "io.verizon"
+sonatypeProfileName := "io.verizon"
 
 pomExtra in Global := {
   <developers>
@@ -61,9 +57,9 @@ pomExtra in Global := {
   </developers>
 }
 
-licenses in Global := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
-homepage in Global := Some(url("http://verizon.github.io/quiver/"))
+homepage := Some(url("http://verizon.github.io/quiver/"))
 
-scmInfo in Global := Some(ScmInfo(url("https://github.com/verizon/quiver"),
-                                      "git@github.com:verizon/quiver.git"))
+scmInfo := Some(ScmInfo(url("https://github.com/verizon/quiver"),
+                            "git@github.com:verizon/quiver.git"))
