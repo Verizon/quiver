@@ -17,12 +17,12 @@ script:
   - |
     if [ $TRAVIS_PULL_REQUEST = 'false' ]; then
       if [ $RELEASE_ON_PUSH = 'false' ]; then
-        sbt validate
+        sbt test coverageReport
       else
         sbt ++$TRAVIS_SCALA_VERSION 'release with-defaults'
       fi
     else
-      sbt validate
+      sbt test coverageReport
     fi
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
@@ -32,7 +32,13 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
 
+after_success:
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+  - "bash <(curl -s https://codecov.io/bash) -r $TRAVIS_REPO_SLUG -t $CODECOV_TOKEN"
+
 env:
   global:
     - secure: "E7d1nSnfbp7A09/GVWhMN+BgSOhML5NRAOAIwooW4h1MI6MUMK881TJOz0/B3HhubsbUKWT1IpQ6OqNsAS2N7cUvG5+cjdpaRrp0z1i2RBARKmwbF3MsiRWV8M0aEUIBRNHe12wktFZMVHR55FAVO942Z1kqhQyW8Tn1gooBgzc="
     - secure: "hdSfTIepwVaQLuI+MRLOZmg2w1gwgIHd9PzISPJig8gInylPI+HH4SZ+I+pmY1Iz6bQCOLo/n3PZjlXFmj7m4CTd2oCpvuISNB3PvL4Vyl3EbwXm0ZGX/yE4teNpO54K/OjHa8Qi/8ZloCZdGuUretfXty29NqFgmCrhh6CShGg="
+    - secure: "mIM3iagGLxOvvjW5WE+whKw7e2iRXVn0AlLqXzlprUDH/a/yIsJZxrzQtX/tevzgSiUWZk0GFBq2FAGRZ8Eifbs5Dn/fxamj+e1/JX6/UPlcToP3v6ZTPlVOuNlyOxt0Qg+lPdOcRrXc4f9/7vHNXskvezuPRJv9FApHcSsVRP8="
