@@ -4,7 +4,7 @@ resolvers += Resolver.url(
     url("http://dl.bintray.com/content/tpolecat/sbt-plugin-releases"))(
         Resolver.ivyStylePatterns)
 
-addSbtPlugin("io.verizon.build" % "sbt-rig" % "1.1.5")
+addSbtPlugin("io.verizon.build" % "sbt-rig" % "1.1.10")
 
 // docs
 addSbtPlugin("com.typesafe.sbt"  % "sbt-site"    % "0.8.1")
