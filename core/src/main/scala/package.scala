@@ -145,7 +145,7 @@ package object quiver {
    * @group creation
    */
   def star(n: Int): Graph[Int,Unit,Unit] =
-    mkGraph(Range(0,n).map(LNode(_, ())), Range(1,n).map(v => LEdge(1,v,())))
+    mkGraph(Range(0,n).map(LNode(_, ())), Range(1,n).map(v => LEdge(0,v,())))
 
   /**
    * Create an `(n,k)`-banana tree, which is an undirected graph obtained by connecting one leaf
@@ -156,7 +156,7 @@ package object quiver {
   def banana(n: Int, k: Int): Graph[Int,Unit,Unit] =
     Range(0,n).map { n =>
       val j = n * k + 1
-      star(k).vmap(_ + j).addNode(LNode(0, ())).addEdge(LEdge(0, n * k + 1, ()))
+      star(k).vmap(_ + j).addNode(LNode(0, ())).addEdge(LEdge(0, n * k + 2, ()))
     }.foldLeft(empty[Int,Unit,Unit])(_ union _).undir
 
   /**
