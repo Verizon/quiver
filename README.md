@@ -1,7 +1,8 @@
 # Quiver
 
-[![Join the chat at https://gitter.im/verizon/quiver](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/verizon/quiver)
+![image](docs/src/site/img/logo.png)
 
+[![Join the chat at https://gitter.im/verizon/quiver](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/verizon/quiver)
 [![Build Status](https://travis-ci.org/Verizon/quiver.svg?branch=master)](https://travis-ci.org/Verizon/quiver)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.verizon.quiver/core_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.verizon.quiver/core_2.11)
 [![codecov](https://codecov.io/gh/Verizon/quiver/branch/master/graph/badge.svg)](https://codecov.io/gh/Verizon/quiver)
