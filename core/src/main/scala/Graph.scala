@@ -723,7 +723,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
       case Decomp(Some(c), g) =>
         val (xs, g2) = g.xdfWith(d(c), d, f)
         val (ys, g3) = g.xdfWith(vs.tail, d, f)
-        (Tree.node(f(c), xs.toStream) +: ys, g3)
+        (Tree.Node(f(c), xs.toStream) +: ys, g3)
     }
 
   import scala.collection.immutable.Queue

@@ -1,4 +1,4 @@
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-libraryDependencies += "org.typelevel" %% "scodec-core" % "1.6.+"
+libraryDependencies += "org.scodec" %% "scodec-core" % "1.10.3"
