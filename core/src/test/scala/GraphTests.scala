@@ -163,6 +163,6 @@ object GraphTests extends Properties("Graph") {
     }
 
   import GDecomp._
-  //FIXME: get scalaz to work with scalacheck
-//  include(comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ], "GDecomp is a lawful comonad")
+
+  property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
 }

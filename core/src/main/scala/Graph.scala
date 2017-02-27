@@ -17,6 +17,8 @@
 
 package quiver
 
+import compatibility._
+
 import scalaz._
 import scalaz.syntax.std.map._
 import scalaz.syntax.monoid._
