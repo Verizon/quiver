@@ -19,6 +19,7 @@ package quiver
 import org.scalacheck._
 import org.scalacheck.Prop._
 import scodec.codecs
+import scodec.Attempt
 import scalaz.\/
 
 object GraphCodecsTest extends Properties("codecs"){
@@ -32,8 +33,9 @@ object GraphCodecsTest extends Properties("codecs"){
         val result = for {
           encoded <- ca.encode(a)
           decoded <- ca.decode(encoded)
-        } yield decoded._2
-        result == (\/.right(a))
+        } yield decoded.value
+
+        result == Attempt.Successful(a)
       }
     }
   }

@@ -38,8 +38,8 @@ object GraphGen {
   } yield LEdge(x, y, a)
 
   def genContext[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[Context[N,A,B]] = for {
-    ins <- arbitrary[Adj[N,B]]
-    outs <- arbitrary[Adj[N,B]]
+    ins <- arbitrary[Vector[(B, N)]]
+    outs <- arbitrary[Vector[(B, N)]]
     n <- arbitrary[N]
     a <- arbitrary[A]
   } yield Context(ins, n, a, outs)
@@ -55,5 +55,6 @@ object GraphGen {
     g <- arbitrary[Graph[N,A,B]]
   } yield GDecomp(ctx, g)
 
-  implicit def arbitraryGDecomp[A: Arbitrary, B: Arbitrary, N: Arbitrary] = Arbitrary(genGDecomp[N,A,B])
+  implicit def arbitraryGDecomp[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B]] = Arbitrary(genGDecomp[N,A,B])
+  implicit def arbitraryGDecompF[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B] => A] = Arbitrary(Gen.const(_.label))
 }
