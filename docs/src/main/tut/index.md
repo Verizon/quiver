@@ -12,10 +12,10 @@ section: "home"
 
 ## Getting Started
 
-To begin using *Quiver*, add the following dependency in your SBT build (check for the latest release by [looking on bintray](https://bintray.com/oncue/releases/quiver/view)):
+To begin using *Quiver*, add the following dependency in your SBT build (check for the latest release by [looking on maven central](http://search.maven.org/#search%7Cga%7C1%7Cio.verizon.quiver)):
 
 ```scala
-libraryDependencies += "oncue.quiver" %% "core" % "x.x.x"
+libraryDependencies += "io.verizon.quiver" %% "core" % "x.x.x-scalaz-7.y"
 ```
 
 Then import the following package in your source file:
