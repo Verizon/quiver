@@ -226,13 +226,13 @@ package object quiver {
 
   /** Find the first path in a search tree that starts with the given node */
   def getPath[N](v: N, t: RTree[N]): Option[Path[N]] =
-    t.find(_.head == v).map(_.reverse)
+    t.find(_.headOption == Some(v)).map(_.reverse)
 
   /**
    * Find the first path in a labeled search tree that starts with the given node
    */
   def getLPath[N,A](v: N, t: LRTree[N,A]): Option[LPath[N,A]] =
-    t.find(_.head._2 == v).map(_.reverse)
+    t.find(_.headOption.map(_._2) == Some(v)).map(_.reverse)
 
   /**
    * The monoid of graph unions
