@@ -165,4 +165,38 @@ object GraphTests extends Properties("Graph") {
   import GDecomp._
 
   property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
+
+  property("The shortest path through a graph should be the shortest path between all subpaths") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    (for {
+      path <- graph.esp(start.vertex, end.vertex).toVector
+      subpath <- (1 until path.size).flatMap(path.sliding).toVector
+      shortest = (subpath.headOption |@| subpath.lastOption).apply(graph.esp)
+    } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
+  }
+
+  property("The shortest labelled path through a graph should be labelled by the labelled shortest labelled path between all subpaths") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    (for {
+      path <- graph.lesp(start.vertex, end.vertex).toVector
+      subpath <- (1 until path.size).flatMap(path.sliding).toVector
+      shortest = (subpath.headOption.map(_._2) |@| subpath.lastOption.map(_._2)).apply(graph.esp)
+    } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
+  }
+
+  property("The shortest labelled path through a graph without the labels should be the shortest path exactly") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    val lpath = graph.lesp(start.vertex, end.vertex)
+    val path = graph.esp(start.vertex, end.vertex)
+    s"Labelled path is $lpath which should be $path if the labels are dropped" |: lpath.map(_.map(_._2)) === path
+  }
 }
