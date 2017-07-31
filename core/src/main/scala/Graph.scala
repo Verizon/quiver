@@ -907,21 +907,25 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * @group bfs   
    */
   def cheapestPath[C](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C)(implicit num: Numeric[C]): Option[LPath[N,B]] = {
-      require(contains(s))
-      require(contains(t))
-      val searchtree = getLPaths(t,lbft(s))
-      if (searchtree.isEmpty) {
-        None
-      } else {
-        Option(searchtree.minBy(_.foldLeft((LNode(s, label(s).get),num.zero)){
-          case ((last,cost),(edgel,n)) =>
-            val next = LNode(n,label(n).get)
-            val addedCost = costFkt(last,edgel,next)
-            (next, num.plus(cost,addedCost))
-        }._2))
-      }
-    }
+    require(contains(s))
+    require(contains(t))
 
+    def costOfPath(p: LPath[N,B]): C = p.foldLeft((LNode(s, label(s).get),num.zero)){
+      case ((last,cost),(edgel,n)) =>
+        val next = LNode(n,label(n).get)
+        val addedCost = costFkt(last,edgel,next)
+        (next, num.plus(cost,addedCost))
+    }._2
+
+    val searchtree = getLPaths(t,lbft(s))
+    if (searchtree.isEmpty) {
+      None
+    } else {
+      Option(searchtree.minBy(costOfPath))
+    }
+  }
+
+  
   /**
    * Check if the given node is an end node according to the given criteria.
    * An ending node `n` in graph `g` has `f(g,n)` containing no nodes other than `n`.
