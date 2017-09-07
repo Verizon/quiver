@@ -185,9 +185,9 @@ object GraphTests extends Properties("Graph") {
     val graph = tpg._1
     (for {
       path <- graph.lesp(start.vertex, end.vertex).toVector
-      subpath <- (1 until path.size).flatMap(path.sliding).toVector
-      shortest = (subpath.headOption.map(_._2) |@| subpath.lastOption.map(_._2)).apply(graph.esp)
-    } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
+      subpath <- (0 until path._2.size).map(n => (path._1, path._2.dropRight(n))).toVector
+      shortest = graph.esp(subpath._1, subpath._2.lastOption.fold(subpath._1)(_._1))
+    } yield shortest.nonEmpty && shortest.get == subpath).forall(identity)
   }
 
   property("The shortest labelled path through a graph without the labels should be the shortest path exactly") = forAll {
@@ -197,6 +197,6 @@ object GraphTests extends Properties("Graph") {
     val graph = tpg._1
     val lpath = graph.lesp(start.vertex, end.vertex)
     val path = graph.esp(start.vertex, end.vertex)
-    s"Labelled path is $lpath which should be $path if the labels are dropped" |: lpath.map(_.map(_._2)) === path
+    s"Labelled path is $lpath which should be $path if the labels are dropped" |: lpath.map{ case (s, p) => s +: p.map(_._1) } === path
   }
 }
