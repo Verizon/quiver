@@ -875,9 +875,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     if (q.isEmpty || isEmpty) Stream()
     else {
       val (p, qp) = q.dequeue
-      if (p.isEmpty) Stream(p)
-      else decomp(p.get._1) match {
-        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(nn => p.map(op => (op._1, nn.swap +: op._2)))))
+      decomp(p._1) match {
+        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(nn => (p._1, nn.swap +: p._2))))
         case Decomp(None, g) => g lbf qp
       }
     }
@@ -888,10 +887,10 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def lbft(v: N): LRTree[N,B] = {
     val out = outEdges(v)
-    if (out.isEmpty) Stream(None)
+    if (out.isEmpty) Stream((v, Vector.empty))
     else {
       val LEdge(vp, _, _) = out.head
-      lbf(Queue(Option((vp, Vector.empty))))
+      lbf(Queue((vp, Vector.empty)))
     }
   }
 
