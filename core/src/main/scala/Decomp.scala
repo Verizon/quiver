@@ -16,7 +16,7 @@
 //: ----------------------------------------------------------------------------
 package quiver
 
-import scalaz.Comonad
+import cats.Comonad
 
 /**
  * The decomposition of a graph into possibly a detached context focused on one node,
@@ -132,9 +132,9 @@ object GDecomp {
 
   implicit def gDecompComonad[N,B]: Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] =
     new Comonad[({type λ[α] = GDecomp[N,α,B]})#λ] {
-      def copoint[A](as: GDecomp[N,A,B]) = as.label
+      def extract[A](as: GDecomp[N,A,B]) = as.label
       def map[A,C](as: GDecomp[N,A,B])(f: A => C) = as map f
-      def cobind[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
+      def coflatMap[A,C](as: GDecomp[N,A,B])(f: GDecomp[N,A,B] => C) =
         as redecorate f
     }
 }

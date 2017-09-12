@@ -5,24 +5,12 @@ matrix:
     # scala 2.10
     - jdk: oraclejdk8
       scala: 2.10.6
-      env: SCALAZ_VERSION=7.1.11
-    - jdk: oraclejdk8
-      scala: 2.10.6
-      env: SCALAZ_VERSION=7.2.7
     # scala 2.11
     - jdk: oraclejdk8
-      scala: 2.11.8
-      env: SCALAZ_VERSION=7.1.11
-    - jdk: oraclejdk8
-      scala: 2.11.8
-      env: SCALAZ_VERSION=7.2.7
+      scala: 2.11.11
     # scala 2.12
     - jdk: oraclejdk8
-      scala: 2.12.1
-      env: SCALAZ_VERSION=7.1.11
-    - jdk: oraclejdk8
-      scala: 2.12.1
-      env: SCALAZ_VERSION=7.2.7
+      scala: 2.12.3
 
 branches:
   only:
