@@ -52,7 +52,8 @@ object GraphGen {
 
   def genGDecomp[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[GDecomp[N,A,B]] = for {
     ctx <- arbitrary[Context[N,A,B]]
-    g <- arbitrary[Graph[N,A,B]]
+    // The remainder of the graph should not reference the focus of the decomposition or its incident edges
+    g <- arbitrary[Graph[N,A,B]].map(_.removeNode(ctx.vertex))
   } yield GDecomp(ctx, g)
 
   implicit def arbitraryGDecomp[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B]] = Arbitrary(genGDecomp[N,A,B])

@@ -67,7 +67,7 @@ case class GDecomp[N,A,B](ctx: Context[N,A,B], rest: Graph[N,A,B]) {
    */
   def redecorate[C](f: GDecomp[N,A,B] => C): GDecomp[N,C,B] =
     GDecomp(ctx.copy(label = f(this)),
-            rest.gmap { c => c.copy(label = f(rest.decomp(c.vertex).toGDecomp.get)) })
+            rest.gmap { c => c.copy(label = f(toGraph.decomp(c.vertex).toGDecomp.get)) })
 
   /**
    * Decompose the graph on the nodes returned by `f`.
