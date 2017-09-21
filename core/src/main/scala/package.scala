@@ -99,8 +99,13 @@ package object quiver {
     Order[Vector[LEdge[N,B]]].on[Graph[N,A,B]](_.labEdges.sorted)
   }
 
-  implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] =
-    N.on[Context[N,A,B]](_.vertex) whenEqual A.on[Context[N,A,B]](_.label) whenEqual Order[Adj[N,B]].on[Context[N,A,B]](_.inAdj) whenEqual Order[Adj[N,B]].on[Context[N,A,B]](_.outAdj)
+  implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] = {
+    implicit val adj = Order[(B, N)].toOrdering
+    N.on[Context[N,A,B]](_.vertex) whenEqual
+      A.on[Context[N,A,B]](_.label) whenEqual
+      Order[Adj[N,B]].on[Context[N,A,B]](_.inAdj.sorted) whenEqual
+      Order[Adj[N,B]].on[Context[N,A,B]](_.outAdj.sorted)
+  }
 
   implicit def gdecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
     contextOrder[N,A,B].on[GDecomp[N,A,B]](_.ctx) whenEqual graphOrder[N,A,B].on[GDecomp[N,A,B]](_.rest)

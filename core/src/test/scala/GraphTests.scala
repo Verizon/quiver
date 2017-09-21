@@ -18,6 +18,7 @@ package quiver
 
 import cats.Order
 import cats.implicits._
+import cats.kernel.Eq
 import cats.kernel.laws.{GroupLaws, OrderLaws}
 import cats.laws.discipline.ComonadTests
 import org.scalacheck._
@@ -167,35 +168,20 @@ object GraphTests extends Properties("Graph") {
       val cPath = graph.cheapestPath[Int](from, to, (f: LNode[N,Int], l: Int, t: LNode[N,Int]) => 1)
       s"Paths different: cheapest = $cPath, shortest = $sPath" |: sPath === cPath
     }
-  import GDecomp._
 
   {
-    import org.scalacheck.derive._
+    import GDecomp._
     import org.scalacheck.ScalacheckShapeless._
 
-    // TODO Clean these up, probably into a GraphCogen class.  Keep
-    // the questionable ones hidden.
+    // TODO Clean these up, probably into a GraphCogen class. Keep the questionable ones hidden.
 
-    // These are dangerous in general, but safe for these types and
-    // enough to get us the necessary Cogen for the Comonad tests.
-    implicit val orderSetInt: Order[Set[Int]] =
-      Order.by(_.toVector)
-    implicit def orderingSetInt: Ordering[Set[Int]] =
-      Order[Set[Int]].toOrdering
-    implicit def orderMapIntSetInt: Order[Map[N, Set[Int]]] =
-      Order.by(_.keys.toVector)
+    implicit def cogenMap[K: Cogen: Ordering, V: Cogen]: Cogen[Map[K, V]] =
+      Cogen.it(_.toVector.sortBy(_._1).iterator)
 
-    // ScalacheckShapeless still needs a bit more help...
-    implicit def orderGrContext: Order[GrContext[N, Int, Int]] = {
-      import scala.language.postfixOps
-      Order[Int].on[GrContext[N, Int, Int]](_.label) whenEqual
-      Order[Map[N, Set[Int]]].on[GrContext[N, Int, Int]](_.inAdj) whenEqual
-      Order[Map[N, Set[Int]]].on[GrContext[N, Int, Int]](_.outAdj)
-    }
-    implicit def orderingGrContext: Ordering[GrContext[N, Int, Int]] =
-      Order[GrContext[N, Int, Int]].toOrdering
+    implicit def cogenContext[V: Cogen: Ordering, A: Cogen, B: Cogen: Ordering]: Cogen[Context[V, A, B]] =
+      Cogen[(V, GrContext[V, A, B])].contramap(c => c.vertex -> c.toGrContext)
 
-    include(ComonadTests[({type λ[α] = GDecomp[N,α,Int]})#λ].coflatMap[Int, Int, Int].all)
+    include(ComonadTests[({type λ[α] = GDecomp[N,α,Int]})#λ].comonad[Int, Int, Int].all)
   }
 
   property("The shortest path through a graph should be the shortest path between all subpaths") = forAll {
