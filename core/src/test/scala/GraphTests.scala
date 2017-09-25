@@ -187,7 +187,7 @@ object GraphTests extends Properties("Graph") {
       path <- graph.lesp(start.vertex, end.vertex).toVector
       subpath <- (0 until path._2.size).map(n => (path._1, path._2.dropRight(n))).toVector
       shortest = graph.esp(subpath._1, subpath._2.lastOption.fold(subpath._1)(_._1))
-    } yield shortest.nonEmpty && shortest.get == subpath).forall(identity)
+    } yield shortest.nonEmpty && shortest.get.length == (subpath._2.length + 1)).forall(identity)
   }
 
   property("The shortest labelled path through a graph without the labels should be the shortest path exactly") = forAll {

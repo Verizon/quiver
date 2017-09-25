@@ -237,7 +237,7 @@ package object quiver {
   def reverseLPath[N,A](p: LPath[N,A]): LPath[N,A] = p match {
     case (s, op) if op.isEmpty => (s, op)
     case (s, op) => (op.last._1, op.foldLeft[(N, Vector[(N,A)])]((s, Vector.empty[(N,A)])){
-      case ((on, pa), (n, l)) => (n, pa :+ (on -> l))
+      case ((on, pa), (n, l)) => (n, (on -> l) +: pa)
     }._2)
   }
 

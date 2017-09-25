@@ -876,7 +876,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     else {
       val (p, qp) = q.dequeue
       decomp(p._1) match {
-        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(nn => (p._1, nn.swap +: p._2))))
+        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(nn => (nn._2, (p._1, nn._1) +: p._2))))
         case Decomp(None, g) => g lbf qp
       }
     }
@@ -889,8 +889,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     val out = outEdges(v)
     if (out.isEmpty) Stream((v, Vector.empty))
     else {
-      val LEdge(vp, _, _) = out.head
-      lbf(Queue((vp, Vector.empty)))
+      val LEdge(vp, _, l) = out.head
+      lbf(Queue((v, Vector.empty), (vp, Vector((v, l)))))
     }
   }
 
