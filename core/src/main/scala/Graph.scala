@@ -906,22 +906,22 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * Cheapest path from vertex `s` to vertex `t` under the cost function `costFkt` with labels
    * @group bfs   
    */
-  def cheapestPath[C](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C)(implicit num: Numeric[C]): Option[LPath[N,B]] = {
-    require(contains(s))
-    require(contains(t))
-
-    def costOfPath(p: LPath[N,B]): C = p.foldLeft((LNode(s, label(s).get),num.zero)){
+  def cheapestPath[C : Monoid : math.Ordering](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C): Option[LPath[N,B]] = {
+    def costOfPath(p: LPath[N,B]): C = p.foldLeft((LNode(s, label(s).get),mzero[C])){
       case ((last,cost),(edgel,n)) =>
         val next = LNode(n,label(n).get)
         val addedCost = costFkt(last,edgel,next)
-        (next, num.plus(cost,addedCost))
+        (next, cost |+| addedCost)
     }._2
-
-    val searchtree = getLPaths(t,lbft(s))
-    if (searchtree.isEmpty) {
+    if (! (contains(s) && contains(t))) {
       None
     } else {
-      Option(searchtree.minBy(costOfPath))
+      val paths = getLPaths(t,lbft(s))
+      if (paths.isEmpty) {
+        None
+      } else {
+        Option(paths.minBy(costOfPath))
+      }
     }
   }
 
