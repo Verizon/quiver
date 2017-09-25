@@ -37,6 +37,13 @@ object GraphGen {
     a <- arbitrary[A]
   } yield LEdge(x, y, a)
 
+  def genExistingEdge[B: Arbitrary, N, A](nodes: List[LNode[N,A]]): Gen[LEdge[N,B]] = for {
+    label <- arbitrary[B]
+    if nodes.nonEmpty
+    a <- Gen.oneOf(nodes)
+    b <- Gen.oneOf(nodes)
+  } yield LEdge(a.vertex, b.vertex, label)
+
   def genContext[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[Context[N,A,B]] = for {
     ins <- arbitrary[Vector[(B, N)]]
     outs <- arbitrary[Vector[(B, N)]]
@@ -57,4 +64,14 @@ object GraphGen {
 
   implicit def arbitraryGDecomp[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B]] = Arbitrary(genGDecomp[N,A,B])
   implicit def arbitraryGDecompF[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B] => A] = Arbitrary(Gen.const(_.label))
+
+  def genTwoPointedGraph[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[(Graph[N,A,B], LNode[N,A], LNode[N,A])] = for {
+    vs <- Gen.listOf(genNode[N,A])
+    if vs.nonEmpty
+    a <- Gen.oneOf(vs)
+    b <- Gen.oneOf(vs)
+    es <- Gen.listOf(genExistingEdge[B,N,A](vs))
+  } yield (safeMkGraph(vs, es), a, b)
+
+  implicit def arbitraryTwoPointedGraph[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[(Graph[N,A,B], LNode[N,A], LNode[N,A])] = Arbitrary(genTwoPointedGraph[N,A,B])
 }

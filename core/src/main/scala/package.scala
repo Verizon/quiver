@@ -77,7 +77,7 @@ package object quiver {
    * Labeled path through a graph
    * @group types
    */
-  type LPath[N,A] = Adj[N,A]
+  type LPath[N,A] = (N,Vector[(N,A)])
 
   /** @group instances */
   implicit def nodeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LNode[N,A]] =
@@ -232,7 +232,14 @@ package object quiver {
    * Find the first path in a labeled search tree that starts with the given node
    */
   def getLPath[N,A](v: N, t: LRTree[N,A]): Option[LPath[N,A]] =
-    t.find(_.headOption.map(_._2) == Option(v)).map(_.reverse)
+    t.find(_._1 == v).map(reverseLPath)
+
+  def reverseLPath[N,A](p: LPath[N,A]): LPath[N,A] = p match {
+    case (s, op) if op.isEmpty => (s, op)
+    case (s, op) => (op.last._1, op.foldLeft[(N, Vector[(N,A)])]((s, Vector.empty[(N,A)])){
+      case ((on, pa), (n, l)) => (n, (on -> l) +: pa)
+    }._2)
+  }
 
   /**
    * The monoid of graph unions
