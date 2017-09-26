@@ -906,10 +906,10 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * @group bfs   
    */
   def cheapestPath[C : Monoid : math.Ordering](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C): Option[LPath[N,B]] = {
-    def costOfPath(p: LPath[N,B]): C = p.foldLeft((LNode(s, label(s).get),mzero[C])){
-      case ((last,cost),(edgel,n)) =>
+    def costOfPath(p: LPath[N,B]): C = p._2.foldLeft((LNode(p._1, label(p._1).get),mzero[C])){
+      case ((last,cost),(n,edgeLabel)) =>
         val next = LNode(n,label(n).get)
-        val addedCost = costFkt(last,edgel,next)
+        val addedCost = costFkt(last,edgeLabel,next)
         (next, cost |+| addedCost)
     }._2
     if (! (contains(s) && contains(t))) {

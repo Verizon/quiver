@@ -246,7 +246,7 @@ package object quiver {
    * Find all paths in a labeled search tree that start with the given node
    */
   def getLPaths[N,A](v: N, t: LRTree[N,A]): Stream[LPath[N,A]] =
-    t.filter(_.headOption.map(_._2) == Option(v)).map(_.reverse)
+    t.filter(_._1 == v).map(reverseLPath)
 
   /**
    * The monoid of graph unions
