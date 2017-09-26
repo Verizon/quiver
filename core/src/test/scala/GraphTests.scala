@@ -162,6 +162,15 @@ object GraphTests extends Properties("Graph") {
       s"Found ${g.leaves} expected ${leaves}" |: g.leaves === leaves
     }
 
+  property("The shortest path should be the cheapest path with constant cost") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N,Int], LNode[N,Int])) =>
+      val graph = tpg._1
+      val from = tpg._2.vertex
+      val to = tpg._3.vertex
+      val sPath = graph.lesp(from, to)
+      val cPath = graph.cheapestPath[Int](from, to, (f: LNode[N,Int], l: Int, t: LNode[N,Int]) => 1)
+      s"Paths different: cheapest = $cPath, shortest = $sPath" |: sPath === cPath
+    }
   import GDecomp._
 
   property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
