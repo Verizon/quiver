@@ -57,10 +57,10 @@ object GraphGen {
   implicit def arbitraryGraph[A: Arbitrary, B: Arbitrary, N: Arbitrary] =
     Arbitrary(graphGen[N,A,B])
 
-  def genGDecomp[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[GDecomp[N,A,B]] = for {
-    ctx <- arbitrary[Context[N,A,B]]
-    g <- arbitrary[Graph[N,A,B]]
-  } yield GDecomp(ctx, g)
+  def genGDecomp[N: Arbitrary, A: Arbitrary, B: Arbitrary]: Gen[GDecomp[N, A, B]] = for {
+    g <- graphGen[N, A, B] if !g.isEmpty
+    n <- Gen.oneOf(g.nodes)
+  } yield g.decomp(n).toGDecomp.get
 
   implicit def arbitraryGDecomp[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B]] = Arbitrary(genGDecomp[N,A,B])
   implicit def arbitraryGDecompF[A: Arbitrary, B: Arbitrary, N: Arbitrary]: Arbitrary[GDecomp[N, A, B] => A] = Arbitrary(Gen.const(_.label))
