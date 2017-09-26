@@ -162,7 +162,50 @@ object GraphTests extends Properties("Graph") {
       s"Found ${g.leaves} expected ${leaves}" |: g.leaves === leaves
     }
 
+  property("The shortest path should be the cheapest path with constant cost") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N,Int], LNode[N,Int])) =>
+      val graph = tpg._1
+      val from = tpg._2.vertex
+      val to = tpg._3.vertex
+      val sPath = graph.lesp(from, to)
+      val cPath = graph.cheapestPath[Int](from, to, (f: LNode[N,Int], l: Int, t: LNode[N,Int]) => 1)
+      s"Paths different: cheapest = $cPath, shortest = $sPath" |: sPath === cPath
+    }
   import GDecomp._
 
   property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
+
+  property("The shortest path through a graph should be the shortest path between all subpaths") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    (for {
+      path <- graph.esp(start.vertex, end.vertex).toVector
+      subpath <- (1 until path.size).flatMap(path.sliding).toVector
+      shortest = (subpath.headOption |@| subpath.lastOption).apply(graph.esp)
+    } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
+  }
+
+  property("The shortest labelled path through a graph should be labelled by the labelled shortest labelled path between all subpaths") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    (for {
+      path <- graph.lesp(start.vertex, end.vertex).toVector
+      subpath <- (0 until path._2.size).map(n => (path._1, path._2.dropRight(n))).toVector
+      shortest = graph.esp(subpath._1, subpath._2.lastOption.fold(subpath._1)(_._1))
+    } yield shortest.nonEmpty && shortest.get.length == (subpath._2.length + 1)).forall(identity)
+  }
+
+  property("The shortest labelled path through a graph without the labels should be the shortest path exactly") = forAll {
+    (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
+    val start = tpg._2
+    val end = tpg._3
+    val graph = tpg._1
+    val lpath = graph.lesp(start.vertex, end.vertex)
+    val path = graph.esp(start.vertex, end.vertex)
+    s"Labelled path is $lpath which should be $path if the labels are dropped" |: lpath.map{ case (s, p) => s +: p.map(_._1) } === path
+  }
 }

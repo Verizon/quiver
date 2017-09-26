@@ -875,9 +875,8 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     if (q.isEmpty || isEmpty) Stream()
     else {
       val (p, qp) = q.dequeue
-      if (p.isEmpty) Stream(p)
-      else decomp(p.head._2) match {
-        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(_ +: p)))
+      decomp(p._1) match {
+        case Decomp(Some(c), g) => p #:: g.lbf(qp.enqueue(c.outs.map(nn => (nn._2, (p._1, nn._1) +: p._2))))
         case Decomp(None, g) => g lbf qp
       }
     }
@@ -888,10 +887,10 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def lbft(v: N): LRTree[N,B] = {
     val out = outEdges(v)
-    if (out.isEmpty) Stream(Vector())
+    if (out.isEmpty) Stream((v, Vector.empty))
     else {
       val LEdge(vp, _, l) = out.head
-      lbf(Queue(Vector(l -> vp)))
+      lbf(Queue((v, Vector.empty), (vp, Vector((v, l)))))
     }
   }
 
@@ -902,6 +901,30 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
   def lesp(s: N, t: N): Option[LPath[N,B]] =
     getLPath(t, lbft(s))
 
+  /**
+   * Cheapest path from vertex `s` to vertex `t` under the cost function `costFkt` with labels
+   * @group bfs   
+   */
+  def cheapestPath[C : Monoid : math.Ordering](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C): Option[LPath[N,B]] = {
+    def costOfPath(p: LPath[N,B]): C = p._2.foldLeft((LNode(p._1, label(p._1).get),mzero[C])){
+      case ((last,cost),(n,edgeLabel)) =>
+        val next = LNode(n,label(n).get)
+        val addedCost = costFkt(last,edgeLabel,next)
+        (next, cost |+| addedCost)
+    }._2
+    if (! (contains(s) && contains(t))) {
+      None
+    } else {
+      val paths = getLPaths(t,lbft(s))
+      if (paths.isEmpty) {
+        None
+      } else {
+        Option(paths.minBy(costOfPath))
+      }
+    }
+  }
+
+  
   /**
    * Check if the given node is an end node according to the given criteria.
    * An ending node `n` in graph `g` has `f(g,n)` containing no nodes other than `n`.
