@@ -81,34 +81,45 @@ package object quiver {
 
   /** @group instances */
   implicit def nodeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LNode[N,A]] =
-    N.on[LNode[N,A]](_.vertex) whenEqual A.on[LNode[N,A]](_.label)
+    Order.whenEqual(
+      Order.by[LNode[N,A], N](_.vertex),
+      Order.by[LNode[N,A], A](_.label))
 
   /** @group instances */
   implicit def ledgeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LEdge[N,A]] =
-    N.on[LEdge[N,A]](_.from) whenEqual N.on[LEdge[N,A]](_.to) whenEqual A.on[LEdge[N,A]](_.label)
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.from),
+      Order.by(_.to),
+      Order.by(_.label)))
 
   /** @group instances */
   implicit def edgeOrder[N,A](implicit N: Order[N]): Order[Edge[N]] =
-    N.on[Edge[N]](_.from) whenEqual N.on[Edge[N]](_.to)
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.from),
+      Order.by(_.to)))
 
   /** @group instances */
   implicit def graphOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Graph[N,A,B]] = {
     implicit val L = Order[LNode[N,A]].toOrdering
     implicit val E = Order[LEdge[N,B]].toOrdering
-    Order[Vector[LNode[N,A]]].on[Graph[N,A,B]](_.labNodes.sorted) whenEqual
-    Order[Vector[LEdge[N,B]]].on[Graph[N,A,B]](_.labEdges.sorted)
+    Order.whenEqual(
+      Order.by(_.labNodes.sorted),
+      Order.by(_.labEdges.sorted))
   }
 
   implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] = {
     implicit val adj = Order[(B, N)].toOrdering
-    N.on[Context[N,A,B]](_.vertex) whenEqual
-      A.on[Context[N,A,B]](_.label) whenEqual
-      Order[Adj[N,B]].on[Context[N,A,B]](_.inAdj.sorted) whenEqual
-      Order[Adj[N,B]].on[Context[N,A,B]](_.outAdj.sorted)
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.vertex),
+      Order.by(_.label),
+      Order.by(_.inAdj.sorted),
+      Order.by(_.outAdj.sorted)))
   }
 
-  implicit def gdecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
-    contextOrder[N,A,B].on[GDecomp[N,A,B]](_.ctx) whenEqual graphOrder[N,A,B].on[GDecomp[N,A,B]](_.rest)
+  implicit def gDecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
+    Order.whenEqual(
+      Order.by[GDecomp[N,A,B], Context[N,A,B]](_.ctx),
+      Order.by[GDecomp[N,A,B], Graph[N,A,B]](_.rest))
 
   /**
    * An empty graph

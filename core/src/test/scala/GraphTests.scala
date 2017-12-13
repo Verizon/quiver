@@ -19,7 +19,8 @@ package quiver
 import cats.Order
 import cats.implicits._
 import cats.kernel.Eq
-import cats.kernel.laws.{GroupLaws, OrderLaws}
+import cats.kernel.laws.OrderLaws
+import cats.kernel.laws.discipline.MonoidTests
 import cats.laws.discipline.ComonadTests
 import org.scalacheck._
 import org.scalacheck.Prop._
@@ -121,7 +122,7 @@ object GraphTests extends Properties("Graph") {
       g1.nodes.forall(u.nodes contains _)
     }
 
-  include(GroupLaws[Graph[N, Int, Int]].monoid.all)
+  include(MonoidTests[Graph[N, Int, Int]].monoid.all)
 
   property("Union is commutative (ignoring labels)") =
     forAll { (g1: Graph[N,Int,Int], g2: Graph[N,Int,Int]) =>
@@ -192,7 +193,7 @@ object GraphTests extends Properties("Graph") {
     (for {
       path <- graph.esp(start.vertex, end.vertex).toVector
       subpath <- (1 until path.size).flatMap(path.sliding).toVector
-      shortest = (subpath.headOption |@| subpath.lastOption).map(graph.esp)
+      shortest = (subpath.headOption, subpath.lastOption).mapN(graph.esp)
     } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
   }
 
