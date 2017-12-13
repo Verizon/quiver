@@ -167,20 +167,16 @@ object GraphTests extends Properties("Graph") {
       s"Paths different: cheapest = $cPath, shortest = $sPath" |: sPath === cPath
     }
 
-  {
-    import GDecomp._
-    import org.scalacheck.ScalacheckShapeless._
+  import GDecomp._
+  import org.scalacheck.ScalacheckShapeless._
 
-    // TODO Clean these up, probably into a GraphCogen class. Keep the questionable ones hidden.
+  // TODO Clean these up, probably into a GraphCogen class. Keep the questionable ones hidden.
+  implicit def cogenMap[K: Cogen: Ordering, V: Cogen]: Cogen[Map[K, V]] =
+    Cogen.it(_.toVector.sortBy(_._1).iterator)
+  implicit def cogenContext[V: Cogen: Ordering, A: Cogen, B: Cogen: Ordering]: Cogen[Context[V, A, B]] =
+    Cogen[(V, GrContext[V, A, B])].contramap(c => c.vertex -> c.toGrContext)
 
-    implicit def cogenMap[K: Cogen: Ordering, V: Cogen]: Cogen[Map[K, V]] =
-      Cogen.it(_.toVector.sortBy(_._1).iterator)
-
-    implicit def cogenContext[V: Cogen: Ordering, A: Cogen, B: Cogen: Ordering]: Cogen[Context[V, A, B]] =
-      Cogen[(V, GrContext[V, A, B])].contramap(c => c.vertex -> c.toGrContext)
-
-    include(ComonadTests[({type λ[α] = GDecomp[N,α,Int]})#λ].comonad[Int, Int, Int].all)
-  }
+  include(ComonadTests[({type λ[α] = GDecomp[N,α,Int]})#λ].comonad[Int, Int, Int].all)
 
   property("The shortest path through a graph should be the shortest path between all subpaths") = forAll {
     (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
