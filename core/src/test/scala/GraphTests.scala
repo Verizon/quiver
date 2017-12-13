@@ -18,8 +18,6 @@ package quiver
 
 import cats.Order
 import cats.implicits._
-import cats.kernel.Eq
-import cats.kernel.laws.OrderLaws
 import cats.kernel.laws.discipline.MonoidTests
 import cats.laws.discipline.ComonadTests
 import org.scalacheck._
@@ -111,7 +109,6 @@ object GraphTests extends Properties("Graph") {
   property("BFS should find all descendants of a node") =
     forAll { (ns: List[LNode[N,Int]], l: Int) =>
       val g = connect(ns, l)
-      val bfs = if (ns.isEmpty) Set() else g.bfs(ns.head.vertex).toSet
       ns.isEmpty || g.bfs(ns.head.vertex).toSet == ns.map(_.vertex).toSet
     }
 
@@ -135,7 +132,7 @@ object GraphTests extends Properties("Graph") {
   property("Folding on contexts equals folding on nodes and edges") =
     forAll { (g: Graph[N,Int,Int]) =>
       (g.labNodes.map(_.label).sum, g.labEdges.map(_.label).sum) == g.fold((0,0)) {
-        case (Context(ins, v, a, outs), (accn, acce)) =>
+        case (Context(ins, _, a, outs), (accn, acce)) =>
           (a + accn, (ins ++ outs).map(_._1).sum + acce)
       }
     }

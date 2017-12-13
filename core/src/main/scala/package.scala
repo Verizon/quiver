@@ -16,7 +16,6 @@
 //: ----------------------------------------------------------------------------
 
 import cats.{Monoid, Order}
-import cats.free.Cofree
 import cats.implicits._
 
 /**

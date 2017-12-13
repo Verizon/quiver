@@ -17,8 +17,7 @@
 
 package quiver
 
-import cats.{Eval, Monoid}
-import cats.free.Cofree
+import cats.Monoid
 import cats.implicits._
 
 case class Edge[N](from: N, to: N)
@@ -321,7 +320,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def updateNode(n: LNode[N,A]): Graph[N,A,B] =
     decomp(n.vertex) match {
-      case Decomp(Some(Context(p, v, l, s)), rest) =>
+      case Decomp(Some(Context(p, _, _, s)), rest) =>
         rest & Context(p, n.vertex, n.label, s)
       case _ => this
     }
