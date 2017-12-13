@@ -7,10 +7,10 @@ matrix:
       scala: 2.10.6
     # scala 2.11
     - jdk: oraclejdk8
-      scala: 2.11.11
+      scala: 2.11.12
     # scala 2.12
     - jdk: oraclejdk8
-      scala: 2.12.3
+      scala: 2.12.4
 
 branches:
   only:
