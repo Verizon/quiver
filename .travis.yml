@@ -4,7 +4,7 @@ matrix:
   include:
     # scala 2.10
     - jdk: oraclejdk8
-      scala: 2.10.6
+      scala: 2.10.7
     # scala 2.11
     - jdk: oraclejdk8
       scala: 2.11.12
