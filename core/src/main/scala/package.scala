@@ -14,10 +14,9 @@
 //:   limitations under the License.
 //:
 //: ----------------------------------------------------------------------------
-import scalaz._
-import scalaz.syntax.std.map._
-import scalaz.syntax.monoid._
-import scalaz.std.vector._
+
+import cats.{Monoid, Order}
+import cats.implicits._
 
 /**
  * @groupname creation Graph Construction
@@ -81,42 +80,45 @@ package object quiver {
 
   /** @group instances */
   implicit def nodeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LNode[N,A]] =
-    Order.order { (a, b) =>
-      N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label)
-    }
+    Order.whenEqual(
+      Order.by[LNode[N,A], N](_.vertex),
+      Order.by[LNode[N,A], A](_.label))
 
   /** @group instances */
   implicit def ledgeOrder[N,A](implicit N: Order[N], A: Order[A]): Order[LEdge[N,A]] =
-    Order.order { (a, b) =>
-      N.order(a.from, b.from) |+| N.order(a.to, b.to) |+| A.order(a.label, b.label)
-    }
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.from),
+      Order.by(_.to),
+      Order.by(_.label)))
 
   /** @group instances */
   implicit def edgeOrder[N,A](implicit N: Order[N]): Order[Edge[N]] =
-    Order.order { (a, b) =>
-      N.order(a.from, b.from) |+| N.order(a.to, b.to)
-    }
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.from),
+      Order.by(_.to)))
 
   /** @group instances */
-  implicit def graphOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Graph[N,A,B]] =
-    Order.order { (a, b) =>
-      implicit val L = Order[LNode[N,A]].toScalaOrdering
-      implicit val E = Order[LEdge[N,B]].toScalaOrdering
-      Order[Vector[LNode[N,A]]].order(a.labNodes.sorted, b.labNodes.sorted) |+|
-      Order[Vector[LEdge[N,B]]].order(a.labEdges.sorted, b.labEdges.sorted)
-    }
+  implicit def graphOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Graph[N,A,B]] = {
+    implicit val L = Order[LNode[N,A]].toOrdering
+    implicit val E = Order[LEdge[N,B]].toOrdering
+    Order.whenEqual(
+      Order.by(_.labNodes.sorted),
+      Order.by(_.labEdges.sorted))
+  }
 
-  implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] =
-    Order.order { (a, b) =>
-      import scalaz.std.vector._
-      import scalaz.std.tuple._
-      N.order(a.vertex, b.vertex) |+| A.order(a.label, b.label) |+| Order[Adj[N,B]].order(a.inAdj, b.inAdj) |+| Order[Adj[N,B]].order(a.outAdj, b.outAdj)
-    }
+  implicit def contextOrder[N,A,B](implicit N: Order[N], A: Order[A], B: Order[B]): Order[Context[N,A,B]] = {
+    implicit val adj = Order[(B, N)].toOrdering
+    Order.whenEqualMonoid.combineAll(List(
+      Order.by(_.vertex),
+      Order.by(_.label),
+      Order.by(_.inAdj.sorted),
+      Order.by(_.outAdj.sorted)))
+  }
 
-  implicit def gdecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
-    Order.order { (a, b) =>
-      contextOrder[N,A,B].order(a.ctx, b.ctx) |+| graphOrder[N,A,B].order(a.rest, b.rest)
-    }
+  implicit def gDecompOrder[N:Order,A:Order,B:Order]: Order[GDecomp[N,A,B]] =
+    Order.whenEqual(
+      Order.by[GDecomp[N,A,B], Context[N,A,B]](_.ctx),
+      Order.by[GDecomp[N,A,B], Graph[N,A,B]](_.rest))
 
   /**
    * An empty graph
@@ -253,7 +255,25 @@ package object quiver {
    * @group instances
    */
   implicit def graphMonoid[N,A,B]: Monoid[Graph[N,A,B]] = new Monoid[Graph[N,A,B]] {
-    def zero = empty
-    def append(g1: Graph[N,A,B], g2: => Graph[N,A,B]) = g1 union g2
+    def empty = quiver.empty
+    def combine(g1: Graph[N,A,B], g2: Graph[N,A,B]) = g1 union g2
+  }
+
+  // Map utilities lost when porting the old implementation
+  private[quiver] implicit class MapOps[A, B](val self: Map[A, B]) extends AnyVal {
+    def alter(k: A)(f: Option[B] => Option[B]): Map[A, B] =
+      f(self.get(k)) match {
+        case Some(v0) => self.updated(k, v0)
+        case None => self - k
+      }
+
+    def insertWith(k: A, v: B)(f: (B, B) => B): Map[A, B] =
+      self.get(k) match {
+        case Some(v0) => self.updated(k, f(v0, v))
+        case None => self.updated(k, v)
+      }
+
+    def mapKeys[A1](f: A => A1): Map[A1, B] =
+      self.map { case (k, v) => f(k) -> v }
   }
 }

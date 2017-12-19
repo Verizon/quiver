@@ -20,7 +20,6 @@ import org.scalacheck._
 import org.scalacheck.Prop._
 import scodec.codecs
 import scodec.Attempt
-import scalaz.\/
 
 object GraphCodecsTest extends Properties("codecs"){
   import GraphGen.{arbitraryNode,arbitraryEdge,arbitraryGraph}

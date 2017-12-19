@@ -17,12 +17,8 @@
 
 package quiver
 
-import compatibility._
-
-import scalaz._
-import scalaz.syntax.std.map._
-import scalaz.syntax.monoid._
-import scalaz.std.vector._
+import cats.Monoid
+import cats.implicits._
 
 case class Edge[N](from: N, to: N)
 
@@ -324,7 +320,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def updateNode(n: LNode[N,A]): Graph[N,A,B] =
     decomp(n.vertex) match {
-      case Decomp(Some(Context(p, v, l, s)), rest) =>
+      case Decomp(Some(Context(p, _, _, s)), rest) =>
         rest & Context(p, n.vertex, n.label, s)
       case _ => this
     }
@@ -667,6 +663,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def rdfs(vs: Seq[N]): Seq[N] = xdfsWith(vs, _.predecessors, _.vertex)
 
+  /*
   /**
    * Finds the transitive closure of this graph.
    * @group dfs
@@ -725,8 +722,9 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
       case Decomp(Some(c), g) =>
         val (xs, g2) = g.xdfWith(d(c), d, f)
         val (ys, g3) = g.xdfWith(vs.tail, d, f)
-        (Tree.Node(f(c), xs.toStream) +: ys, g3)
+        (Cofree[Stream, C](f(c), Eval.later(xs.toStream)) +: ys, g3)
     }
+   */
 
   import scala.collection.immutable.Queue
 
@@ -906,7 +904,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * @group bfs   
    */
   def cheapestPath[C : Monoid : math.Ordering](s: N, t: N, costFkt: (LNode[N,A],B,LNode[N,A]) => C): Option[LPath[N,B]] = {
-    def costOfPath(p: LPath[N,B]): C = p._2.foldLeft((LNode(p._1, label(p._1).get),mzero[C])){
+    def costOfPath(p: LPath[N,B]): C = p._2.foldLeft((LNode(p._1, label(p._1).get), Monoid[C].empty)){
       case ((last,cost),(n,edgeLabel)) =>
         val next = LNode(n,label(n).get)
         val addedCost = costFkt(last,edgeLabel,next)

@@ -16,11 +16,12 @@
 //: ----------------------------------------------------------------------------
 package quiver
 
+import cats.Order
+import cats.implicits._
+import cats.kernel.laws.discipline.MonoidTests
+import cats.laws.discipline.ComonadTests
 import org.scalacheck._
 import org.scalacheck.Prop._
-import scalaz._
-import Scalaz._
-import scalaz.scalacheck.ScalazProperties._
 
 object GraphTests extends Properties("Graph") {
   type N = Byte
@@ -67,8 +68,8 @@ object GraphTests extends Properties("Graph") {
 
   property("A graph constructed from nodes and edges should contain those nodes and edges") =
     forAll { (ns: List[N], es: List[LEdge[N,Int]], i: Int) =>
-      implicit val NO = Order[LNode[N,Int]].toScalaOrdering
-      implicit val EO = Order[LEdge[N,Int]].toScalaOrdering
+      implicit val NO = Order[LNode[N,Int]].toOrdering
+      implicit val EO = Order[LEdge[N,Int]].toOrdering
       val nns = ns.toSet.toList.map((b: N) => LNode(b, i)).sorted
       val ees = es.toSet.toList.filter((x: LEdge[N,Int]) =>
                   ns.contains(x.from) && ns.contains(x.to)
@@ -108,7 +109,6 @@ object GraphTests extends Properties("Graph") {
   property("BFS should find all descendants of a node") =
     forAll { (ns: List[LNode[N,Int]], l: Int) =>
       val g = connect(ns, l)
-      val bfs = if (ns.isEmpty) Set() else g.bfs(ns.head.vertex).toSet
       ns.isEmpty || g.bfs(ns.head.vertex).toSet == ns.map(_.vertex).toSet
     }
 
@@ -119,25 +119,20 @@ object GraphTests extends Properties("Graph") {
       g1.nodes.forall(u.nodes contains _)
     }
 
-  property("Graphs with union form a monoid") =
-    forAll { (g1: Graph[N,Int,Int], g2: Graph[N,Int,Int], g3: Graph[N,Int,Int]) =>
-      graphMonoid.monoidLaw.associative(g1, g2, g3)
-      graphMonoid.monoidLaw.leftIdentity(g1)
-      graphMonoid.monoidLaw.rightIdentity(g1)
-    }
+  include(MonoidTests[Graph[N, Int, Int]].monoid.all)
 
   property("Union is commutative (ignoring labels)") =
     forAll { (g1: Graph[N,Int,Int], g2: Graph[N,Int,Int]) =>
       val u1 = g1 union g2
       val u2 = g2 union g1
-      implicit val N = Order[Edge[N]].toScalaOrdering
+      implicit val N = Order[Edge[N]].toOrdering
       u1.edges.sorted == u2.edges.sorted && u1.nodes.sorted == u2.nodes.sorted
     }
 
   property("Folding on contexts equals folding on nodes and edges") =
     forAll { (g: Graph[N,Int,Int]) =>
       (g.labNodes.map(_.label).sum, g.labEdges.map(_.label).sum) == g.fold((0,0)) {
-        case (Context(ins, v, a, outs), (accn, acce)) =>
+        case (Context(ins, _, a, outs), (accn, acce)) =>
           (a + accn, (ins ++ outs).map(_._1).sum + acce)
       }
     }
@@ -147,7 +142,7 @@ object GraphTests extends Properties("Graph") {
       val g = safeMkGraph(ns, es)
       val vs = ns.map(_.vertex).toSet
       val roots = vs.filterNot(n => es.find { e =>
-        e.to === n && vs.contains(e.from) && (e.from /== n)
+        e.to === n && vs.contains(e.from) && (e.from =!= n)
       }.isDefined)
       s"Found ${g.roots} expected ${roots}" |: g.roots === roots
     }
@@ -157,10 +152,10 @@ object GraphTests extends Properties("Graph") {
       val g = safeMkGraph(ns, es)
       val vs = ns.map(_.vertex).toSet
       val leaves = vs.filterNot(n => es.find { e =>
-        e.from === n && vs.contains(e.to) && (e.to /== n)
+        e.from === n && vs.contains(e.to) && (e.to =!= n)
       }.isDefined)
       s"Found ${g.leaves} expected ${leaves}" |: g.leaves === leaves
-    }
+  }
 
   property("The shortest path should be the cheapest path with constant cost") = forAll {
     (tpg: (Graph[N,Int,Int], LNode[N,Int], LNode[N,Int])) =>
@@ -171,9 +166,17 @@ object GraphTests extends Properties("Graph") {
       val cPath = graph.cheapestPath[Int](from, to, (f: LNode[N,Int], l: Int, t: LNode[N,Int]) => 1)
       s"Paths different: cheapest = $cPath, shortest = $sPath" |: sPath === cPath
     }
-  import GDecomp._
 
-  property("GDecomp is a lawful comonad") = comonad.laws[({type λ[α] = GDecomp[Int,α,Int]})#λ]
+  import GDecomp._
+  import org.scalacheck.ScalacheckShapeless._
+
+  // TODO Clean these up, probably into a GraphCogen class. Keep the questionable ones hidden.
+  implicit def cogenMap[K: Cogen: Ordering, V: Cogen]: Cogen[Map[K, V]] =
+    Cogen.it(_.toVector.sortBy(_._1).iterator)
+  implicit def cogenContext[V: Cogen: Ordering, A: Cogen, B: Cogen: Ordering]: Cogen[Context[V, A, B]] =
+    Cogen[(V, GrContext[V, A, B])].contramap(c => c.vertex -> c.toGrContext)
+
+  include(ComonadTests[({type λ[α] = GDecomp[N,α,Int]})#λ].comonad[Int, Int, Int].all)
 
   property("The shortest path through a graph should be the shortest path between all subpaths") = forAll {
     (tpg: (Graph[N,Int,Int], LNode[N, Int], LNode[N, Int])) =>
@@ -183,7 +186,7 @@ object GraphTests extends Properties("Graph") {
     (for {
       path <- graph.esp(start.vertex, end.vertex).toVector
       subpath <- (1 until path.size).flatMap(path.sliding).toVector
-      shortest = (subpath.headOption |@| subpath.lastOption).apply(graph.esp)
+      shortest = (subpath.headOption, subpath.lastOption).mapN(graph.esp)
     } yield shortest.nonEmpty && shortest.get.nonEmpty && shortest.get.get == subpath).forall(identity)
   }
 

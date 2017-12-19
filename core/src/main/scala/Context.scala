@@ -67,4 +67,3 @@ case class GrContext[N,A,B](inAdj: Map[N, Set[B]],
                             outAdj: Map[N, Set[B]]) {
   def toContext(v: N): Context[N,A,B] = Context(toAdj(inAdj), v, label, toAdj(outAdj))
 }
-

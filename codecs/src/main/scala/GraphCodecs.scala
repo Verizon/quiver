@@ -17,9 +17,6 @@
 package quiver
 
 import scodec._
-import scodec.bits._
-import shapeless._
-import scalaz.\/
 
 object GraphCodecs {
 
