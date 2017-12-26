@@ -1,4 +1,4 @@
-val CatsVersion = "1.0.0-RC2"
+val CatsVersion = "1.0.0"
 
 libraryDependencies ++= Seq(
   "org.typelevel"              %% "cats-free"                 % CatsVersion,
