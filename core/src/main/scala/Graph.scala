@@ -663,7 +663,6 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    */
   def rdfs(vs: Seq[N]): Seq[N] = xdfsWith(vs, _.predecessors, _.vertex)
 
-  /*
   /**
    * Finds the transitive closure of this graph.
    * @group dfs
@@ -680,7 +679,7 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
    * Finds all the reachable nodes from a given node, using DFS
    * @group dfs
    */
-  def reachable(v: N): Vector[N] = dff(Seq(v)).flatMap(_.flatten)
+  def reachable(v: N): Vector[N] = dff(Seq(v)).flatMap(flattenTree)
 
   /**
    * Depth-first forest. Follows successors of the given nodes. The result is
@@ -720,11 +719,10 @@ case class Graph[N,A,B](rep: GraphRep[N,A,B]) {
     else decomp(vs.head) match {
       case Decomp(None, g) => g.xdfWith(vs.tail, d, f)
       case Decomp(Some(c), g) =>
-        val (xs, g2) = g.xdfWith(d(c), d, f)
+        val (xs, _) = g.xdfWith(d(c), d, f)
         val (ys, g3) = g.xdfWith(vs.tail, d, f)
-        (Cofree[Stream, C](f(c), Eval.later(xs.toStream)) +: ys, g3)
+        (Node(f(c), xs.toStream) +: ys, g3)
     }
-   */
 
   import scala.collection.immutable.Queue
 

@@ -16,6 +16,7 @@
 //: ----------------------------------------------------------------------------
 
 import cats.{Monoid, Order}
+import cats.free.Cofree
 import cats.implicits._
 
 /**
@@ -275,5 +276,14 @@ package object quiver {
 
     def mapKeys[A1](f: A => A1): Map[A1, B] =
       self.map { case (k, v) => f(k) -> v }
+  }
+
+
+  type Tree[A] = Cofree[Stream, A]
+
+  def flattenTree[A](tree: Tree[A]): Stream[A] = {
+    def go(tree: Tree[A], xs: Stream[A]): Stream[A] =
+      Stream.cons(tree.head, tree.tail.value.foldRight(xs)(go(_, _)))
+    go(tree, Stream.Empty)
   }
 }
